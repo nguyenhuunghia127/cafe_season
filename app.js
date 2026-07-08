@@ -193,7 +193,11 @@ function validateInputs() {
     
     const rentInput = document.getElementById('inp-rent');
     const utilitiesInput = document.getElementById('inp-utilities');
-    const salaryInput = document.getElementById('inp-salary');
+    const ftCountInput = document.getElementById('inp-ft-count');
+    const ftSalaryInput = document.getElementById('inp-ft-salary');
+    const ptCountInput = document.getElementById('inp-pt-count');
+    const ptHoursInput = document.getElementById('inp-pt-hours');
+    const ptRateInput = document.getElementById('inp-pt-rate');
     const miscInput = document.getElementById('inp-misc');
     
     const priceInput = document.getElementById('inp-price');
@@ -214,7 +218,7 @@ function validateInputs() {
     
     // Clear borders
     [depositInput, renovateInput, equipmentInput, rawStartInput, decorMiscInput, bufferInput, 
-     loanInput, interestInput, termInput, rentInput, utilitiesInput, salaryInput, miscInput, 
+     loanInput, interestInput, termInput, rentInput, utilitiesInput, ftCountInput, ftSalaryInput, ptCountInput, ptHoursInput, ptRateInput, miscInput, 
      priceInput, costPctInput, volGoodInput, volBaseInput, volWorstInput].forEach(clearError);
     
     const deposit = parseNumber(depositInput.value);
@@ -226,7 +230,11 @@ function validateInputs() {
     const loan = parseNumber(loanInput.value);
     const rent = parseNumber(rentInput.value);
     const utilities = parseNumber(utilitiesInput.value);
-    const salary = parseNumber(salaryInput.value);
+    const ftCount = parseNumber(ftCountInput.value);
+    const ftSalary = parseNumber(ftSalaryInput.value);
+    const ptCount = parseNumber(ptCountInput.value);
+    const ptHours = parseNumber(ptHoursInput.value);
+    const ptRate = parseNumber(ptRateInput.value);
     const misc = parseNumber(miscInput.value);
     const price = parseNumber(priceInput.value);
     
@@ -252,7 +260,11 @@ function validateInputs() {
     
     if (rent < 0) setError(rentInput, "Tiền thuê mặt bằng không được âm.");
     if (utilities < 0) setError(utilitiesInput, "Chi phí điện nước không được âm.");
-    if (salary < 0) setError(salaryInput, "Lương nhân viên không được âm.");
+    if (ftCount < 0) setError(ftCountInput, "Số lượng không được âm.");
+    if (ftSalary < 0) setError(ftSalaryInput, "Lương không được âm.");
+    if (ptCount < 0) setError(ptCountInput, "Số lượng không được âm.");
+    if (ptHours < 0) setError(ptHoursInput, "Số giờ không được âm.");
+    if (ptRate < 0) setError(ptRateInput, "Lương không được âm.");
     if (misc < 0) setError(miscInput, "Chi phí phát sinh không được âm.");
     if (price <= 0) setError(priceInput, "Giá bán trung bình phải lớn hơn 0 đ/ly.");
     
@@ -679,7 +691,12 @@ function renderExplanation(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt
     
     const rent = parseNumber(document.getElementById('inp-rent').value);
     const utilities = parseNumber(document.getElementById('inp-utilities').value);
-    const salary = parseNumber(document.getElementById('inp-salary').value);
+    const ftCount = parseNumber(document.getElementById('inp-ft-count').value);
+    const ftSalary = parseNumber(document.getElementById('inp-ft-salary').value);
+    const ptCount = parseNumber(document.getElementById('inp-pt-count').value);
+    const ptHours = parseNumber(document.getElementById('inp-pt-hours').value);
+    const ptRate = parseNumber(document.getElementById('inp-pt-rate').value);
+    const salary = (ftCount * ftSalary) + (ptCount * ptHours * ptRate * 30);
     const misc = parseNumber(document.getElementById('inp-misc').value);
     
     const deprYears = parseInt(document.getElementById('inp-depr-years').value) || 5;
@@ -820,7 +837,12 @@ function updateDashboard() {
 
     const rent = parseNumber(document.getElementById('inp-rent').value);
     const utilities = parseNumber(document.getElementById('inp-utilities').value);
-    const salary = parseNumber(document.getElementById('inp-salary').value);
+    const ftCount = parseNumber(document.getElementById('inp-ft-count').value);
+    const ftSalary = parseNumber(document.getElementById('inp-ft-salary').value);
+    const ptCount = parseNumber(document.getElementById('inp-pt-count').value);
+    const ptHours = parseNumber(document.getElementById('inp-pt-hours').value);
+    const ptRate = parseNumber(document.getElementById('inp-pt-rate').value);
+    const salary = (ftCount * ftSalary) + (ptCount * ptHours * ptRate * 30);
     const misc = parseNumber(document.getElementById('inp-misc').value);
 
     const price = parseNumber(document.getElementById('inp-price').value);
@@ -991,35 +1013,55 @@ function renderChart(good, base, worst, breakeven, volGood, volBase, volWorst, g
     const sensitivityTab = document.getElementById('sensitivity-tab');
     const explanationTab = document.getElementById('explanation-tab');
 
+    const investmentWrapper = document.getElementById('investment-wrapper');
+    const checklistWrapper = document.getElementById('checklist-wrapper');
+
+    if (mainWrapper) mainWrapper.style.display = 'none';
+    if (splitWrapper) splitWrapper.style.display = 'none';
+    if (sensitivityTab) sensitivityTab.style.display = 'none';
+    if (explanationTab) explanationTab.style.display = 'none';
+    if (investmentWrapper) investmentWrapper.style.display = 'none';
+    if (checklistWrapper) checklistWrapper.style.display = 'none';
+
     if (activeTab === 'structure') {
-        if (mainWrapper) mainWrapper.style.display = 'none';
         if (splitWrapper) splitWrapper.style.display = 'grid';
-        if (sensitivityTab) sensitivityTab.style.display = 'none';
-        if (explanationTab) explanationTab.style.display = 'none';
     } else if (activeTab === 'sensitivity') {
-        if (mainWrapper) mainWrapper.style.display = 'none';
-        if (splitWrapper) splitWrapper.style.display = 'none';
         if (sensitivityTab) sensitivityTab.style.display = 'block';
-        if (explanationTab) explanationTab.style.display = 'none';
     } else if (activeTab === 'explanation') {
-        if (mainWrapper) mainWrapper.style.display = 'none';
-        if (splitWrapper) splitWrapper.style.display = 'none';
-        if (sensitivityTab) sensitivityTab.style.display = 'none';
         if (explanationTab) explanationTab.style.display = 'block';
+    } else if (activeTab === 'investment') {
+        if (investmentWrapper) investmentWrapper.style.display = 'block';
+    } else if (activeTab === 'checklist') {
+        if (checklistWrapper) checklistWrapper.style.display = 'block';
     } else {
         if (mainWrapper) mainWrapper.style.display = 'block';
-        if (splitWrapper) splitWrapper.style.display = 'none';
-        if (sensitivityTab) sensitivityTab.style.display = 'none';
-        if (explanationTab) explanationTab.style.display = 'none';
     }
 
     if (activeTab === 'sensitivity') {
-        // Destroy all charts
         ['financialChart', 'costStructureChart', 'equityStructureChart'].forEach(id => {
             const c = Chart.getChart(id);
             if (c) c.destroy();
         });
         renderSensitivityTable(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt, monthlyDepreciation, volBase);
+        return;
+    }
+
+    if (activeTab === 'investment') {
+        ['financialChart', 'costStructureChart', 'equityStructureChart'].forEach(id => {
+            const c = Chart.getChart(id);
+            if (c) c.destroy();
+        });
+        const discountRate = parseFloat(document.getElementById('inp-discount-rate').value) || 15;
+        renderInvestmentAnalysis(totalCapitalNeeded, base.net, discountRate, breakeven, volBase);
+        return;
+    }
+
+    if (activeTab === 'checklist') {
+        ['financialChart', 'costStructureChart', 'equityStructureChart'].forEach(id => {
+            const c = Chart.getChart(id);
+            if (c) c.destroy();
+        });
+        renderChecklist();
         return;
     }
 
@@ -1222,7 +1264,8 @@ function renderChart(good, base, worst, breakeven, volGood, volBase, volWorst, g
                     }
                 }
             });
-        } else if (activeTab === 'breakeven') {
+            /* breakeven handled by investment */
+    } else if (activeTab === 'NO_BREAKEVEN_ANYMORE') {
             chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -1415,6 +1458,10 @@ window.addEventListener('DOMContentLoaded', () => {
     
     // Bind change update on non-formatted fields
     document.getElementById('inp-interest').addEventListener('input', updateDashboard);
+    document.getElementById('inp-ft-count').addEventListener('input', updateDashboard);
+    document.getElementById('inp-pt-count').addEventListener('input', updateDashboard);
+    document.getElementById('inp-pt-hours').addEventListener('input', updateDashboard);
+    document.getElementById('inp-discount-rate').addEventListener('input', updateDashboard);
     document.getElementById('inp-term').addEventListener('input', updateDashboard);
     document.getElementById('inp-cost-pct').addEventListener('input', updateDashboard);
     document.getElementById('inp-vol-good').addEventListener('input', updateDashboard);
@@ -1425,3 +1472,252 @@ window.addEventListener('DOMContentLoaded', () => {
 
     updateDashboard();
 });
+
+// ======================================================================
+// Scenario Save & Load Logic
+// ======================================================================
+
+function getInputsData() {
+    const inputs = [
+        'inp-deposit', 'inp-renovate', 'inp-equipment', 'inp-raw-start', 'inp-decor-misc', 'inp-buffer',
+        'inp-loan', 'inp-interest', 'inp-term',
+        'inp-rent', 'inp-utilities', 'inp-ft-count', 'inp-ft-salary', 'inp-pt-count', 'inp-pt-hours', 'inp-pt-rate', 'inp-misc',
+        'inp-price', 'inp-cost-pct',
+        'inp-vol-good', 'inp-vol-base', 'inp-vol-worst', 'inp-discount-rate',
+        'inp-depr-years', 'inp-tax-rate', 'inp-div-retained', 'inp-div-payout'
+    ];
+    let data = {};
+    inputs.forEach(id => {
+        let el = document.getElementById(id);
+        if(el) data[id] = el.value;
+    });
+    return data;
+}
+
+function setInputsData(data) {
+    for (let id in data) {
+        let el = document.getElementById(id);
+        if(el) {
+            el.value = data[id];
+            if (el.parentElement && el.parentElement.classList.contains('input-wrapper') && el.type === 'text') {
+                el.value = formatNumber(parseNumber(data[id]));
+            }
+        }
+    }
+}
+
+function loadScenariosList() {
+    let scenarios = JSON.parse(localStorage.getItem('coffeelytics_scenarios')) || {};
+    let selector = document.getElementById('scenario-selector');
+    if (!selector) return;
+    
+    selector.innerHTML = '<option value="">-- Kịch bản Mặc định --</option>';
+    for (let name in scenarios) {
+        let opt = document.createElement('option');
+        opt.value = name;
+        opt.innerText = name;
+        selector.appendChild(opt);
+    }
+    let current = localStorage.getItem('coffeelytics_current_scenario');
+    if (current && scenarios[current]) {
+        selector.value = current;
+    }
+}
+
+window.saveCurrentScenario = function() {
+    let name = prompt("Nhập tên kịch bản để lưu (VD: Mặt bằng Quận 1):");
+    if (!name || name.trim() === "") return;
+    name = name.trim();
+    
+    let scenarios = JSON.parse(localStorage.getItem('coffeelytics_scenarios')) || {};
+    scenarios[name] = getInputsData();
+    localStorage.setItem('coffeelytics_scenarios', JSON.stringify(scenarios));
+    localStorage.setItem('coffeelytics_current_scenario', name);
+    
+    loadScenariosList();
+    alert("Đã lưu kịch bản: " + name);
+}
+
+window.loadScenario = function(name) {
+    if (!name || name === "") {
+        localStorage.removeItem('coffeelytics_current_scenario');
+        return;
+    }
+    
+    let scenarios = JSON.parse(localStorage.getItem('coffeelytics_scenarios')) || {};
+    if (scenarios[name]) {
+        setInputsData(scenarios[name]);
+        localStorage.setItem('coffeelytics_current_scenario', name);
+        updateDashboard();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadScenariosList();
+    let current = localStorage.getItem('coffeelytics_current_scenario');
+    if (current) {
+        window.loadScenario(current);
+    }
+});
+
+// ======================================================================
+// Investment Analysis (NPV & IRR)
+// ======================================================================
+
+function renderInvestmentAnalysis(totalCapital, monthlyNet, discountRatePct, breakevenPoint, volBase) {
+    const wrapper = document.getElementById('investment-wrapper');
+    if (!wrapper) return;
+    
+    const r = discountRatePct / 100;
+    const monthlyRate = Math.pow(1 + r, 1/12) - 1; // Effective monthly rate
+    const months = 36; // 3 year projection
+    
+    // Cashflows
+    let cashflows = [-totalCapital];
+    for(let i=0; i<months; i++) {
+        cashflows.push(monthlyNet);
+    }
+    
+    // NPV
+    let npv = 0;
+    for(let i=0; i<=months; i++) {
+        npv += cashflows[i] / Math.pow(1 + monthlyRate, i);
+    }
+    
+    // Simple Payback period
+    let paybackMonths = totalCapital / (monthlyNet > 0 ? monthlyNet : 0.0001);
+    let paybackText = monthlyNet > 0 ? (paybackMonths).toFixed(1) + " tháng" : "Không bao giờ";
+    
+    // IRR (Approximate using Newton-Raphson or simple bisection)
+    let irrMonthly = 0;
+    if (monthlyNet > 0) {
+        let low = 0.0;
+        let high = 1.0;
+        for (let i = 0; i < 100; i++) {
+            let mid = (low + high) / 2;
+            let val = -totalCapital;
+            for(let j=1; j<=months; j++) val += monthlyNet / Math.pow(1 + mid, j);
+            if (val > 0) low = mid;
+            else high = mid;
+        }
+        irrMonthly = (low + high) / 2;
+    }
+    let irrAnnual = (Math.pow(1 + irrMonthly, 12) - 1) * 100;
+    
+    let npvColor = npv >= 0 ? 'val-profit' : 'val-loss';
+    let irrColor = irrAnnual >= discountRatePct ? 'val-profit' : 'val-loss';
+
+    let html = `
+        <h3 class="chart-sub-title">Phân tích Hiệu Quả Đầu Tư (Tầm nhìn 3 năm)</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+            Dựa trên Kịch bản Bán hàng Trung Bình (${volBase} ly/ngày). Vốn đầu tư: ${formatShortVND(totalCapital)}.
+        </p>
+        <div class="scenarios-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="glass-card scenario-card">
+                <div class="scenario-metric">
+                    <span style="font-size:16px; font-weight:600;">Thời gian hoàn vốn</span>
+                    <span style="font-size:18px; color:var(--primary); font-weight:bold;">${paybackText}</span>
+                </div>
+            </div>
+            <div class="glass-card scenario-card">
+                <div class="scenario-metric">
+                    <span style="font-size:16px; font-weight:600;">Sản lượng hòa vốn</span>
+                    <span style="font-size:18px; color:var(--primary); font-weight:bold;">${Math.ceil(breakevenPoint)} ly/ngày</span>
+                </div>
+            </div>
+            <div class="glass-card scenario-card">
+                <div class="scenario-metric">
+                    <span style="font-size:16px; font-weight:600;">NPV (Giá trị HT Thuần)</span>
+                    <span class="${npvColor}" style="font-size:18px; font-weight:bold;">${npv >= 0 ? '+' : ''}${formatShortVND(npv)}</span>
+                </div>
+            </div>
+            <div class="glass-card scenario-card">
+                <div class="scenario-metric">
+                    <span style="font-size:16px; font-weight:600;">IRR (Tỷ suất sinh lời)</span>
+                    <span class="${irrColor}" style="font-size:18px; font-weight:bold;">${monthlyNet > 0 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</span>
+                </div>
+            </div>
+        </div>
+        <div class="explanation-box" style="margin-top:16px;">
+            <strong>Kết luận:</strong> 
+            ${npv >= 0 ? '<span style="color:var(--val-profit)">Dự án khả thi về mặt tài chính (NPV > 0).</span>' : '<span style="color:var(--val-loss)">Dự án không hiệu quả với mức lãi suất chiết khấu này (NPV < 0).</span>'}
+        </div>
+    `;
+    wrapper.innerHTML = html;
+}
+
+// ======================================================================
+// Checklist
+// ======================================================================
+
+function renderChecklist() {
+    const wrapper = document.getElementById('checklist-wrapper');
+    if (!wrapper) return;
+    
+    // Only render once if empty
+    if (wrapper.innerHTML.trim() !== "") return;
+    
+    const checklistItems = [
+        { phase: "1. Nghiên Cứu & Mặt Bằng", items: [
+            "Khảo sát thị trường (Giá, Đỉnh traffic, Đối thủ)",
+            "Chốt cọc mặt bằng, kiểm tra pháp lý nhà",
+            "Ký hợp đồng thuê nhà (Lưu ý: Thời gian miễn phí sửa chữa)"
+        ]},
+        { phase: "2. Pháp Lý", items: [
+            "Giấy phép Kinh Doanh (Hộ KD hoặc Công ty)",
+            "Giấy chứng nhận VSATTP (Bắt buộc với F&B)",
+            "PCCC, Đăng ký biển hiệu"
+        ]},
+        { phase: "3. Thiết Kế & Thi Công", items: [
+            "Bản vẽ 2D/3D mặt bằng",
+            "Thi công điện, nước, thoát sàn (Cực kỳ quan trọng khu quầy bar)",
+            "Nghiệm thu phần thô, trang trí nội thất"
+        ]},
+        { phase: "4. Máy Móc & Nguyên Liệu", items: [
+            "Lên danh sách và đặt mua Máy pha, Máy xay, Tủ lạnh...",
+            "Tìm nhà cung cấp (Cà phê, trà, sữa, syrup...)",
+            "In ấn bao bì (Ly, túi, quai xách, sticker)"
+        ]},
+        { phase: "5. Nhân Sự & Vận Hành", items: [
+            "Tuyển dụng (Barista, Phục vụ, Thu ngân)",
+            "Đào tạo Menu, quy trình phục vụ",
+            "Cài đặt phần mềm quản lý POS"
+        ]},
+        { phase: "6. Khai Trương", items: [
+            "Chạy thử nghiệm (Soft-opening)",
+            "Quảng cáo, Khuyến mãi (Grand-opening)"
+        ]}
+    ];
+    
+    let html = `
+        <h3 class="chart-sub-title">Checklist Mở Quán Cà Phê</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+            Lưu ý: Bạn có thể click vào các mục để đánh dấu hoàn thành. Trạng thái không được lưu lại khi tải lại trang, đây chỉ là công cụ hỗ trợ tương tác nhanh.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+    `;
+    
+    checklistItems.forEach((phase, idx) => {
+        html += `
+            <div class="glass-card" style="padding: 12px 16px;">
+                <h4 style="margin-bottom: 8px; color: var(--primary); font-size: 15px;">${phase.phase}</h4>
+                <div style="display:flex; flex-direction:column; gap: 6px;">
+        `;
+        phase.items.forEach((item, jdx) => {
+            let id = `chk-${idx}-${jdx}`;
+            html += `
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-size: 14px; color: var(--text-main);">
+                    <input type="checkbox" style="margin-top: 3px;" onchange="this.parentElement.style.textDecoration = this.checked ? 'line-through' : 'none'; this.parentElement.style.opacity = this.checked ? '0.6' : '1';">
+                    ${item}
+                </label>
+            `;
+        });
+        html += `
+                </div>
+            </div>
+        `;
+    });
+    
+    html += `</div>`;
+    wrapper.innerHTML = html;
+}

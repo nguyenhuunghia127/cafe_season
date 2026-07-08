@@ -66,6 +66,16 @@
     <div class="dashboard-grid">
         <!-- Left Side: Interactive Input Panel -->
         <aside class="inputs-panel accordion-container">
+            <!-- Project Management -->
+            <div class="glass-card" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px;">
+                <div style="flex:1;">
+                    <select id="scenario-selector" onchange="loadScenario(this.value)" style="width:100%; padding: 8px; border-radius: 6px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); font-family: var(--font-body);">
+                        <option value="">-- Kịch bản Mặc định --</option>
+                    </select>
+                </div>
+                <button onclick="saveCurrentScenario()" style="padding: 8px 16px; border-radius: 6px; background: var(--primary); color: white; border: none; cursor: pointer; font-family: var(--font-display); font-weight: 600; white-space: nowrap;">💾 Lưu</button>
+            </div>
+
             <!-- Setup & Capital Accordion -->
             <div class="accordion-item glass-card active">
                 <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -193,19 +203,46 @@
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="inp-salary">Lương nhân sự</label>
-                            <div class="input-wrapper">
-                                <input type="text" id="inp-salary" value="3000000">
-                                <span class="unit">đ/th</span>
+                    <!-- Staffing Planner -->
+                    <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 12px; margin-bottom: 12px; border: 1px dashed var(--border-color);">
+                        <h4 style="margin-bottom: 12px; font-size: 13px; color: var(--text-muted);">Tính Lương (Staffing Planner)</h4>
+                        <div class="form-row" style="margin-bottom: 8px;">
+                            <div class="form-group">
+                                <label for="inp-ft-count">Số NV Full-time</label>
+                                <input type="number" id="inp-ft-count" value="0" min="0" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="inp-ft-salary">Lương FT/tháng</label>
+                                <div class="input-wrapper">
+                                    <input type="text" id="inp-ft-salary" value="6000000">
+                                    <span class="unit">đ</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="inp-misc">Chi phí phát sinh</label>
-                            <div class="input-wrapper">
-                                <input type="text" id="inp-misc" value="500000">
-                                <span class="unit">đ/th</span>
+                        <div class="form-row" style="margin-bottom: 8px;">
+                            <div class="form-group">
+                                <label for="inp-pt-count">Số NV Part-time</label>
+                                <input type="number" id="inp-pt-count" value="1" min="0" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="inp-pt-hours">Số giờ PT/ngày</label>
+                                <input type="number" id="inp-pt-hours" value="5" min="0" step="0.5">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="inp-pt-rate">Lương PT/giờ</label>
+                                <div class="input-wrapper">
+                                    <input type="text" id="inp-pt-rate" value="20000">
+                                    <span class="unit">đ</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inp-misc">Chi phí phát sinh</label>
+                                <div class="input-wrapper">
+                                    <input type="text" id="inp-misc" value="500000">
+                                    <span class="unit">đ/th</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -229,10 +266,10 @@
                 </div>
             </div>
 
-            <!-- Volume Forecast Accordion -->
+            <!-- Volume Forecast & Investment Accordion -->
             <div class="accordion-item glass-card">
                 <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <h2 class="section-title" style="margin-bottom:0;">4. Sản Lượng Dự Kiến (ly/ngày)</h2>
+                    <h2 class="section-title" style="margin-bottom:0;">4. Sản Lượng & Chỉ Số Đầu Tư</h2>
                     <span class="accordion-icon">▼</span>
                 </div>
                 <div class="accordion-content" style="display: none;">
@@ -248,6 +285,15 @@
                         <div class="form-group">
                             <label for="inp-vol-worst">Xấu</label>
                             <input type="number" id="inp-vol-worst" value="20" style="padding-right: 10px;">
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top: 12px;">
+                        <div class="form-group">
+                            <label for="inp-discount-rate">Lãi suất chiết khấu (Discount Rate)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-discount-rate" value="15" step="1" min="0" max="100">
+                                <span class="unit">%/năm</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -312,13 +358,14 @@
 
             <!-- Main Charts Section -->
             <div class="glass-card">
-                <div class="tab-header">
-                    <button class="tab-btn active" onclick="switchTab('scenarios')">So sánh Kịch bản</button>
-                    <button class="tab-btn" onclick="switchTab('breakeven')">Phân tích Hòa vốn</button>
-                    <button class="tab-btn" onclick="switchTab('cashflow')">Dòng tiền & Dự phòng</button>
-                    <button class="tab-btn" onclick="switchTab('structure')">Cơ cấu Đầu tư & Cổ phần</button>
-                    <button class="tab-btn" onclick="switchTab('sensitivity')">Phân tích độ nhạy</button>
-                    <button class="tab-btn" onclick="switchTab('explanation')" style="color: var(--primary);">💡 Giải thích Số liệu</button>
+                <div class="tab-header" style="overflow-x: auto; white-space: nowrap; padding-bottom: 8px;">
+                    <button class="tab-btn active" onclick="switchTab('scenarios')">📊 Kịch bản</button>
+                    <button class="tab-btn" onclick="switchTab('cashflow')">🌊 Dòng tiền</button>
+                    <button class="tab-btn" onclick="switchTab('structure')">🥧 Cơ cấu</button>
+                    <button class="tab-btn" onclick="switchTab('investment')">📈 Phân tích Đầu tư</button>
+                    <button class="tab-btn" onclick="switchTab('sensitivity')">🎯 Độ nhạy</button>
+                    <button class="tab-btn" onclick="switchTab('checklist')">✅ Checklist</button>
+                    <button class="tab-btn" onclick="switchTab('explanation')" style="color: var(--primary);">💡 Giải thích</button>
                 </div>
                 <!-- Main Chart Wrapper -->
                 <div class="chart-container" id="main-chart-wrapper">
@@ -347,6 +394,14 @@
                     <table class="sensitivity-table" id="sensitivity-table">
                         <!-- Filled by JS -->
                     </table>
+                </div>
+                <!-- Investment Analysis Wrapper -->
+                <div id="investment-wrapper" style="display: none; margin-top: 12px;">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+                <!-- Checklist Wrapper -->
+                <div id="checklist-wrapper" style="display: none; margin-top: 12px;">
+                    <!-- Populated dynamically by app.js -->
                 </div>
                 <!-- Explanation Tab Wrapper -->
                 <div class="explanation-wrapper" id="explanation-tab" style="display:none; margin-top:12px; font-size: 14px; line-height: 1.6; color: var(--text-main);">
