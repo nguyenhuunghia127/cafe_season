@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffeelytics - Dashboard Tài Chính Quán Cà Phê</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js Data Labels plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <!-- Separated CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="glass-card">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M2 21h18v-2H2v2M20 8h-2V5h2v3M4 19h12v-4H4v4m16-9h-2V9h2v1m0-5H2v12h16V5h2c1.1 0 2-.9 2-2s-.9-2-2-2h-4v2h2v2z"/>
+                </svg>
+            </div>
+            <div>
+                <h1>Coffeelytics</h1>
+                <div class="subtitle">Tính toán Kịch bản Tài chính & Đòn bẩy Quán Cà Phê</div>
+            </div>
+        </div>
+        <div class="header-controls">
+            <div class="badge-leverage" id="leverage-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-8 14H5v-2h6v2m4-4H5v-2h10v2m4-4H5V7h14v2z"/>
+                </svg>
+                Tỷ lệ đòn bẩy: <span id="lbl-leverage-ratio">33%</span>
+            </div>
+            <!-- Theme Toggle Button -->
+            <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" title="Đổi giao diện sáng/tối">
+                <svg class="moon-icon" viewBox="0 0 24 24">
+                    <path d="M12.3 22h-.1c-5.5 0-10-4.5-10-10 0-4.8 3.5-8.9 8.2-9.8.5-.1 1 .2 1.2.7.2.5 0 1.1-.4 1.4-2.8 2.2-4.4 5.6-4.4 9.2 0 4.1 3.1 7.6 7.1 8.2.5.1.9.5.9 1 0 .6-.4 1.1-.9 1.3-.3.1-.6.1-.9.1zm-1.8-17.7c-3.1 1.2-5 4.1-5 7.4 0 4.4 3.6 8 8 8 .6 0 1.2-.1 1.8-.2-1.7-2.4-2.6-5.2-2.6-8.2 0-2.6.7-5.1 2-7.2-1.5.1-2.9.4-4.2 1.2z"/>
+                </svg>
+                <svg class="sun-icon" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M12 2c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2s2-.9 2-2V4c0-1.1-.9-2-2-2zm5 5h-2v2h2V7zm-10 0H5v2h2V7zm8.66 2.34l-1.41 1.41 1.41 1.41 1.41-1.41-1.41-1.41zM8.34 9.34L6.93 7.93 5.52 9.34l1.41 1.41 1.41-1.41zM12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zM17 15h-2v2h2v-2zm-10 0H5v2h2v-2zm8.66 5.66l-1.41-1.41-1.41 1.41 1.41 1.41 1.41-1.41zM8.34 20.66l-1.41-1.41-1.41 1.41 1.41 1.41 1.41-1.41z"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Validation Error Warning Box -->
+    <div id="error-warning-box" class="glass-card" style="display: none; margin-bottom: 24px; border-color: rgba(248, 113, 113, 0.4); background: rgba(248, 113, 113, 0.05); color: var(--danger);">
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--danger)" style="flex-shrink:0;">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <div>
+                <h3 style="font-family: var(--font-display); font-weight:700; font-size:15px; margin-bottom:4px; color:var(--text-main);">Số liệu chưa đồng bộ do có lỗi nhập liệu</h3>
+                <ul id="error-list" style="margin-left: 18px; font-size:13px; line-height: 1.6; color: var(--text-muted); list-style-type: decimal;">
+                    <!-- Dynamically populated -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Left Side: Interactive Input Panel -->
+        <aside class="inputs-panel accordion-container">
+            <!-- Setup & Capital Accordion -->
+            <div class="accordion-item glass-card active">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h2 class="section-title" style="margin-bottom:0;">1. Chi Phí Thiết Lập & Vốn</h2>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inp-deposit">Cọc mặt bằng (3th)</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-deposit" value="18000000">
+                                <span class="unit">đ</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-renovate">Sửa chữa & Decor</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-renovate" value="18000000">
+                                <span class="unit">đ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inp-equipment">Máy móc & Thiết bị</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-equipment" value="40000000">
+                                <span class="unit">đ</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-raw-start">Nguyên liệu ban đầu</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-raw-start" value="10000000">
+                                <span class="unit">đ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inp-decor-misc">Decor nhỏ & Khác</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-decor-misc" value="4000000">
+                                <span class="unit">đ</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-depr-years">Khấu hao (năm)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-depr-years" value="5" min="1" step="1">
+                                <span class="unit">năm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inp-buffer">Quỹ dự phòng dự kiến</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-buffer" value="30000000">
+                                <span class="unit">đ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Leverage Accordion -->
+            <div class="accordion-item glass-card">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h2 class="section-title" style="margin-bottom:0;">2. Khoản Vay (Đòn Bẩy)</h2>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content" style="display: none;">
+                    <div class="form-group">
+                        <label for="inp-loan">Số tiền vay ngân hàng</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="inp-loan" value="40000000">
+                            <span class="unit">đ</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inp-interest">Lãi suất vay</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-interest" value="12" step="0.5" min="0">
+                                <span class="unit">%/năm</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-term">Thời hạn vay</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-term" value="12" step="1" min="1">
+                                <span class="unit">tháng</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operating Cost & Margins Accordion -->
+            <div class="accordion-item glass-card">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h2 class="section-title" style="margin-bottom:0;">3. Chi Phí Vận Hành & Giá Bán</h2>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inp-rent">Tiền thuê mặt bằng</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-rent" value="6000000">
+                                <span class="unit">đ/th</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-utilities">Điện, nước, internet</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-utilities" value="2000000">
+                                <span class="unit">đ/th</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inp-salary">Lương nhân sự</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-salary" value="3000000">
+                                <span class="unit">đ/th</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-misc">Chi phí phát sinh</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-misc" value="500000">
+                                <span class="unit">đ/th</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inp-price">Giá bán trung bình</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="inp-price" value="25000">
+                                <span class="unit">đ/ly</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-cost-pct">Tỷ lệ Cost nguyên liệu</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-cost-pct" value="30" step="1" min="0" max="100">
+                                <span class="unit">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volume Forecast Accordion -->
+            <div class="accordion-item glass-card">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h2 class="section-title" style="margin-bottom:0;">4. Sản Lượng Dự Kiến (ly/ngày)</h2>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content" style="display: none;">
+                    <div class="form-row" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="form-group">
+                            <label for="inp-vol-good">Tốt</label>
+                            <input type="number" id="inp-vol-good" value="70" style="padding-right: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-vol-base">Trung bình</label>
+                            <input type="number" id="inp-vol-base" value="40" style="padding-right: 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-vol-worst">Xấu</label>
+                            <input type="number" id="inp-vol-worst" value="20" style="padding-right: 10px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dividend Policy Accordion -->
+            <div class="accordion-item glass-card">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h2 class="section-title" style="margin-bottom:0;">5. Chính Sách Cổ Tức</h2>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inp-div-retained">Tái đầu tư</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-div-retained" value="20" min="0" max="100">
+                                <span class="unit">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-div-payout">Chia cổ tức</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-div-payout" value="80" readonly style="background: rgba(15,23,42,0.1); cursor: not-allowed;">
+                                <span class="unit">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label>Thuế TNDN (Tính tự động)</label>
+                            <div style="font-size:12px; color: var(--text-muted); line-height: 1.4; padding-top: 4px;">
+                                Thuế được tính tự động dựa trên doanh thu năm theo mức: 0% (dưới 1 tỷ), 15% (1-3 tỷ), 17% (3-50 tỷ), hoặc 20% (>50 tỷ).
+                            </div>
+                        </div>
+                    </div>
+                    <div style="font-size:11px; color: var(--text-muted); line-height: 1.4; margin-top: 4px;">
+                        * Lợi nhuận ròng sau tái đầu tư sẽ chia đều cho cổ đông.
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Side: KPIs and Visualization -->
+        <main class="dashboard-content">
+            <!-- Dynamic KPIs -->
+            <div class="kpi-row">
+                <div class="glass-card kpi-card kpi-blue">
+                    <div class="kpi-label">Tổng Vốn Cần Thiết</div>
+                    <div class="kpi-value" id="kpi-total-capital">120M đ</div>
+                    <div class="kpi-desc">Setup + Dự phòng dự kiến</div>
+                </div>
+                <div class="glass-card kpi-card kpi-yellow">
+                    <div class="kpi-label">Trả Vay Hàng Tháng</div>
+                    <div class="kpi-value" id="kpi-monthly-debt">3.7M đ</div>
+                    <div class="kpi-desc">Tính theo dư nợ cố định (EMI)</div>
+                </div>
+                <div class="glass-card kpi-card kpi-success">
+                    <div class="kpi-label">Sản lượng hòa vốn</div>
+                    <div class="kpi-value" id="kpi-breakeven-vol">29 ly/ngày</div>
+                    <div class="kpi-desc">Để trang trải vận hành + nợ vay</div>
+                </div>
+            </div>
+
+            <!-- Main Charts Section -->
+            <div class="glass-card">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab('scenarios')">So sánh Kịch bản</button>
+                    <button class="tab-btn" onclick="switchTab('breakeven')">Phân tích Hòa vốn</button>
+                    <button class="tab-btn" onclick="switchTab('cashflow')">Dòng tiền & Dự phòng</button>
+                    <button class="tab-btn" onclick="switchTab('structure')">Cơ cấu Đầu tư & Cổ phần</button>
+                    <button class="tab-btn" onclick="switchTab('sensitivity')">Phân tích độ nhạy</button>
+                    <button class="tab-btn" onclick="switchTab('explanation')" style="color: var(--primary);">💡 Giải thích Số liệu</button>
+                </div>
+                <!-- Main Chart Wrapper -->
+                <div class="chart-container" id="main-chart-wrapper">
+                    <canvas id="financialChart"></canvas>
+                </div>
+                <!-- Split Structure Charts Wrapper (Initially Hidden) -->
+                <div class="chart-container-split" id="split-chart-wrapper" style="display: none;">
+                    <div class="split-chart">
+                        <h4 class="chart-sub-title">Cơ cấu Chi phí Vốn Thiết Lập</h4>
+                        <canvas id="costStructureChart"></canvas>
+                    </div>
+                    <div class="split-chart">
+                        <h4 class="chart-sub-title">Cơ cấu Tỷ Lệ Cổ Phần Sở Hữu</h4>
+                        <canvas id="equityStructureChart"></canvas>
+                    </div>
+                </div>
+                <!-- Sensitivity Table Wrapper -->
+                <div class="sensitivity-wrapper" id="sensitivity-tab" style="display:none; overflow-x:auto; margin-top:12px;">
+                    <div style="margin-bottom: 12px;">
+                        <h4 class="chart-sub-title" style="margin-bottom: 4px;">Phân tích độ nhạy lợi nhuận (Giá bán & Cost %)</h4>
+                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                            <strong>Cách tính:</strong> Lợi nhuận ròng = Doanh thu - Cost NVL - Định phí - Khấu hao - Lãi vay - Thuế.
+                            <br/><em>(Di chuột vào từng con số để xem diễn giải chi tiết)</em>
+                        </p>
+                    </div>
+                    <table class="sensitivity-table" id="sensitivity-table">
+                        <!-- Filled by JS -->
+                    </table>
+                </div>
+                <!-- Explanation Tab Wrapper -->
+                <div class="explanation-wrapper" id="explanation-tab" style="display:none; margin-top:12px; font-size: 14px; line-height: 1.6; color: var(--text-main);">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+
+            <!-- Scenario Details Cards -->
+            <div class="scenarios-grid">
+                <!-- Good -->
+                <div class="glass-card scenario-card s-good">
+                    <span class="scenario-badge">Tốt</span>
+                    <h3 class="scenario-title">Kịch bản Tốt</h3>
+                    <div class="scenario-metric">
+                        <span>Doanh thu/Tháng</span>
+                        <span id="det-good-rev">52.5Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Cost Nguyên liệu</span>
+                        <span id="det-good-cogs">15.8Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Định phí vận hành</span>
+                        <span id="det-good-opex">11.5Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Trả nợ vay</span>
+                        <span id="det-good-debt">3.7Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Khấu hao tài sản</span>
+                        <span id="det-good-depr">0đ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Thuế TNDN</span>
+                        <span id="det-good-tax">0đ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Lợi nhuận ròng (Sau thuế)</span>
+                        <span class="val-profit" id="det-good-net">+21.5Mđ</span>
+                    </div>
+                </div>
+
+                <!-- Base -->
+                <div class="glass-card scenario-card s-base">
+                    <span class="scenario-badge">Trung bình</span>
+                    <h3 class="scenario-title">Kịch bản Trung bình</h3>
+                    <div class="scenario-metric">
+                        <span>Doanh thu/Tháng</span>
+                        <span id="det-base-rev">30.0Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Cost Nguyên liệu</span>
+                        <span id="det-base-cogs">9.0Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Định phí vận hành</span>
+                        <span id="det-base-opex">11.5Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Trả nợ vay</span>
+                        <span id="det-base-debt">3.7Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Khấu hao tài sản</span>
+                        <span id="det-base-depr">0đ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Thuế TNDN</span>
+                        <span id="det-base-tax">0đ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Lợi nhuận ròng (Sau thuế)</span>
+                        <span class="val-profit" id="det-base-net">+5.8Mđ</span>
+                    </div>
+                </div>
+
+                <!-- Worst -->
+                <div class="glass-card scenario-card s-worst">
+                    <span class="scenario-badge">Xấu</span>
+                    <h3 class="scenario-title">Kịch bản Xấu</h3>
+                    <div class="scenario-metric">
+                        <span>Doanh thu/Tháng</span>
+                        <span id="det-worst-rev">15.0Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Cost Nguyên liệu</span>
+                        <span id="det-worst-cogs">4.5Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Định phí vận hành</span>
+                        <span id="det-worst-opex">11.5Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Trả nợ vay</span>
+                        <span id="det-worst-debt">3.7Mđ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Khấu hao tài sản</span>
+                        <span id="det-worst-depr">0đ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Thuế TNDN</span>
+                        <span id="det-worst-tax">0đ</span>
+                    </div>
+                    <div class="scenario-metric">
+                        <span>Lợi nhuận ròng (Sau thuế)</span>
+                        <span class="val-loss" id="det-worst-net">-4.7Mđ</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alert dynamic message -->
+            <div id="survival-alert-container" class="survival-alert" style="display: none;">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                </svg>
+                <span id="survival-alert-text">Với kịch bản xấu, quỹ dự phòng sẽ cạn kiệt ở tháng 6.</span>
+            </div>
+
+            <!-- Shareholder Management Block -->
+            <div class="glass-card shareholders-section">
+                <h2 class="section-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 1.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg>
+                    Quản Lý Cổ Đông Góp Vốn & Chia Sẻ Cổ Tức
+                </h2>
+                
+                <div class="add-shareholder-form">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="inp-sh-name">Tên Cổ đông</label>
+                        <input type="text" id="inp-sh-name" placeholder="Ví dụ: Anh Tuấn">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="inp-sh-contrib">Số Vốn Góp (VND)</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="inp-sh-contrib" placeholder="Ví dụ: 30.000.000">
+                            <span class="unit">đ</span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="inp-sh-role">Vai trò</label>
+                        <select id="inp-sh-role">
+                            <option value="invest">💰 Chỉ góp vốn</option>
+                            <option value="operate">🔧 Góp vốn + Vận hành</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:flex-end;">
+                        <button class="btn btn-primary" id="btn-save-shareholder" onclick="saveShareholder()">Thêm Cổ Đông</button>
+                        <button class="btn btn-secondary" id="btn-cancel-edit" style="display:none;" onclick="cancelEdit()">Hủy</button>
+                    </div>
+                </div>
+
+                <div id="sh-table-container">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Pitching suggestions for shareholders -->
+            <div class="pitch-helper-container">
+                <div class="glass-card pitch-card">
+                    <div class="pitch-card-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
+                        Biên An Toàn (Margin of Safety)
+                    </div>
+                    <div class="pitch-card-value" id="pitch-safety-val">--</div>
+                    <div class="pitch-card-text" id="pitch-safety-desc">--</div>
+                </div>
+                <div class="glass-card pitch-card">
+                    <div class="pitch-card-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                        Thời gian Hoàn Vốn (Dựa trên Cổ Tức)
+                    </div>
+                    <div class="pitch-card-value" id="pitch-payback-val">--</div>
+                    <div class="pitch-card-text" id="pitch-payback-desc">--</div>
+                </div>
+            </div>
+
+            <!-- Capital Disbursement Schedule -->
+            <div class="glass-card" style="margin-top: 24px;">
+                <h2 class="section-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z"/>
+                    </svg>
+                    Tiến Độ Giải Ngân Vốn Đầu Tư (Capital Disbursement Timeline)
+                </h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-badge">GĐ 1</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Tìm kiếm mặt bằng & Đặt cọc (Thanh toán ngay)</div>
+                            <div class="timeline-amount" id="disburse-p1">18.000.000 đ</div>
+                            <div class="timeline-breakdown" id="breakdown-p1" style="font-size: 13px; color: var(--text-main); margin-top: 6px; font-weight: 500;"></div>
+                            <div class="timeline-desc">Thanh toán cọc tiền thuê nhà tối thiểu 3 tháng đợt đầu.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge">GĐ 2</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Cải tạo sửa chữa & Xây quầy bar (Thực hiện đợt 1)</div>
+                            <div class="timeline-amount" id="disburse-p2">20.000.000 đ</div>
+                            <div class="timeline-breakdown" id="breakdown-p2" style="font-size: 13px; color: var(--text-main); margin-top: 6px; font-weight: 500;"></div>
+                            <div class="timeline-desc">Chi phí sửa chữa phần thô, quầy bar, lắp đặt điện nước và thi công sơn decor trong & ngoài quán.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge">GĐ 3</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Mua sắm thiết bị, máy móc & Bàn ghế (Trước khai trương 7 ngày)</div>
+                            <div class="timeline-amount" id="disburse-p3">42.000.000 đ</div>
+                            <div class="timeline-breakdown" id="breakdown-p3" style="font-size: 13px; color: var(--text-main); margin-top: 6px; font-weight: 500;"></div>
+                            <div class="timeline-desc">Mua sắm tủ lạnh cũ, bàn ghế trong nhà/ngoài trời, lắp đặt hệ thống chiếu sáng và máy POS bán hàng.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge">GĐ 4</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Nhập nguyên liệu & Trang trí nhỏ (Trước khai trương 3 ngày)</div>
+                            <div class="timeline-amount" id="disburse-p4">10.000.000 đ</div>
+                            <div class="timeline-breakdown" id="breakdown-p4" style="font-size: 13px; color: var(--text-main); margin-top: 6px; font-weight: 500;"></div>
+                            <div class="timeline-desc">Hàng nguyên liệu pha chế đợt đầu, in menu, chuẩn bị vật dụng trang trí như chậu cây, hoa, tranh ảnh.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge">GĐ 5</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Quỹ dự phòng vận hành (Giải ngân theo thực tế tháng)</div>
+                            <div class="timeline-amount" id="disburse-p5">30.000.000 đ</div>
+                            <div class="timeline-breakdown" id="breakdown-p5" style="font-size: 13px; color: var(--text-main); margin-top: 6px; font-weight: 500;"></div>
+                            <div class="timeline-desc">Nguồn tiền mặt dự phòng gửi tài khoản ngân hàng của quán để duy trì vận hành vượt qua các tháng đầu lỗ.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Separated JS Application -->
+    <script src="app.js"></script>
+</body>
+</html>
