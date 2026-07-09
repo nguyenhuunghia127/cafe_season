@@ -7,6 +7,7 @@ Chart.register(ChartDataLabels);
 
 // Global state
 let activeTab = 'scenarios';
+let investmentScenario = 'base';
 let chartInstance = null;
 let costChartInstance = null;
 let equityChartInstance = null;
@@ -113,13 +114,43 @@ function getSuggestedTaxRate(annualRevenue) {
     return 20;
 }
 
+function calculateMonthlySalary(rev = 0) {
+    const shiftMorningStaff = parseNumber(document.getElementById('inp-shift-morning-staff')?.value || '0');
+    const shiftMorningRate = parseNumber(document.getElementById('inp-shift-morning-rate')?.value || '0');
+    const shiftAfternoonStaff = parseNumber(document.getElementById('inp-shift-afternoon-staff')?.value || '0');
+    const shiftAfternoonRate = parseNumber(document.getElementById('inp-shift-afternoon-rate')?.value || '0');
+    const shiftEveningStaff = parseNumber(document.getElementById('inp-shift-evening-staff')?.value || '0');
+    const shiftEveningRate = parseNumber(document.getElementById('inp-shift-evening-rate')?.value || '0');
+    
+    const ftManagerCount = parseNumber(document.getElementById('inp-ft-manager-count')?.value || '0');
+    const ftManagerSalary = parseNumber(document.getElementById('inp-ft-manager-salary')?.value || '0');
+    const weekendMultiplier = parseFloat(document.getElementById('inp-weekend-multiplier')?.value || '1.0');
+    const commissionRate = parseFloat(document.getElementById('inp-commission-rate')?.value || '0');
+
+    const baseDailyShiftCost = (shiftMorningStaff * 6 * shiftMorningRate) + 
+                               (shiftAfternoonStaff * 6 * shiftAfternoonRate) + 
+                               (shiftEveningStaff * 5 * shiftEveningRate);
+    
+    const monthlyShiftSalary = (baseDailyShiftCost * 22) + (baseDailyShiftCost * weekendMultiplier * 8);
+    const monthlyManagerSalary = ftManagerCount * ftManagerSalary;
+    
+    const baseSalary = monthlyShiftSalary + monthlyManagerSalary;
+    const commission = rev * (commissionRate / 100);
+    
+    return {
+        baseSalary: baseSalary,
+        commission: commission,
+        totalSalary: baseSalary + commission
+    };
+}
+
 // ======================================================================
 // Setup inputs for auto-formatting as the user types
 // ======================================================================
 function setupInputFormatting() {
     const idsToFormat = [
         'inp-deposit', 'inp-renovate', 'inp-equipment', 'inp-raw-start', 'inp-decor-misc', 'inp-buffer',
-        'inp-loan', 'inp-rent', 'inp-utilities', 'inp-salary', 'inp-misc', 'inp-price', 'inp-sh-contrib'
+        'inp-loan', 'inp-rent', 'inp-utilities', 'inp-shift-morning-rate', 'inp-shift-afternoon-rate', 'inp-shift-evening-rate', 'inp-ft-manager-salary', 'inp-misc', 'inp-price', 'inp-sh-contrib'
     ];
     idsToFormat.forEach(id => {
         const input = document.getElementById(id);
@@ -193,15 +224,24 @@ function validateInputs() {
     
     const rentInput = document.getElementById('inp-rent');
     const utilitiesInput = document.getElementById('inp-utilities');
-    const ftCountInput = document.getElementById('inp-ft-count');
-    const ftSalaryInput = document.getElementById('inp-ft-salary');
-    const ptCountInput = document.getElementById('inp-pt-count');
-    const ptHoursInput = document.getElementById('inp-pt-hours');
-    const ptRateInput = document.getElementById('inp-pt-rate');
+    
+    const shiftMorningStaffInput = document.getElementById('inp-shift-morning-staff');
+    const shiftMorningRateInput = document.getElementById('inp-shift-morning-rate');
+    const shiftAfternoonStaffInput = document.getElementById('inp-shift-afternoon-staff');
+    const shiftAfternoonRateInput = document.getElementById('inp-shift-afternoon-rate');
+    const shiftEveningStaffInput = document.getElementById('inp-shift-evening-staff');
+    const shiftEveningRateInput = document.getElementById('inp-shift-evening-rate');
+    const ftManagerCountInput = document.getElementById('inp-ft-manager-count');
+    const ftManagerSalaryInput = document.getElementById('inp-ft-manager-salary');
+    const weekendMultiplierInput = document.getElementById('inp-weekend-multiplier');
+    const commissionRateInput = document.getElementById('inp-commission-rate');
+    
     const miscInput = document.getElementById('inp-misc');
     
     const priceInput = document.getElementById('inp-price');
     const costPctInput = document.getElementById('inp-cost-pct');
+    const growthRevInput = document.getElementById('inp-growth-rev');
+    const growthOpexInput = document.getElementById('inp-growth-opex');
 
     const volGoodInput = document.getElementById('inp-vol-good');
     const volBaseInput = document.getElementById('inp-vol-base');
@@ -218,8 +258,11 @@ function validateInputs() {
     
     // Clear borders
     [depositInput, renovateInput, equipmentInput, rawStartInput, decorMiscInput, bufferInput, 
-     loanInput, interestInput, termInput, rentInput, utilitiesInput, ftCountInput, ftSalaryInput, ptCountInput, ptHoursInput, ptRateInput, miscInput, 
-     priceInput, costPctInput, volGoodInput, volBaseInput, volWorstInput].forEach(clearError);
+     loanInput, interestInput, termInput, rentInput, utilitiesInput, 
+     shiftMorningStaffInput, shiftMorningRateInput, shiftAfternoonStaffInput, shiftAfternoonRateInput, 
+     shiftEveningStaffInput, shiftEveningRateInput, ftManagerCountInput, ftManagerSalaryInput, 
+     weekendMultiplierInput, commissionRateInput, miscInput, 
+     priceInput, costPctInput, volGoodInput, volBaseInput, volWorstInput, growthRevInput, growthOpexInput].forEach(clearError);
     
     const deposit = parseNumber(depositInput.value);
     const renovate = parseNumber(renovateInput.value);
@@ -230,11 +273,18 @@ function validateInputs() {
     const loan = parseNumber(loanInput.value);
     const rent = parseNumber(rentInput.value);
     const utilities = parseNumber(utilitiesInput.value);
-    const ftCount = parseNumber(ftCountInput.value);
-    const ftSalary = parseNumber(ftSalaryInput.value);
-    const ptCount = parseNumber(ptCountInput.value);
-    const ptHours = parseNumber(ptHoursInput.value);
-    const ptRate = parseNumber(ptRateInput.value);
+    
+    const shiftMorningStaff = parseNumber(shiftMorningStaffInput.value);
+    const shiftMorningRate = parseNumber(shiftMorningRateInput.value);
+    const shiftAfternoonStaff = parseNumber(shiftAfternoonStaffInput.value);
+    const shiftAfternoonRate = parseNumber(shiftAfternoonRateInput.value);
+    const shiftEveningStaff = parseNumber(shiftEveningStaffInput.value);
+    const shiftEveningRate = parseNumber(shiftEveningRateInput.value);
+    const ftManagerCount = parseNumber(ftManagerCountInput.value);
+    const ftManagerSalary = parseNumber(ftManagerSalaryInput.value);
+    const weekendMultiplier = parseFloat(weekendMultiplierInput.value) || 1.0;
+    const commissionRate = parseFloat(commissionRateInput.value) || 0;
+    
     const misc = parseNumber(miscInput.value);
     const price = parseNumber(priceInput.value);
     
@@ -260,11 +310,18 @@ function validateInputs() {
     
     if (rent < 0) setError(rentInput, "Tiền thuê mặt bằng không được âm.");
     if (utilities < 0) setError(utilitiesInput, "Chi phí điện nước không được âm.");
-    if (ftCount < 0) setError(ftCountInput, "Số lượng không được âm.");
-    if (ftSalary < 0) setError(ftSalaryInput, "Lương không được âm.");
-    if (ptCount < 0) setError(ptCountInput, "Số lượng không được âm.");
-    if (ptHours < 0) setError(ptHoursInput, "Số giờ không được âm.");
-    if (ptRate < 0) setError(ptRateInput, "Lương không được âm.");
+    
+    if (shiftMorningStaff < 0) setError(shiftMorningStaffInput, "Số NV ca sáng không được âm.");
+    if (shiftMorningRate < 0) setError(shiftMorningRateInput, "Lương ca sáng không được âm.");
+    if (shiftAfternoonStaff < 0) setError(shiftAfternoonStaffInput, "Số NV ca chiều không được âm.");
+    if (shiftAfternoonRate < 0) setError(shiftAfternoonRateInput, "Lương ca chiều không được âm.");
+    if (shiftEveningStaff < 0) setError(shiftEveningStaffInput, "Số NV ca tối không được âm.");
+    if (shiftEveningRate < 0) setError(shiftEveningRateInput, "Lương ca tối không được âm.");
+    if (ftManagerCount < 0) setError(ftManagerCountInput, "Số quản lý không được âm.");
+    if (ftManagerSalary < 0) setError(ftManagerSalaryInput, "Lương quản lý không được âm.");
+    if (weekendMultiplier < 1.0) setError(weekendMultiplierInput, "Hệ số cuối tuần không được nhỏ hơn 1.0.");
+    if (commissionRate < 0 || commissionRate > 100) setError(commissionRateInput, "Tỷ lệ thưởng phải từ 0% đến 100%.");
+    
     if (misc < 0) setError(miscInput, "Chi phí phát sinh không được âm.");
     if (price <= 0) setError(priceInput, "Giá bán trung bình phải lớn hơn 0 đ/ly.");
     
@@ -675,6 +732,158 @@ function renderSensitivityTable(basePrice, baseCostPct, fixedMonthlyOpex, monthl
     table.innerHTML = html;
 }
 
+function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt, monthlyDepreciation, volBase) {
+    const wrapper = document.getElementById('breakeven-tab');
+    if (!wrapper) return;
+
+    const rent = parseNumber(document.getElementById('inp-rent').value);
+    const commissionRate = parseFloat(document.getElementById('inp-commission-rate')?.value || '0');
+
+    // Vary price by ±10k, ±5k
+    const prices = [basePrice - 10000, basePrice - 5000, basePrice, basePrice + 5000, basePrice + 10000].filter(p => p > 0);
+    // Vary rent by ±5M, ±2.5M
+    const rents = [rent - 5000000, rent - 2500000, rent, rent + 2500000, rent + 5000000].filter(r => r >= 0);
+
+    let priceRowsHtml = '';
+    prices.forEach(p => {
+        let cellsHtml = '';
+        const unitMargin = p * (1 - baseCostPct / 100 - commissionRate / 100);
+        
+        rents.forEach(r => {
+            if (unitMargin <= 0) {
+                cellsHtml += `<td style="text-align: right; padding: 8px; color: var(--danger); font-weight: 500;">Lỗ gộp/ly</td>`;
+            } else {
+                const newOpex = fixedMonthlyOpex - rent + r;
+                const beVol = (newOpex + monthlyDebt + monthlyDepreciation) / (30 * unitMargin);
+                const isBaseCase = (p === basePrice && r === rent);
+                const extraStyle = isBaseCase ? 'background: rgba(2, 132, 199, 0.15); font-weight: bold; border: 2px solid var(--primary);' : '';
+                cellsHtml += `<td style="text-align: right; padding: 8px; ${extraStyle}">${Math.ceil(beVol)} ly</td>`;
+            }
+        });
+
+        priceRowsHtml += `
+            <tr>
+                <td style="text-align: left; padding: 8px; font-weight: 500;">${formatNumber(p)}đ</td>
+                ${cellsHtml}
+            </tr>
+        `;
+    });
+
+    wrapper.innerHTML = `
+        <h3 class="chart-sub-title">🎯 Ma Trận Sản Lượng Hòa Vốn (Ly/Ngày) Theo Giá Bán & Tiền Thuê</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+            Bảng dưới đây thể hiện số ly nước quán cần bán được <strong>mỗi ngày</strong> để hòa vốn (bao gồm định phí, nợ vay ngân hàng và khấu hao) khi thay đổi giá thuê mặt bằng (cột) và giá bán lẻ (dòng). Ô tô đậm có viền xanh là kịch bản hiện tại của bạn.
+        </p>
+
+        <!-- Table -->
+        <div style="overflow-x: auto; margin-bottom: 24px;">
+            <table class="sensitivity-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr>
+                        <th class="sensitivity-corner" style="text-align: left; padding: 8px; background: rgba(2, 132, 199, 0.08);">Giá bán \\ Tiền thuê</th>
+                        ${rents.map(r => `<th style="text-align: right; padding: 8px; background: rgba(2, 132, 199, 0.08);">${formatShortVND(r)}/tháng</th>`).join('')}
+                    </tr>
+                </thead>
+                <tbody>
+                    ${priceRowsHtml}
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="chart-sub-title" style="margin-top: 24px; margin-bottom: 8px;">📈 Đồ Thị Điểm Hòa Vốn Cắt Nhau (Break-Even Point Chart)</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+            Giao điểm giữa hai đường thẳng chính là điểm hòa vốn của dự án.
+        </p>
+        <div class="chart-container" style="position: relative; height: 280px; width: 100%; margin-bottom: 24px;">
+            <canvas id="breakevenChart"></canvas>
+        </div>
+    `;
+
+    // Draw Breakeven Chart using Chart.js
+    setTimeout(() => {
+        const ctx = document.getElementById('breakevenChart');
+        if (!ctx) return;
+
+        const maxVol = Math.max(Math.ceil(volBase * 1.5), 100);
+        const steps = 10;
+        const labels = [];
+        const dataRev = [];
+        const dataCost = [];
+
+        for (let v = 0; v <= maxVol; v += steps) {
+            labels.push(v + " ly");
+            const rev = v * 30 * basePrice;
+            const cogs = rev * (baseCostPct / 100);
+            const commission = rev * (commissionRate / 100);
+            const cost = (fixedMonthlyOpex + monthlyDebt + monthlyDepreciation) + cogs + commission;
+            dataRev.push(Math.round(rev));
+            dataCost.push(Math.round(cost));
+        }
+
+        const isLight = document.body.classList.contains('light-theme');
+        const textColor = isLight ? '#475569' : '#9ca3af';
+        const gridColor = isLight ? 'rgba(15, 23, 42, 0.06)' : 'rgba(255, 255, 255, 0.05)';
+
+        new Chart(ctx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Tổng Doanh Thu (VND)',
+                        data: dataRev,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.05)',
+                        borderWidth: 2,
+                        tension: 0,
+                        pointRadius: 3
+                    },
+                    {
+                        label: 'Tổng Chi Phí (VND)',
+                        data: dataCost,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.05)',
+                        borderWidth: 2,
+                        tension: 0,
+                        pointRadius: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: textColor, font: { family: 'Outfit', size: 12 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + formatVND(context.raw);
+                            }
+                        }
+                    },
+                    datalabels: { display: false }
+                },
+                scales: {
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: {
+                            color: textColor,
+                            callback: function(value) { return formatShortVND(value); }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: textColor }
+                    }
+                }
+            }
+        });
+    }, 50);
+}
+
 // ======================================================================
 // Generate Dynamic Number Explanation
 // ======================================================================
@@ -691,12 +900,8 @@ function renderExplanation(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt
     
     const rent = parseNumber(document.getElementById('inp-rent').value);
     const utilities = parseNumber(document.getElementById('inp-utilities').value);
-    const ftCount = parseNumber(document.getElementById('inp-ft-count').value);
-    const ftSalary = parseNumber(document.getElementById('inp-ft-salary').value);
-    const ptCount = parseNumber(document.getElementById('inp-pt-count').value);
-    const ptHours = parseNumber(document.getElementById('inp-pt-hours').value);
-    const ptRate = parseNumber(document.getElementById('inp-pt-rate').value);
-    const salary = (ftCount * ftSalary) + (ptCount * ptHours * ptRate * 30);
+    const salaryObj = calculateMonthlySalary(baseScenario.rev);
+    const salary = salaryObj.totalSalary;
     const misc = parseNumber(document.getElementById('inp-misc').value);
     
     const deprYears = parseInt(document.getElementById('inp-depr-years').value) || 5;
@@ -837,12 +1042,9 @@ function updateDashboard() {
 
     const rent = parseNumber(document.getElementById('inp-rent').value);
     const utilities = parseNumber(document.getElementById('inp-utilities').value);
-    const ftCount = parseNumber(document.getElementById('inp-ft-count').value);
-    const ftSalary = parseNumber(document.getElementById('inp-ft-salary').value);
-    const ptCount = parseNumber(document.getElementById('inp-pt-count').value);
-    const ptHours = parseNumber(document.getElementById('inp-pt-hours').value);
-    const ptRate = parseNumber(document.getElementById('inp-pt-rate').value);
-    const salary = (ftCount * ftSalary) + (ptCount * ptHours * ptRate * 30);
+    const salaryObj = calculateMonthlySalary(0);
+    const salary = salaryObj.baseSalary;
+    const commissionRate = parseFloat(document.getElementById('inp-commission-rate')?.value || '0');
     const misc = parseNumber(document.getElementById('inp-misc').value);
 
     const price = parseNumber(document.getElementById('inp-price').value);
@@ -864,7 +1066,7 @@ function updateDashboard() {
     const depreciableAssets = equipment + decorMisc; // Máy móc + Decor có thể khấu hao
     const monthlyDepreciation = depreciableAssets / (deprYears * 12);
 
-    const unitContributionMargin = price * (1 - costPct / 100);
+    const unitContributionMargin = price * (1 - costPct / 100 - commissionRate / 100);
     
     // Break-even including depreciation
     const breakEvenDailyVol = unitContributionMargin > 0 ? (fixedMonthlyOpex + monthlyDebt + monthlyDepreciation) / (30 * unitContributionMargin) : 0;
@@ -891,27 +1093,26 @@ function updateDashboard() {
         badge.style.backgroundColor = 'var(--primary-glow)';
     }
 
-    // Computing 3 scenarios (with tax + depreciation)
+    // Computing 3 scenarios (with tax + depreciation + commission)
     function computeScenario(vol) {
         const rev = vol * 30 * price;
         const cogs = rev * (costPct / 100);
-        const profitBeforeTax = (rev - cogs) - fixedMonthlyOpex - monthlyDebt - monthlyDepreciation;
+        const salaryObj = calculateMonthlySalary(rev);
+        const opex = rent + utilities + salaryObj.baseSalary + misc + salaryObj.commission;
+        const profitBeforeTax = (rev - cogs) - opex - monthlyDebt - monthlyDepreciation;
         const tax = calculateTax(profitBeforeTax, rev * 12);
         const net = profitBeforeTax - tax;
-        return { rev, cogs, profitBeforeTax, tax, net };
+        return { rev, cogs, opex, profitBeforeTax, tax, net, commission: salaryObj.commission };
     }
 
     const good = computeScenario(volGood);
     const base = computeScenario(volBase);
     const worst = computeScenario(volWorst);
 
-    // Use ACTUAL fixedMonthlyOpex + monthlyDebt + depreciation for scenario detail cards
-    const totalFixedDisplay = fixedMonthlyOpex;
-
     // Dynamic details DOM rendering
     document.getElementById('det-good-rev').innerText = formatShortVND(good.rev);
     document.getElementById('det-good-cogs').innerText = formatShortVND(good.cogs);
-    document.getElementById('det-good-opex').innerText = formatShortVND(totalFixedDisplay);
+    document.getElementById('det-good-opex').innerText = formatShortVND(good.opex);
     document.getElementById('det-good-debt').innerText = formatShortVND(monthlyDebt);
     document.getElementById('det-good-depr').innerText = formatShortVND(monthlyDepreciation);
     document.getElementById('det-good-tax').innerText = formatShortVND(good.tax);
@@ -920,7 +1121,7 @@ function updateDashboard() {
 
     document.getElementById('det-base-rev').innerText = formatShortVND(base.rev);
     document.getElementById('det-base-cogs').innerText = formatShortVND(base.cogs);
-    document.getElementById('det-base-opex').innerText = formatShortVND(totalFixedDisplay);
+    document.getElementById('det-base-opex').innerText = formatShortVND(base.opex);
     document.getElementById('det-base-debt').innerText = formatShortVND(monthlyDebt);
     document.getElementById('det-base-depr').innerText = formatShortVND(monthlyDepreciation);
     document.getElementById('det-base-tax').innerText = formatShortVND(base.tax);
@@ -929,7 +1130,7 @@ function updateDashboard() {
 
     document.getElementById('det-worst-rev').innerText = formatShortVND(worst.rev);
     document.getElementById('det-worst-cogs').innerText = formatShortVND(worst.cogs);
-    document.getElementById('det-worst-opex').innerText = formatShortVND(totalFixedDisplay);
+    document.getElementById('det-worst-opex').innerText = formatShortVND(worst.opex);
     document.getElementById('det-worst-debt').innerText = formatShortVND(monthlyDebt);
     document.getElementById('det-worst-depr').innerText = formatShortVND(monthlyDepreciation);
     document.getElementById('det-worst-tax').innerText = formatShortVND(worst.tax);
@@ -961,30 +1162,96 @@ function updateDashboard() {
     }
 
     const alertContainer = document.getElementById('survival-alert-container');
-    if (worst.net < 0) {
-        alertContainer.style.display = 'flex';
-        if (runOutMonth !== -1) {
-            // Reset to danger style
-            alertContainer.style.background = 'var(--danger-glow)';
-            alertContainer.style.borderColor = 'rgba(248, 113, 113, 0.3)';
-            const isLightAlert = document.body.classList.contains('light-theme');
-            alertContainer.style.color = isLightAlert ? '#b91c1c' : 'var(--danger)';
-            alertContainer.querySelector('svg').style.fill = 'var(--danger)';
-            document.getElementById('survival-alert-text').innerText = 
-                `Cảnh báo: Với kịch bản xấu (lỗ ${formatShortVND(Math.abs(worst.net))}/tháng), quỹ dự phòng của bạn sẽ cạn kiệt ở tháng ${runOutMonth}.`;
-        } else {
-            document.getElementById('survival-alert-text').innerText = 
-                `Dù kịch bản xấu (lỗ ${formatShortVND(Math.abs(worst.net))}/tháng), quỹ dự phòng ${formatShortVND(buffer)} vẫn đủ gánh chịu qua 12 tháng đầu tiên.`;
-            
-            const isLightAlert = document.body.classList.contains('light-theme');
-            alertContainer.style.background = 'var(--warning-glow)';
-            alertContainer.style.borderColor = 'rgba(251, 191, 36, 0.3)';
-            alertContainer.style.color = isLightAlert ? '#92400e' : '#fde68a';
-            alertContainer.querySelector('svg').style.fill = 'var(--warning)';
-        }
-    } else {
-        alertContainer.style.display = 'none';
+    const isLightAlert = document.body.classList.contains('light-theme');
+    
+    // Runway calculations
+    const burnRate = worst.net < 0 ? Math.abs(worst.net) : 0;
+    const runwayMonths = burnRate > 0 ? (buffer / burnRate) : Infinity;
+
+    alertContainer.style.display = 'flex';
+    alertContainer.style.padding = '16px';
+    alertContainer.style.borderRadius = '12px';
+    alertContainer.style.border = '1px solid';
+    
+    let statusIcon = '🟢';
+    let statusText = 'An toàn';
+    let badgeBg = 'rgba(16, 185, 129, 0.1)';
+    let badgeColor = isLightAlert ? '#047857' : '#34d399';
+    let badgeBorder = 'rgba(16, 185, 129, 0.3)';
+    let borderColor = 'rgba(16, 185, 129, 0.2)';
+    let textColor = isLightAlert ? '#0f172a' : '#f8fafc';
+    let containerBg = isLightAlert ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.02)';
+    let containerBorder = 'rgba(16, 185, 129, 0.25)';
+    let warningMessage = 'Quỹ dự phòng ở mức rất an toàn. Kịch bản xấu nhất không làm bạn cạn tiền (hoặc thời gian sinh tồn lớn hơn 12 tháng). Bạn có biên an toàn tài chính vững chắc.';
+    let runwayText = 'Vô hạn (Không cạn kiệt)';
+
+    if (runwayMonths !== Infinity) {
+        runwayText = runwayMonths.toFixed(1) + ' tháng';
     }
+
+    if (burnRate > 0) {
+        if (runwayMonths < 3) {
+            statusIcon = '🔴';
+            statusText = 'Nguy hiểm';
+            badgeBg = 'rgba(239, 68, 68, 0.1)';
+            badgeColor = isLightAlert ? '#b91c1c' : '#f87171';
+            badgeBorder = 'rgba(239, 68, 68, 0.3)';
+            borderColor = 'rgba(239, 68, 68, 0.2)';
+            textColor = isLightAlert ? '#b91c1c' : '#fca5a5';
+            containerBg = 'var(--danger-glow)';
+            containerBorder = 'rgba(239, 68, 68, 0.3)';
+            warningMessage = `Với kịch bản xấu (lỗ ${formatShortVND(burnRate)}/tháng), quỹ dự phòng của bạn sẽ cạn kiệt ở tháng ${runOutMonth}. Bạn đang có nguy cơ đứt dòng tiền rất cao trong ngắn hạn.`;
+        } else if (runwayMonths <= 6) {
+            statusIcon = '🟡';
+            statusText = 'Cảnh báo';
+            badgeBg = 'rgba(245, 158, 11, 0.1)';
+            badgeColor = isLightAlert ? '#b45309' : '#fbbf24';
+            badgeBorder = 'rgba(245, 158, 11, 0.3)';
+            borderColor = 'rgba(245, 158, 11, 0.2)';
+            textColor = isLightAlert ? '#92400e' : '#fde68a';
+            containerBg = 'var(--warning-glow)';
+            containerBorder = 'rgba(245, 158, 11, 0.3)';
+            warningMessage = `Quỹ dự phòng đủ gánh lỗ trong khoảng ${runwayMonths.toFixed(1)} tháng. Mức độ an toàn tài chính ở mức trung bình, cần chú ý tối ưu định phí hoặc tăng doanh số.`;
+        }
+    }
+
+    alertContainer.style.background = containerBg;
+    alertContainer.style.borderColor = containerBorder;
+    alertContainer.style.color = textColor;
+    
+    alertContainer.innerHTML = `
+        <div style="display: flex; flex-direction: column; width: 100%; gap: 10px;">
+            <!-- Top Row: Badge + Status -->
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 6px; font-weight: bold; font-size: 13.5px;">
+                    <span>${statusIcon}</span>
+                    <span>Khả Năng Sinh Tồn Tài Chính (Worst Case Runway)</span>
+                </div>
+                <span style="padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; background: ${badgeBg}; color: ${badgeColor}; border: 1px solid ${badgeBorder};">
+                    ${statusText}
+                </span>
+            </div>
+            <!-- Middle Row: Burn Rate & Runway values -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-top: 1px dashed ${borderColor}; padding-top: 8px; margin-top: 4px;">
+                <div>
+                    <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">TỐC ĐỘ ĐỐT TIỀN (BURN RATE)</div>
+                    <div style="font-size: 15px; font-weight: bold; margin-top: 2px; color: ${burnRate > 0 ? 'var(--danger)' : 'var(--success)'};">
+                        ${worst.net < 0 ? '-' + formatShortVND(burnRate) : '+' + formatShortVND(worst.net)}/tháng
+                    </div>
+                </div>
+                <div>
+                    <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">THỜI GIAN SINH TỒN (RUNWAY)</div>
+                    <div style="font-size: 15px; font-weight: bold; margin-top: 2px;">
+                        ${runwayText}
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Row: Warning message -->
+            <div style="font-size: 12.5px; line-height: 1.4; margin-top: 4px;">
+                ${warningMessage}
+            </div>
+        </div>
+    `;
 
     // Render tables, disbursement schedule and pitch assistants (using net after tax)
     const totalEquityContributed = shareholders.reduce((sum, s) => sum + s.contribution, 0);
@@ -1012,16 +1279,15 @@ function renderChart(good, base, worst, breakeven, volGood, volBase, volWorst, g
     const splitWrapper = document.getElementById('split-chart-wrapper');
     const sensitivityTab = document.getElementById('sensitivity-tab');
     const explanationTab = document.getElementById('explanation-tab');
-
     const investmentWrapper = document.getElementById('investment-wrapper');
-    const checklistWrapper = document.getElementById('checklist-wrapper');
+    const breakevenTab = document.getElementById('breakeven-tab');
 
     if (mainWrapper) mainWrapper.style.display = 'none';
     if (splitWrapper) splitWrapper.style.display = 'none';
     if (sensitivityTab) sensitivityTab.style.display = 'none';
     if (explanationTab) explanationTab.style.display = 'none';
     if (investmentWrapper) investmentWrapper.style.display = 'none';
-    if (checklistWrapper) checklistWrapper.style.display = 'none';
+    if (breakevenTab) breakevenTab.style.display = 'none';
 
     if (activeTab === 'structure') {
         if (splitWrapper) splitWrapper.style.display = 'grid';
@@ -1031,14 +1297,14 @@ function renderChart(good, base, worst, breakeven, volGood, volBase, volWorst, g
         if (explanationTab) explanationTab.style.display = 'block';
     } else if (activeTab === 'investment') {
         if (investmentWrapper) investmentWrapper.style.display = 'block';
-    } else if (activeTab === 'checklist') {
-        if (checklistWrapper) checklistWrapper.style.display = 'block';
+    } else if (activeTab === 'breakeven') {
+        if (breakevenTab) breakevenTab.style.display = 'block';
     } else {
         if (mainWrapper) mainWrapper.style.display = 'block';
     }
 
     if (activeTab === 'sensitivity') {
-        ['financialChart', 'costStructureChart', 'equityStructureChart'].forEach(id => {
+        ['financialChart', 'costStructureChart', 'equityStructureChart', 'cumulativeCashFlowChart', 'breakevenChart'].forEach(id => {
             const c = Chart.getChart(id);
             if (c) c.destroy();
         });
@@ -1047,31 +1313,30 @@ function renderChart(good, base, worst, breakeven, volGood, volBase, volWorst, g
     }
 
     if (activeTab === 'investment') {
-        ['financialChart', 'costStructureChart', 'equityStructureChart'].forEach(id => {
+        ['financialChart', 'costStructureChart', 'equityStructureChart', 'cumulativeCashFlowChart', 'breakevenChart'].forEach(id => {
             const c = Chart.getChart(id);
             if (c) c.destroy();
         });
-        const discountRate = parseFloat(document.getElementById('inp-discount-rate').value) || 15;
-        renderInvestmentAnalysis(totalCapitalNeeded, base.net, discountRate, breakeven, volBase);
-        return;
-    }
-
-    if (activeTab === 'checklist') {
-        ['financialChart', 'costStructureChart', 'equityStructureChart'].forEach(id => {
-            const c = Chart.getChart(id);
-            if (c) c.destroy();
-        });
-        renderChecklist();
+        renderInvestmentAnalysis();
         return;
     }
 
     if (activeTab === 'explanation') {
         // Destroy all charts
-        ['financialChart', 'costStructureChart', 'equityStructureChart'].forEach(id => {
+        ['financialChart', 'costStructureChart', 'equityStructureChart', 'cumulativeCashFlowChart', 'breakevenChart'].forEach(id => {
             const c = Chart.getChart(id);
             if (c) c.destroy();
         });
         renderExplanation(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt, monthlyDepreciation, volBase, setupCosts, deposit, renovate, equipment, rawStart, decorMisc, totalEquityContributed, breakeven, base);
+        return;
+    }
+
+    if (activeTab === 'breakeven') {
+        ['financialChart', 'costStructureChart', 'equityStructureChart', 'cumulativeCashFlowChart', 'breakevenChart'].forEach(id => {
+            const c = Chart.getChart(id);
+            if (c) c.destroy();
+        });
+        renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt, monthlyDepreciation, volBase);
         return;
     }
 
@@ -1188,6 +1453,8 @@ function renderChart(good, base, worst, breakeven, volGood, volBase, volWorst, g
         if (costChart) costChart.destroy();
         const equityChart = Chart.getChart("equityStructureChart");
         if (equityChart) equityChart.destroy();
+        const cumChart = Chart.getChart("cumulativeCashFlowChart");
+        if (cumChart) cumChart.destroy();
 
         // Destroy main chart
         const mainChart = Chart.getChart("financialChart");
@@ -1421,6 +1688,10 @@ window.toggleTheme = function() {
     updateDashboard();
 }
 
+window.exportPDF = function() {
+    window.print();
+}
+
 // ======================================================================
 // Core setup on load
 // ======================================================================
@@ -1458,17 +1729,25 @@ window.addEventListener('DOMContentLoaded', () => {
     
     // Bind change update on non-formatted fields
     document.getElementById('inp-interest').addEventListener('input', updateDashboard);
-    document.getElementById('inp-ft-count').addEventListener('input', updateDashboard);
-    document.getElementById('inp-pt-count').addEventListener('input', updateDashboard);
-    document.getElementById('inp-pt-hours').addEventListener('input', updateDashboard);
+    document.getElementById('inp-shift-morning-staff').addEventListener('input', updateDashboard);
+    document.getElementById('inp-shift-morning-rate').addEventListener('input', updateDashboard);
+    document.getElementById('inp-shift-afternoon-staff').addEventListener('input', updateDashboard);
+    document.getElementById('inp-shift-afternoon-rate').addEventListener('input', updateDashboard);
+    document.getElementById('inp-shift-evening-staff').addEventListener('input', updateDashboard);
+    document.getElementById('inp-shift-evening-rate').addEventListener('input', updateDashboard);
+    document.getElementById('inp-ft-manager-count').addEventListener('input', updateDashboard);
+    document.getElementById('inp-ft-manager-salary').addEventListener('input', updateDashboard);
+    document.getElementById('inp-weekend-multiplier').addEventListener('input', updateDashboard);
+    document.getElementById('inp-commission-rate').addEventListener('input', updateDashboard);
     document.getElementById('inp-discount-rate').addEventListener('input', updateDashboard);
+    document.getElementById('inp-growth-rev').addEventListener('input', updateDashboard);
+    document.getElementById('inp-growth-opex').addEventListener('input', updateDashboard);
     document.getElementById('inp-term').addEventListener('input', updateDashboard);
     document.getElementById('inp-cost-pct').addEventListener('input', updateDashboard);
     document.getElementById('inp-vol-good').addEventListener('input', updateDashboard);
     document.getElementById('inp-vol-base').addEventListener('input', updateDashboard);
     document.getElementById('inp-vol-worst').addEventListener('input', updateDashboard);
     document.getElementById('inp-depr-years').addEventListener('input', updateDashboard);
-    document.getElementById('inp-tax-rate').addEventListener('input', updateDashboard);
 
     updateDashboard();
 });
@@ -1481,9 +1760,15 @@ function getInputsData() {
     const inputs = [
         'inp-deposit', 'inp-renovate', 'inp-equipment', 'inp-raw-start', 'inp-decor-misc', 'inp-buffer',
         'inp-loan', 'inp-interest', 'inp-term',
-        'inp-rent', 'inp-utilities', 'inp-ft-count', 'inp-ft-salary', 'inp-pt-count', 'inp-pt-hours', 'inp-pt-rate', 'inp-misc',
+        'inp-rent', 'inp-utilities',
+        'inp-shift-morning-staff', 'inp-shift-morning-rate',
+        'inp-shift-afternoon-staff', 'inp-shift-afternoon-rate',
+        'inp-shift-evening-staff', 'inp-shift-evening-rate',
+        'inp-ft-manager-count', 'inp-ft-manager-salary',
+        'inp-weekend-multiplier', 'inp-commission-rate', 'inp-misc',
         'inp-price', 'inp-cost-pct',
         'inp-vol-good', 'inp-vol-base', 'inp-vol-worst', 'inp-discount-rate',
+        'inp-growth-rev', 'inp-growth-opex',
         'inp-depr-years', 'inp-tax-rate', 'inp-div-retained', 'inp-div-payout'
     ];
     let data = {};
@@ -1552,10 +1837,137 @@ window.loadScenario = function(name) {
     }
 }
 
+window.exportConfig = function() {
+    try {
+        const currentInputs = getInputsData();
+        const savedScenarios = JSON.parse(localStorage.getItem('coffeelytics_scenarios')) || {};
+        const configData = {
+            currentInputs: currentInputs,
+            savedScenarios: savedScenarios,
+            shareholders: shareholders
+        };
+        
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(configData, null, 4));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "coffeelytics_config.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    } catch (e) {
+        alert("Lỗi xuất file cấu hình: " + e.message);
+    }
+};
+
+window.shareViaUrl = function() {
+    try {
+        const configData = {
+            currentInputs: getInputsData(),
+            savedScenarios: JSON.parse(localStorage.getItem('coffeelytics_scenarios')) || {},
+            shareholders: shareholders
+        };
+        const jsonStr = JSON.stringify(configData);
+        // Encode using standard base64 that handles unicode safely
+        const base64Data = btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode('0x' + p1);
+        }));
+        
+        const shareUrl = window.location.origin + window.location.pathname + "?data=" + encodeURIComponent(base64Data);
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            alert("Đã sao chép đường link cấu hình vào bộ nhớ tạm! Bạn chỉ cần gửi link này cho đối tác.");
+        }).catch(err => {
+            // Fallback for browsers that block clipboard API
+            const tempInput = document.createElement("input");
+            tempInput.value = shareUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            alert("Đã sao chép đường link cấu hình vào bộ nhớ tạm! Bạn chỉ cần gửi link này cho đối tác.");
+        });
+    } catch (e) {
+        alert("Lỗi tạo link chia sẻ: " + e.message);
+    }
+};
+
+window.triggerImport = function() {
+    const fileInput = document.getElementById('import-file-input');
+    if (fileInput) fileInput.click();
+};
+
+window.importConfig = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const parsed = JSON.parse(e.target.result);
+            if (!parsed.currentInputs) {
+                alert("File không đúng định dạng cấu hình Coffeelytics.");
+                return;
+            }
+            
+            // Restore inputs
+            setInputsData(parsed.currentInputs);
+            
+            // Restore scenarios
+            if (parsed.savedScenarios) {
+                localStorage.setItem('coffeelytics_scenarios', JSON.stringify(parsed.savedScenarios));
+            }
+            
+            // Restore shareholders
+            if (parsed.shareholders && Array.isArray(parsed.shareholders)) {
+                shareholders = parsed.shareholders;
+            }
+            
+            // Refresh
+            loadScenariosList();
+            updateDashboard();
+            
+            alert("Đã nhập dữ liệu thành công!");
+        } catch (err) {
+            alert("Lỗi đọc file cấu hình: " + err.message);
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Check for shared URL data
+    const urlParams = new URLSearchParams(window.location.search);
+    const sharedData = urlParams.get('data');
+    if (sharedData) {
+        try {
+            const decodedJson = decodeURIComponent(atob(sharedData).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            
+            const parsed = JSON.parse(decodedJson);
+            if (parsed.currentInputs) {
+                setInputsData(parsed.currentInputs);
+                
+                if (parsed.savedScenarios) {
+                    localStorage.setItem('coffeelytics_scenarios', JSON.stringify(parsed.savedScenarios));
+                }
+                
+                if (parsed.shareholders && Array.isArray(parsed.shareholders)) {
+                    shareholders = parsed.shareholders;
+                }
+                
+                // Clear the URL parameter so it doesn't re-trigger on reload
+                window.history.replaceState({}, document.title, window.location.pathname);
+                alert("Đã tải dữ liệu từ đường link chia sẻ thành công!");
+            }
+        } catch (err) {
+            console.error("Lỗi giải mã liên kết chia sẻ:", err);
+        }
+    }
+
     loadScenariosList();
     let current = localStorage.getItem('coffeelytics_current_scenario');
-    if (current) {
+    if (current && !sharedData) {
         window.loadScenario(current);
     }
 });
@@ -1564,160 +1976,453 @@ document.addEventListener('DOMContentLoaded', () => {
 // Investment Analysis (NPV & IRR)
 // ======================================================================
 
-function renderInvestmentAnalysis(totalCapital, monthlyNet, discountRatePct, breakevenPoint, volBase) {
+window.setInvestmentScenario = function(scen) {
+    investmentScenario = scen;
+    updateDashboard();
+}
+
+function renderInvestmentAnalysis() {
     const wrapper = document.getElementById('investment-wrapper');
     if (!wrapper) return;
+
+    // Read all inputs from DOM
+    const deposit = parseNumber(document.getElementById('inp-deposit').value);
+    const renovate = parseNumber(document.getElementById('inp-renovate').value);
+    const equipment = parseNumber(document.getElementById('inp-equipment').value);
+    const rawStart = parseNumber(document.getElementById('inp-raw-start').value);
+    const decorMisc = parseNumber(document.getElementById('inp-decor-misc').value);
+    const buffer = parseNumber(document.getElementById('inp-buffer').value);
+    const deprYears = parseInt(document.getElementById('inp-depr-years').value) || 5;
+
+    const loan = parseNumber(document.getElementById('inp-loan').value);
+    const interest = parseFloat(document.getElementById('inp-interest').value) || 0;
+    const term = parseInt(document.getElementById('inp-term').value) || 12;
+
+    const rent = parseNumber(document.getElementById('inp-rent').value);
+    const utilities = parseNumber(document.getElementById('inp-utilities').value);
+    const salaryObj = calculateMonthlySalary(0);
+    const salary = salaryObj.baseSalary;
+    const misc = parseNumber(document.getElementById('inp-misc').value);
+
+    const price = parseNumber(document.getElementById('inp-price').value);
+    const costPct = parseFloat(document.getElementById('inp-cost-pct').value) || 0;
+
+    const volGood = parseFloat(document.getElementById('inp-vol-good').value) || 0;
+    const volBase = parseFloat(document.getElementById('inp-vol-base').value) || 0;
+    const volWorst = parseFloat(document.getElementById('inp-vol-worst').value) || 0;
+
+    const discountRatePct = parseFloat(document.getElementById('inp-discount-rate').value) || 15;
+    const growthRevPct = parseFloat(document.getElementById('inp-growth-rev').value) || 0;
+    const growthOpexPct = parseFloat(document.getElementById('inp-growth-opex').value) || 0;
+    const commissionRate = parseFloat(document.getElementById('inp-commission-rate')?.value || '0');
+
+    // Derived values
+    const setupCosts = deposit + renovate + equipment + rawStart + decorMisc;
+    const totalCapital = setupCosts + buffer;
+    const fixedMonthlyOpex = rent + utilities + salary + misc;
+    const monthlyDebt = calculateEMI(loan, interest, term);
+    const depreciableAssets = equipment + decorMisc;
+    const monthlyDepreciation = depreciableAssets / (deprYears * 12);
     
-    const r = discountRatePct / 100;
-    const monthlyRate = Math.pow(1 + r, 1/12) - 1; // Effective monthly rate
-    const months = 36; // 3 year projection
-    
-    // Cashflows
-    let cashflows = [-totalCapital];
-    for(let i=0; i<months; i++) {
-        cashflows.push(monthlyNet);
+    // Choose active scenario volume
+    let vol = volBase;
+    let scenarioLabel = "Trung bình";
+    if (investmentScenario === 'good') {
+        vol = volGood;
+        scenarioLabel = "Tốt";
+    } else if (investmentScenario === 'worst') {
+        vol = volWorst;
+        scenarioLabel = "Xấu";
     }
+
+    // Calculations for 36 months
+    let monthlyRate = Math.pow(1 + (discountRatePct / 100), 1/12) - 1;
+    let npv = -totalCapital;
+    let pvCashflowsIn = 0;
+    let currentCumCash = -totalCapital;
+    let currentCumPV = -totalCapital;
+    let paybackMonth = -1;
+    let discPaybackMonth = -1;
     
-    // NPV
-    let npv = 0;
-    for(let i=0; i<=months; i++) {
-        npv += cashflows[i] / Math.pow(1 + monthlyRate, i);
+    let yearData = [
+        { year: 0, rev: 0, opex: 0, tax: 0, net: -totalCapital, pv: -totalCapital },
+        { year: 1, rev: 0, opex: 0, tax: 0, net: 0, pv: 0 },
+        { year: 2, rev: 0, opex: 0, tax: 0, net: 0, pv: 0 },
+        { year: 3, rev: 0, opex: 0, tax: 0, net: 0, pv: 0 }
+    ];
+
+    let monthlyData = [];
+    
+    for (let m = 1; m <= 36; m++) {
+        let y = Math.ceil(m / 12);
+        let gRev = Math.pow(1 + (growthRevPct / 100), y - 1);
+        let gOpex = Math.pow(1 + (growthOpexPct / 100), y - 1);
+        
+        let mRev = vol * 30 * price * gRev;
+        let mCogs = mRev * (costPct / 100);
+        let mOpex = fixedMonthlyOpex * gOpex + (mRev * (commissionRate / 100));
+        let mDebt = (m <= term) ? monthlyDebt : 0;
+        let mDepr = (m <= deprYears * 12) ? monthlyDepreciation : 0;
+        
+        let mPBT = mRev - mCogs - mOpex - mDebt - mDepr;
+        let taxRate = getSuggestedTaxRate(mRev * 12);
+        let mTax = mPBT > 0 ? mPBT * (taxRate / 100) : 0;
+        
+        // actual cash flow
+        let mCashFlow = mRev - mCogs - mOpex - mDebt - mTax;
+        
+        let pv = mCashFlow / Math.pow(1 + monthlyRate, m);
+        npv += pv;
+        if (mCashFlow > 0) {
+            pvCashflowsIn += pv;
+        }
+        
+        currentCumCash += mCashFlow;
+        currentCumPV += pv;
+        
+        if (currentCumCash >= 0 && paybackMonth === -1) {
+            let prevCumCash = currentCumCash - mCashFlow;
+            paybackMonth = (m - 1) + (Math.abs(prevCumCash) / mCashFlow);
+        }
+        
+        if (currentCumPV >= 0 && discPaybackMonth === -1) {
+            let prevCumPV = currentCumPV - pv;
+            discPaybackMonth = (m - 1) + (Math.abs(prevCumPV) / pv);
+        }
+        
+        yearData[y].rev += mRev;
+        yearData[y].opex += mOpex + mCogs + mDebt;
+        yearData[y].tax += mTax;
+        yearData[y].net += mCashFlow;
+        yearData[y].pv += pv;
+        
+        monthlyData.push({
+            month: m,
+            cashflow: mCashFlow,
+            cumCash: currentCumCash,
+            cumPv: currentCumPV
+        });
     }
-    
-    // Simple Payback period
-    let paybackMonths = totalCapital / (monthlyNet > 0 ? monthlyNet : 0.0001);
-    let paybackText = monthlyNet > 0 ? (paybackMonths).toFixed(1) + " tháng" : "Không bao giờ";
-    
-    // IRR (Approximate using Newton-Raphson or simple bisection)
+
+    // IRR
     let irrMonthly = 0;
-    if (monthlyNet > 0) {
-        let low = 0.0;
-        let high = 1.0;
+    let totalInflow = 0;
+    for (let m = 1; m <= 36; m++) {
+        totalInflow += monthlyData[m-1].cashflow;
+    }
+    
+    if (totalInflow > totalCapital) {
+        let low = -0.99;
+        let high = 2.0;
         for (let i = 0; i < 100; i++) {
             let mid = (low + high) / 2;
             let val = -totalCapital;
-            for(let j=1; j<=months; j++) val += monthlyNet / Math.pow(1 + mid, j);
+            for (let m = 1; m <= 36; m++) {
+                val += monthlyData[m-1].cashflow / Math.pow(1 + mid, m);
+            }
             if (val > 0) low = mid;
             else high = mid;
         }
         irrMonthly = (low + high) / 2;
     }
-    let irrAnnual = (Math.pow(1 + irrMonthly, 12) - 1) * 100;
     
+    let irrAnnual = irrMonthly > -0.99 ? (Math.pow(1 + irrMonthly, 12) - 1) * 100 : -100;
+    let roi = ((totalInflow - totalCapital) / totalCapital) * 100;
+    let pi = pvCashflowsIn / totalCapital;
+
+    let paybackText = paybackMonth > 0 ? paybackMonth.toFixed(1) + " tháng" : "Không trong 3 năm";
+    let discPaybackText = discPaybackMonth > 0 ? discPaybackMonth.toFixed(1) + " tháng" : "Không trong 3 năm";
+
     let npvColor = npv >= 0 ? 'val-profit' : 'val-loss';
     let irrColor = irrAnnual >= discountRatePct ? 'val-profit' : 'val-loss';
+    let piColor = pi >= 1 ? 'val-profit' : 'val-loss';
+    let roiColor = roi >= 0 ? 'val-profit' : 'val-loss';
+
+    let cumY1 = -totalCapital + yearData[1].pv;
+    let cumY2 = cumY1 + yearData[2].pv;
+    let cumY3 = cumY2 + yearData[3].pv;
+
+    // Unit Contribution Margin & breakeven daily volume
+    const unitContributionMargin = price * (1 - costPct / 100);
+    const breakEvenDailyVol = unitContributionMargin > 0 ? (fixedMonthlyOpex + monthlyDebt + monthlyDepreciation) / (30 * unitContributionMargin) : 0;
 
     let html = `
         <h3 class="chart-sub-title">Phân tích Hiệu Quả Đầu Tư (Tầm nhìn 3 năm)</h3>
+        
+        <!-- Scenario Selector Buttons -->
+        <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; overflow-x: auto; white-space: nowrap;">
+            <button class="tab-btn ${investmentScenario === 'good' ? 'active' : ''}" onclick="setInvestmentScenario('good')" style="font-size:13px; padding: 6px 12px; border-radius: 6px; cursor: pointer;">📈 Kịch bản Tốt</button>
+            <button class="tab-btn ${investmentScenario === 'base' ? 'active' : ''}" onclick="setInvestmentScenario('base')" style="font-size:13px; padding: 6px 12px; border-radius: 6px; cursor: pointer;">📊 Kịch bản Trung bình</button>
+            <button class="tab-btn ${investmentScenario === 'worst' ? 'active' : ''}" onclick="setInvestmentScenario('worst')" style="font-size:13px; padding: 6px 12px; border-radius: 6px; cursor: pointer;">📉 Kịch bản Xấu</button>
+        </div>
+
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
-            Dựa trên Kịch bản Bán hàng Trung Bình (${volBase} ly/ngày). Vốn đầu tư: ${formatShortVND(totalCapital)}.
+            Đang hiển thị phân tích cho <strong>Kịch bản ${scenarioLabel}</strong> (${vol} ly/ngày). Vốn đầu tư: ${formatShortVND(totalCapital)}. Tăng trưởng DT: ${growthRevPct}%/năm | Tăng chi phí: ${growthOpexPct}%/năm.
         </p>
-        <div class="scenarios-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-            <div class="glass-card scenario-card">
+
+        <div class="scenarios-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+            <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:16px; font-weight:600;">Thời gian hoàn vốn</span>
-                    <span style="font-size:18px; color:var(--primary); font-weight:bold;">${paybackText}</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Hoàn vốn đơn giản</span>
+                    <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${paybackText}</span>
                 </div>
             </div>
-            <div class="glass-card scenario-card">
+            <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:16px; font-weight:600;">Sản lượng hòa vốn</span>
-                    <span style="font-size:18px; color:var(--primary); font-weight:bold;">${Math.ceil(breakevenPoint)} ly/ngày</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Hoàn vốn chiết khấu</span>
+                    <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${discPaybackText}</span>
                 </div>
             </div>
-            <div class="glass-card scenario-card">
+            <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:16px; font-weight:600;">NPV (Giá trị HT Thuần)</span>
-                    <span class="${npvColor}" style="font-size:18px; font-weight:bold;">${npv >= 0 ? '+' : ''}${formatShortVND(npv)}</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Sản lượng hòa vốn</span>
+                    <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${Math.ceil(breakEvenDailyVol)} ly/ngày</span>
                 </div>
             </div>
-            <div class="glass-card scenario-card">
+            <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:16px; font-weight:600;">IRR (Tỷ suất sinh lời)</span>
-                    <span class="${irrColor}" style="font-size:18px; font-weight:bold;">${monthlyNet > 0 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">NPV (Hiện giá thuần)</span>
+                    <span class="${npvColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${npv >= 0 ? '+' : ''}${formatShortVND(npv)}</span>
+                </div>
+            </div>
+            <div class="glass-card scenario-card" style="padding: 12px;">
+                <div class="scenario-metric">
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">IRR (Tỷ suất nội bộ)</span>
+                    <span class="${irrColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${totalInflow > totalCapital && irrAnnual > -100 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</span>
+                </div>
+            </div>
+            <div class="glass-card scenario-card" style="padding: 12px;">
+                <div class="scenario-metric">
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">ROI (Tỷ lệ hoàn vốn)</span>
+                    <span class="${roiColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${roi.toFixed(1)}%</span>
+                </div>
+            </div>
+            <div class="glass-card scenario-card" style="padding: 12px;">
+                <div class="scenario-metric">
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">PI (Chỉ số sinh lời)</span>
+                    <span class="${piColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${pi.toFixed(2)}</span>
                 </div>
             </div>
         </div>
-        <div class="explanation-box" style="margin-top:16px;">
-            <strong>Kết luận:</strong> 
-            ${npv >= 0 ? '<span style="color:var(--val-profit)">Dự án khả thi về mặt tài chính (NPV > 0).</span>' : '<span style="color:var(--val-loss)">Dự án không hiệu quả với mức lãi suất chiết khấu này (NPV < 0).</span>'}
+
+        <div class="explanation-box" style="margin-top:16px; padding: 12px 16px; background: rgba(15,23,42,0.02); border-radius: 6px; border-left: 4px solid ${npv >= 0 ? 'var(--primary)' : 'var(--danger)'};">
+            <strong>Kết luận tài chính:</strong> 
+            ${npv >= 0 ? `<span style="color:var(--val-profit)">Dự án khả thi về mặt tài chính (NPV &gt; 0, chỉ số PI đạt ${pi.toFixed(2)} &gt; 1). IRR đạt ${irrAnnual.toFixed(1)}% lớn hơn lãi suất chiết khấu ${discountRatePct}%.</span>` : `<span style="color:var(--val-loss)">Dự án không hiệu quả với mức lãi suất chiết khấu này (NPV &lt; 0, PI đạt ${pi.toFixed(2)} &lt; 1). Bạn nên cân nhắc điều chỉnh định phí, giá bán hoặc cải thiện sản lượng bán.</span>`}
+        </div>
+
+        <!-- Cumulative Cash Flow Chart -->
+        <div style="margin-top: 24px;">
+            <h4 class="chart-sub-title" style="margin-bottom: 8px;">Đồ Thị Dòng Tiền Tích Lũy 36 Tháng (Hòa vốn khi đường tích lũy vượt mức 0)</h4>
+            <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
+                <canvas id="cumulativeCashFlowChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Detailed Year-by-Year Table -->
+        <div style="margin-top: 24px; overflow-x: auto;">
+            <h4 class="chart-sub-title" style="margin-bottom: 8px;">Bảng Chi Tiết Dòng Tiền 3 Năm (đơn vị: đ)</h4>
+            <table class="sensitivity-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Khoản mục \\ Thời điểm</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">Năm 0 (Hiện tại)</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">Năm 1</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">Năm 2</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">Năm 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: left; padding: 8px; font-weight: 500;">Doanh thu thuần</td>
+                        <td style="text-align: right; padding: 8px; color: var(--text-muted);">--</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].rev))}đ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].rev))}đ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].rev))}đ</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left; padding: 8px; font-weight: 500;">Tổng chi phí hoạt động (gồm COGS & Nợ vay)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--text-muted);">--</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].opex))}đ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].opex))}đ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].opex))}đ</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left; padding: 8px; font-weight: 500;">Thuế TNDN</td>
+                        <td style="text-align: right; padding: 8px; color: var(--text-muted);">--</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].tax))}đ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].tax))}đ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].tax))}đ</td>
+                    </tr>
+                    <tr style="border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); font-weight: 600; background: rgba(15,23,42,0.01);">
+                        <td style="text-align: left; padding: 8px;">Dòng tiền ròng (Net Cash Flow)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}đ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[1].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].net))}đ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[2].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].net))}đ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[3].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].net))}đ</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left; padding: 8px; font-weight: 500; color: var(--text-muted);">Hệ số chiết khấu</td>
+                        <td style="text-align: right; padding: 8px; color: var(--text-muted);">1.000</td>
+                        <td style="text-align: right; padding: 8px; color: var(--text-muted);">${(1 / Math.pow(1 + (discountRatePct / 100), 1)).toFixed(3)}</td>
+                        <td style="text-align: right; padding: 8px; color: var(--text-muted);">${(1 / Math.pow(1 + (discountRatePct / 100), 2)).toFixed(3)}</td>
+                        <td style="text-align: right; padding: 8px; color: var(--text-muted);">${(1 / Math.pow(1 + (discountRatePct / 100), 3)).toFixed(3)}</td>
+                    </tr>
+                    <tr style="font-weight: 600; border-top: 1px dashed var(--border-color);">
+                        <td style="text-align: left; padding: 8px;">Dòng tiền chiết khấu (PV)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}đ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[1].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].pv))}đ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[2].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].pv))}đ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[3].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].pv))}đ</td>
+                    </tr>
+                    <tr style="background: rgba(15,23,42,0.03); font-weight: bold; border-top: 2px solid var(--border-color);">
+                        <td style="text-align: left; padding: 8px;">Tích lũy chiết khấu (Cumulative PV)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}đ</td>
+                        <td style="text-align: right; padding: 8px; color: ${cumY1 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY1 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY1))}đ</td>
+                        <td style="text-align: right; padding: 8px; color: ${cumY2 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY2 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY2))}đ</td>
+                        <td style="text-align: right; padding: 8px; color: ${cumY3 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY3 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY3))}đ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Detailed explanation of metrics -->
+        <div class="glass-card" style="margin-top: 24px; padding: 16px; font-size: 13.5px; line-height: 1.6; color: var(--text-main);">
+            <h4 class="chart-sub-title" style="margin-bottom: 12px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; color: var(--primary);">
+                💡 Diễn giải & Công thức tính chi tiết của Kịch bản ${scenarioLabel}
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div>
+                    <strong>1. Tổng vốn đầu tư ban đầu (Vốn cần thiết):</strong>
+                    <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
+                        • Công thức: Cọc mặt bằng (${formatShortVND(deposit)}) + Thi công sửa chữa (${formatShortVND(renovate)}) + Thiết bị máy móc (${formatShortVND(equipment)}) + Nguyên liệu khởi tạo (${formatShortVND(rawStart)}) + Decor & Khác (${formatShortVND(decorMisc)}) + Dự phòng gồng lỗ (${formatShortVND(buffer)}).
+                        <br>• Kết quả: <strong>${formatNumber(totalCapital)} đ</strong>.
+                    </div>
+                </div>
+                <div>
+                    <strong>2. Thời gian hoàn vốn đơn giản (Simple Payback):</strong>
+                    <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
+                        • Công thức: Tổng vốn đầu tư / Dòng tiền ròng hàng tháng trung bình năm 1.
+                        <br>• Cách tính: ${formatNumber(totalCapital)} đ / ${formatNumber(Math.round(yearData[1].net / 12))} đ (dòng tiền ròng trung bình/tháng của Năm 1).
+                        <br>• Kết quả: <strong>${paybackText}</strong>.
+                    </div>
+                </div>
+                <div>
+                    <strong>3. Thời gian hoàn vốn chiết khấu (Discounted Payback):</strong>
+                    <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
+                        • Công thức: Thời điểm mà tổng hiện giá các dòng tiền tích luỹ đạt trạng thái hòa vốn (lớn hơn hoặc bằng 0).
+                        <br>• Cách tính: Quy đổi dòng tiền từng tháng về hiện giá (PV) theo tỷ lệ chiết khấu hàng tháng hiệu dụng r_m = (1 + ${discountRatePct}%)^(1/12) - 1 ≈ ${(monthlyRate*100).toFixed(3)}%/tháng. Sau đó cộng dồn từng tháng để xem khi nào thu hồi đủ vốn hiện giá.
+                        <br>• Kết quả: <strong>${discPaybackText}</strong>.
+                    </div>
+                </div>
+                <div>
+                    <strong>4. Giá trị hiện tại thuần (NPV - Net Present Value):</strong>
+                    <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
+                        • Công thức: -Vốn đầu tư ban đầu + Tổng PV của dòng tiền 36 tháng.
+                        <br>• Ý nghĩa: Thể hiện số tiền lãi ròng thực tế thu về (sau khi đã khấu trừ đi trượt giá và chi phí cơ hội là lãi suất chiết khấu ${discountRatePct}%).
+                        <br>• Kết quả: <strong class="${npvColor}">${npv >= 0 ? '+' : ''}${formatNumber(Math.round(npv))} đ</strong>.
+                    </div>
+                </div>
+                <div>
+                    <strong>5. Tỷ suất sinh lời nội bộ (IRR - Internal Rate of Return):</strong>
+                    <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
+                        • Khái niệm: Mức lãi suất chiết khấu mà tại đó NPV = 0.
+                        <br>• Ý nghĩa: Tỷ suất sinh lời thực tế của quán. Nếu IRR lớn hơn Lãi suất chiết khấu kì vọng (${discountRatePct}%) thì dự án đáng để đầu tư.
+                        <br>• Kết quả: <strong class="${irrColor}">${totalInflow > totalCapital && irrAnnual > -100 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</strong>.
+                    </div>
+                </div>
+                <div>
+                    <strong>6. Tỷ lệ hoàn vốn đầu tư (ROI - Return on Investment):</strong>
+                    <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
+                        • Công thức: (Tổng dòng tiền ròng 3 năm - Vốn đầu tư ban đầu) / Vốn đầu tư ban đầu × 100%.
+                        <br>• Cách tính: (${formatNumber(Math.round(totalInflow))} đ dòng tiền thu về - ${formatNumber(totalCapital)} đ vốn bỏ ra) / ${formatNumber(totalCapital)} đ.
+                        <br>• Kết quả: <strong class="${roiColor}">${roi.toFixed(1)}%</strong> trong vòng 3 năm (tương đương trung bình khoảng ${(roi/3).toFixed(1)}%/năm).
+                    </div>
+                </div>
+                <div>
+                    <strong>7. Chỉ số sinh lời (PI - Profitability Index):</strong>
+                    <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
+                        • Công thức: Tổng hiện giá dòng tiền vào (PV) / Vốn đầu tư ban đầu.
+                        <br>• Ý nghĩa: Cứ 1 đồng vốn đầu tư ban đầu đem lại bao nhiêu đồng giá trị hiện tại. Dự án có khả thi khi PI > 1.
+                        <br>• Kết quả: <strong class="${piColor}">${pi.toFixed(2)}</strong>.
+                    </div>
+                </div>
+            </div>
         </div>
     `;
     wrapper.innerHTML = html;
-}
 
-// ======================================================================
-// Checklist
-// ======================================================================
+    // Draw Line Chart for Cumulative Cash Flow
+    const isLight = document.body.classList.contains('light-theme');
+    const textColor = isLight ? '#475569' : '#9ca3af';
+    const gridColor = isLight ? 'rgba(15, 23, 42, 0.06)' : 'rgba(255, 255, 255, 0.05)';
 
-function renderChecklist() {
-    const wrapper = document.getElementById('checklist-wrapper');
-    if (!wrapper) return;
-    
-    // Only render once if empty
-    if (wrapper.innerHTML.trim() !== "") return;
-    
-    const checklistItems = [
-        { phase: "1. Nghiên Cứu & Mặt Bằng", items: [
-            "Khảo sát thị trường (Giá, Đỉnh traffic, Đối thủ)",
-            "Chốt cọc mặt bằng, kiểm tra pháp lý nhà",
-            "Ký hợp đồng thuê nhà (Lưu ý: Thời gian miễn phí sửa chữa)"
-        ]},
-        { phase: "2. Pháp Lý", items: [
-            "Giấy phép Kinh Doanh (Hộ KD hoặc Công ty)",
-            "Giấy chứng nhận VSATTP (Bắt buộc với F&B)",
-            "PCCC, Đăng ký biển hiệu"
-        ]},
-        { phase: "3. Thiết Kế & Thi Công", items: [
-            "Bản vẽ 2D/3D mặt bằng",
-            "Thi công điện, nước, thoát sàn (Cực kỳ quan trọng khu quầy bar)",
-            "Nghiệm thu phần thô, trang trí nội thất"
-        ]},
-        { phase: "4. Máy Móc & Nguyên Liệu", items: [
-            "Lên danh sách và đặt mua Máy pha, Máy xay, Tủ lạnh...",
-            "Tìm nhà cung cấp (Cà phê, trà, sữa, syrup...)",
-            "In ấn bao bì (Ly, túi, quai xách, sticker)"
-        ]},
-        { phase: "5. Nhân Sự & Vận Hành", items: [
-            "Tuyển dụng (Barista, Phục vụ, Thu ngân)",
-            "Đào tạo Menu, quy trình phục vụ",
-            "Cài đặt phần mềm quản lý POS"
-        ]},
-        { phase: "6. Khai Trương", items: [
-            "Chạy thử nghiệm (Soft-opening)",
-            "Quảng cáo, Khuyến mãi (Grand-opening)"
-        ]}
-    ];
-    
-    let html = `
-        <h3 class="chart-sub-title">Checklist Mở Quán Cà Phê</h3>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
-            Lưu ý: Bạn có thể click vào các mục để đánh dấu hoàn thành. Trạng thái không được lưu lại khi tải lại trang, đây chỉ là công cụ hỗ trợ tương tác nhanh.
-        </p>
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-    `;
-    
-    checklistItems.forEach((phase, idx) => {
-        html += `
-            <div class="glass-card" style="padding: 12px 16px;">
-                <h4 style="margin-bottom: 8px; color: var(--primary); font-size: 15px;">${phase.phase}</h4>
-                <div style="display:flex; flex-direction:column; gap: 6px;">
-        `;
-        phase.items.forEach((item, jdx) => {
-            let id = `chk-${idx}-${jdx}`;
-            html += `
-                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-size: 14px; color: var(--text-main);">
-                    <input type="checkbox" style="margin-top: 3px;" onchange="this.parentElement.style.textDecoration = this.checked ? 'line-through' : 'none'; this.parentElement.style.opacity = this.checked ? '0.6' : '1';">
-                    ${item}
-                </label>
-            `;
+    setTimeout(() => {
+        const ctx = document.getElementById('cumulativeCashFlowChart');
+        if (!ctx) return;
+
+        const labels = Array.from({length: 37}, (_, i) => "Th" + i);
+        const dataCumCash = [ -totalCapital, ...monthlyData.map(d => Math.round(d.cumCash)) ];
+        const dataCumPv = [ -totalCapital, ...monthlyData.map(d => Math.round(d.cumPv)) ];
+
+        new Chart(ctx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Tích lũy thực tế',
+                        data: dataCumCash,
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56, 189, 248, 0.05)',
+                        borderWidth: 2,
+                        tension: 0.2,
+                        fill: true
+                    },
+                    {
+                        label: 'Tích lũy chiết khấu (PV)',
+                        data: dataCumPv,
+                        borderColor: '#fbbf24',
+                        backgroundColor: 'rgba(251, 191, 36, 0.05)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        tension: 0.2,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: textColor, font: { family: 'Outfit', size: 12 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + formatNumber(context.raw) + 'đ';
+                            }
+                        }
+                    },
+                    datalabels: { display: false }
+                },
+                scales: {
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: {
+                            color: textColor,
+                            callback: function(value) { return formatShortVND(value); }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: textColor }
+                    }
+                }
+            }
         });
-        html += `
-                </div>
-            </div>
-        `;
-    });
-    
-    html += `</div>`;
-    wrapper.innerHTML = html;
+    }, 50);
 }
+
+

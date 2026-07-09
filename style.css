@@ -305,6 +305,16 @@ input {
     transition: all 0.2s ease;
 }
 
+/* Hide number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 input:focus {
     outline: none;
     border-color: var(--primary);
@@ -996,4 +1006,121 @@ body.light-theme .sensitivity-positive {
 body.light-theme .sensitivity-negative {
     background: rgba(239, 68, 68, 0.06);
     color: #dc2626;
+}
+
+/* Export PDF Button */
+.export-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--card-shadow);
+    padding: 0 14px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-main);
+    gap: 6px;
+}
+
+.export-btn:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.light-theme .export-btn:hover {
+    border-color: rgba(15, 23, 42, 0.15);
+    background: rgba(15, 23, 42, 0.04);
+}
+
+.export-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--text-main);
+}
+
+@media print {
+    /* Hide interactive elements, sidebar, and buttons */
+    .inputs-panel, 
+    .theme-toggle-btn, 
+    .export-btn, 
+    .tab-header,
+    header .header-controls,
+    .scenario-badge,
+    button {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 11pt !important;
+    }
+
+    /* Make content full width */
+    .dashboard-grid {
+        display: block !important;
+    }
+
+    .dashboard-content {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Style improvements for print readability */
+    .glass-card {
+        background: none !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        color: #000 !important;
+        page-break-inside: avoid !important;
+        margin-bottom: 15px !important;
+        padding: 15px !important;
+    }
+
+    .kpi-row {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 12px !important;
+        margin-bottom: 15px !important;
+    }
+
+    .kpi-card {
+        background: none !important;
+        border: 1px solid #ddd !important;
+        color: #000 !important;
+    }
+
+    .kpi-value {
+        color: #000 !important;
+    }
+
+    .scenarios-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 12px !important;
+    }
+
+    /* Avoid page break inside elements */
+    canvas, table, .timeline, .explanation-box {
+        page-break-inside: avoid !important;
+    }
+
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
+    th, td {
+        border: 1px solid #ddd !important;
+        color: #000 !important;
+    }
 }
