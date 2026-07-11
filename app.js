@@ -53,6 +53,26 @@ function parseNumber(value) {
     return isNegative ? -num : num;
 }
 
+// ======================================================================
+// Number Animation Effect
+// ======================================================================
+function animateValue(obj, start, end, duration, formatFn = formatShortVND) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const currentVal = Math.floor(progress * (end - start) + start);
+        obj.innerHTML = formatFn(currentVal);
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        } else {
+            obj.innerHTML = formatFn(end);
+        }
+    };
+    window.requestAnimationFrame(step);
+}
+
+
 function formatShortVND(value) {
     let isNegative = value < 0;
     let absVal = Math.abs(value);
@@ -589,16 +609,6 @@ function renderShareholders(totalCapitalNeeded, loan, goodNet, baseNet, worstNet
     container.appendChild(statusDiv);
 }
 
-// ======================================================================
-// Update Capital Disbursement schedule DOM dynamically
-// ======================================================================
-function updateDisbursement(deposit, renovate, equipment, rawStart, decorMisc, buffer) {
-    document.getElementById('disburse-p1').innerText = formatVND(deposit);
-    document.getElementById('disburse-p2').innerText = formatVND(renovate + decorMisc * 0.5);
-    document.getElementById('disburse-p3').innerText = formatVND(equipment + decorMisc * 0.5);
-    document.getElementById('disburse-p4').innerText = formatVND(rawStart);
-    document.getElementById('disburse-p5').innerText = formatVND(buffer);
-}
 
 // ======================================================================
 // Dynamic Investor Pitch suggestions calculator
@@ -648,16 +658,22 @@ function updateInvestorPitch(equity, baseNet, volBase, breakeven) {
 // Update Disbursement Timeline Breakdown
 // ======================================================================
 function updateDisbursement(deposit, renovate, equipment, rawStart, decorMisc, buffer) {
-    const totalEquityContributed = shareholders.reduce((sum, s) => sum + s.contribution, 0);
-    if (totalEquityContributed === 0) return;
-
     const phases = [
         { id: 'p1', amount: deposit },
-        { id: 'p2', amount: renovate },
-        { id: 'p3', amount: equipment },
-        { id: 'p4', amount: rawStart + decorMisc },
+        { id: 'p2', amount: renovate + decorMisc * 0.5 },
+        { id: 'p3', amount: equipment + decorMisc * 0.5 },
+        { id: 'p4', amount: rawStart },
         { id: 'p5', amount: buffer }
     ];
+
+    // Update totals
+    phases.forEach(phase => {
+        const el = document.getElementById(`disburse-${phase.id}`);
+        if (el) el.innerText = formatVND(phase.amount);
+    });
+
+    const totalEquityContributed = shareholders.reduce((sum, s) => sum + s.contribution, 0);
+    if (totalEquityContributed === 0) return;
 
     phases.forEach(phase => {
         const bdEl = document.getElementById(`breakdown-${phase.id}`);
@@ -885,6 +901,130 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
 }
 
 // ======================================================================
+// Long Term Projections
+// ======================================================================
+function renderLongTermProjections(basePrice, baseCostPct, fixedOpex, monthlyDebt, monthlyDepr, baseVol, totalEquity) {
+    const revGrowth = parseFloat(document.getElementById('inp-growth-rev')?.value || 10) / 100;
+    const opexGrowth = parseFloat(document.getElementById('inp-growth-opex')?.value || 5) / 100;
+    
+    const lblInfOpex = document.getElementById('lbl-inf-opex');
+    const lblInfRev = document.getElementById('lbl-inf-rev');
+    if (lblInfOpex) lblInfOpex.innerText = (opexGrowth * 100).toFixed(0);
+    if (lblInfRev) lblInfRev.innerText = (revGrowth * 100).toFixed(0);
+
+    let currentRev = baseVol * 30 * basePrice * 12;
+    let currentCogs = currentRev * (baseCostPct / 100);
+    const commissionRate = parseFloat(document.getElementById('inp-commission-rate')?.value || '0');
+    let currentCommission = currentRev * (commissionRate / 100);
+    let currentOpex = (fixedOpex * 12) + currentCommission; 
+
+    const labels = ["Năm 1", "Năm 2", "Năm 3", "Năm 4", "Năm 5"];
+    const dataRev = [];
+    const dataOpex = [];
+    const dataNet = [];
+
+    let totalNet3Years = 0;
+    let year3Net = 0;
+
+    for (let i = 1; i <= 5; i++) {
+        const yRev = currentRev * Math.pow(1 + revGrowth, i - 1);
+        const yCogs = yRev * (baseCostPct / 100);
+        const yFixedOpex = fixedOpex * 12 * Math.pow(1 + opexGrowth, i - 1);
+        const yCommission = yRev * (commissionRate / 100);
+        const yOpex = yFixedOpex + yCommission;
+        
+        const yDebt = monthlyDebt * 12;
+        const yDepr = monthlyDepr * 12;
+
+        const profitBeforeTax = (yRev - yCogs) - yOpex - yDebt - yDepr;
+        const tax = calculateTax(profitBeforeTax / 12, yRev) * 12; 
+        const yNet = profitBeforeTax - tax;
+
+        dataRev.push(Math.round(yRev));
+        dataOpex.push(Math.round(yCogs + yOpex + yDebt + yDepr + tax));
+        dataNet.push(Math.round(yNet));
+
+        if (i <= 3) totalNet3Years += yNet;
+        if (i === 3) year3Net = yNet;
+    }
+
+    const valContainer = document.getElementById('longterm-valuation');
+    if (valContainer) {
+        const peRatio = 3; 
+        const valuation = year3Net > 0 ? year3Net * peRatio : 0;
+        
+        valContainer.innerHTML = `
+            <div style="font-size: 14px; margin-bottom: 12px;"><strong style="color:var(--primary);">💡 Phân Tích Định Giá Doanh Nghiệp (Cuối Năm 3)</strong></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Lợi nhuận ròng Năm 3:</div>
+                    <div style="font-size: 18px; font-weight: bold; color: ${year3Net > 0 ? 'var(--success)' : 'var(--danger)'};">${formatVND(year3Net)}</div>
+                </div>
+                <div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Định giá quán (P/E = 3):</div>
+                    <div style="font-size: 18px; font-weight: bold; color: var(--primary);">${formatVND(valuation)}</div>
+                </div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+                * Nếu quán hoạt động ổn định tới năm thứ 3 với các kịch bản lạm phát/tăng trưởng trên, bạn có thể chào bán/sang nhượng lại quán với mức giá tham khảo khoảng ${formatShortVND(valuation)}.
+            </div>
+        `;
+    }
+
+    setTimeout(() => {
+        const ctx = document.getElementById('longtermChart');
+        if (!ctx) return;
+        const isLight = document.body.classList.contains('light-theme');
+        const textColor = isLight ? '#475569' : '#9ca3af';
+        const gridColor = isLight ? 'rgba(15, 23, 42, 0.06)' : 'rgba(255, 255, 255, 0.05)';
+
+        new Chart(ctx.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Doanh Thu',
+                        data: dataRev,
+                        backgroundColor: 'rgba(56, 189, 248, 0.8)',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Tổng Chi Phí',
+                        data: dataOpex,
+                        backgroundColor: 'rgba(248, 113, 113, 0.8)',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Lợi Nhuận Ròng',
+                        data: dataNet,
+                        backgroundColor: 'rgba(52, 211, 153, 0.8)',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { color: textColor } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) { return context.dataset.label + ': ' + formatVND(context.raw); }
+                        }
+                    },
+                    datalabels: { display: false }
+                },
+                scales: {
+                    y: { grid: { color: gridColor }, ticks: { color: textColor, callback: function(value) { return formatShortVND(value); } } },
+                    x: { grid: { display: false }, ticks: { color: textColor } }
+                }
+            }
+        });
+    }, 50);
+}
+
+// ======================================================================
 // Generate Dynamic Number Explanation
 // ======================================================================
 function renderExplanation(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt, monthlyDepreciation, volBase, setupCosts, deposit, renovate, equipment, rawStart, decorMisc, totalEquityContributed, breakeven, baseScenario) {
@@ -1071,10 +1211,18 @@ function updateDashboard() {
     // Break-even including depreciation
     const breakEvenDailyVol = unitContributionMargin > 0 ? (fixedMonthlyOpex + monthlyDebt + monthlyDepreciation) / (30 * unitContributionMargin) : 0;
 
-    // Display summary KPIs
-    document.getElementById('kpi-total-capital').innerText = formatShortVND(totalCapitalNeeded);
-    document.getElementById('kpi-monthly-debt').innerText = formatShortVND(monthlyDebt);
-    document.getElementById('kpi-breakeven-vol').innerText = Math.ceil(breakEvenDailyVol) + ' ly/ngày';
+    // Display summary KPIs with animation
+    const kpiCap = document.getElementById('kpi-total-capital');
+    const kpiDebt = document.getElementById('kpi-monthly-debt');
+    const kpiBe = document.getElementById('kpi-breakeven-vol');
+    
+    // Animate from 0 to target (simple)
+    animateValue(kpiCap, 0, totalCapitalNeeded, 800, formatShortVND);
+    animateValue(kpiDebt, 0, monthlyDebt, 800, formatShortVND);
+    
+    // For breakeven, custom format
+    animateValue(kpiBe, 0, breakEvenDailyVol, 800, (val) => Math.ceil(val) + ' ly/ngày');
+
     document.getElementById('lbl-leverage-ratio').innerText = leverageRatio.toFixed(0) + '%';
     
     // Update leverage badge style
@@ -1108,6 +1256,29 @@ function updateDashboard() {
     const good = computeScenario(volGood);
     const base = computeScenario(volBase);
     const worst = computeScenario(volWorst);
+
+    // Update Sticky Summary Bar
+    document.getElementById('sticky-cap').innerText = formatShortVND(totalCapitalNeeded);
+    document.getElementById('sticky-be').innerText = Math.ceil(breakEvenDailyVol) + ' ly/n';
+    document.getElementById('sticky-good').innerText = (good.net >= 0 ? '+' : '') + formatShortVND(good.net);
+    document.getElementById('sticky-base').innerText = (base.net >= 0 ? '+' : '') + formatShortVND(base.net);
+    document.getElementById('sticky-worst').innerText = (worst.net >= 0 ? '+' : '') + formatShortVND(worst.net);
+    document.getElementById('sticky-good').className = 'sticky-val ' + (good.net >= 0 ? 'val-profit' : 'val-loss');
+    document.getElementById('sticky-base').className = 'sticky-val ' + (base.net >= 0 ? 'val-profit' : 'val-loss');
+    document.getElementById('sticky-worst').className = 'sticky-val ' + (worst.net >= 0 ? 'val-profit' : 'val-loss');
+
+    // Canvas Confetti Effect (Profit Margin > 20% on Base Scenario)
+    if (base.rev > 0 && (base.net / base.rev) > 0.20) {
+        if (typeof confetti !== 'undefined') {
+            // Trigger confetti
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#10b981', '#34d399', '#fcd34d']
+            });
+        }
+    }
 
     // Dynamic details DOM rendering
     document.getElementById('det-good-rev').innerText = formatShortVND(good.rev);
@@ -1201,6 +1372,7 @@ function updateDashboard() {
             containerBg = 'var(--danger-glow)';
             containerBorder = 'rgba(239, 68, 68, 0.3)';
             warningMessage = `Với kịch bản xấu (lỗ ${formatShortVND(burnRate)}/tháng), quỹ dự phòng của bạn sẽ cạn kiệt ở tháng ${runOutMonth}. Bạn đang có nguy cơ đứt dòng tiền rất cao trong ngắn hạn.`;
+            alertContainer.classList.add('danger-alert');
         } else if (runwayMonths <= 6) {
             statusIcon = '🟡';
             statusText = 'Cảnh báo';
@@ -1212,7 +1384,12 @@ function updateDashboard() {
             containerBg = 'var(--warning-glow)';
             containerBorder = 'rgba(245, 158, 11, 0.3)';
             warningMessage = `Quỹ dự phòng đủ gánh lỗ trong khoảng ${runwayMonths.toFixed(1)} tháng. Mức độ an toàn tài chính ở mức trung bình, cần chú ý tối ưu định phí hoặc tăng doanh số.`;
+            alertContainer.classList.remove('danger-alert');
+        } else {
+            alertContainer.classList.remove('danger-alert');
         }
+    } else {
+        alertContainer.classList.remove('danger-alert');
     }
 
     alertContainer.style.background = containerBg;
@@ -1281,6 +1458,7 @@ function renderChart(good, base, worst, breakeven, volGood, volBase, volWorst, g
     const explanationTab = document.getElementById('explanation-tab');
     const investmentWrapper = document.getElementById('investment-wrapper');
     const breakevenTab = document.getElementById('breakeven-tab');
+    const longtermTab = document.getElementById('longterm-tab');
 
     if (mainWrapper) mainWrapper.style.display = 'none';
     if (splitWrapper) splitWrapper.style.display = 'none';
@@ -1288,6 +1466,7 @@ function renderChart(good, base, worst, breakeven, volGood, volBase, volWorst, g
     if (explanationTab) explanationTab.style.display = 'none';
     if (investmentWrapper) investmentWrapper.style.display = 'none';
     if (breakevenTab) breakevenTab.style.display = 'none';
+    if (longtermTab) longtermTab.style.display = 'none';
 
     if (activeTab === 'structure') {
         if (splitWrapper) splitWrapper.style.display = 'grid';
@@ -1299,8 +1478,19 @@ function renderChart(good, base, worst, breakeven, volGood, volBase, volWorst, g
         if (investmentWrapper) investmentWrapper.style.display = 'block';
     } else if (activeTab === 'breakeven') {
         if (breakevenTab) breakevenTab.style.display = 'block';
+    } else if (activeTab === 'longterm') {
+        if (longtermTab) longtermTab.style.display = 'block';
     } else {
         if (mainWrapper) mainWrapper.style.display = 'block';
+    }
+
+    if (activeTab === 'longterm') {
+        ['financialChart', 'costStructureChart', 'equityStructureChart', 'cumulativeCashFlowChart', 'breakevenChart'].forEach(id => {
+            const c = Chart.getChart(id);
+            if (c) c.destroy();
+        });
+        renderLongTermProjections(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt, monthlyDepreciation, volBase, totalEquityContributed);
+        return;
     }
 
     if (activeTab === 'sensitivity') {
@@ -1693,6 +1883,130 @@ window.exportPDF = function() {
 }
 
 // ======================================================================
+// Product Mix Logic
+// ======================================================================
+let menuItems = [
+    { id: 1, name: "Cà phê", volumePct: 40, price: 25000, costPct: 25 },
+    { id: 2, name: "Trà & Sinh tố", volumePct: 40, price: 35000, costPct: 30 },
+    { id: 3, name: "Bánh & Đồ ăn", volumePct: 20, price: 30000, costPct: 45 }
+];
+
+window.renderMenuItems = function() {
+    const container = document.getElementById('menu-items-container');
+    if (!container) return;
+    
+    let html = '';
+    menuItems.forEach((item) => {
+        html += `
+            <div class="menu-item-row" style="display:grid; grid-template-columns: 2fr 1fr 1.5fr 1fr 24px; gap: 8px; margin-bottom: 8px; align-items:center;">
+                <input type="text" class="menu-name" value="${item.name}" onchange="updateMenuItem(${item.id}, 'name', this.value)" style="padding:6px 8px; font-size:12px;">
+                <div class="input-wrapper">
+                    <input type="number" class="menu-vol" value="${item.volumePct}" onchange="updateMenuItem(${item.id}, 'volumePct', this.value)" style="padding:6px 8px; font-size:12px;">
+                    <span class="unit">%</span>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="menu-price" value="${formatNumber(item.price)}" oninput="formatAndSetMenuPrice(this, ${item.id})" style="padding:6px 8px; font-size:12px;">
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" class="menu-cost" value="${item.costPct}" onchange="updateMenuItem(${item.id}, 'costPct', this.value)" style="padding:6px 8px; font-size:12px;">
+                    <span class="unit">%</span>
+                </div>
+                <button onclick="removeMenuItem(${item.id})" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">×</button>
+            </div>
+        `;
+    });
+    
+    const totalVol = menuItems.reduce((sum, item) => sum + parseFloat(item.volumePct || 0), 0);
+    if (Math.abs(totalVol - 100) > 0.1) {
+        html += `<div style="font-size:11px; color:var(--danger); margin-top: 4px;">Lưu ý: Tổng tỷ trọng bán = ${totalVol}%. Nên điều chỉnh lại cho đủ 100%.</div>`;
+    }
+    
+    container.innerHTML = html;
+    calculateWeightedMenu();
+};
+
+window.updateMenuItem = function(id, field, value) {
+    const item = menuItems.find(i => i.id === id);
+    if (item) {
+        if (field === 'price') {
+            item[field] = parseNumber(value);
+        } else if (field === 'name') {
+            item[field] = value;
+        } else {
+            item[field] = parseFloat(value) || 0;
+        }
+    }
+    renderMenuItems();
+};
+
+window.formatAndSetMenuPrice = function(inputElement, id) {
+    let selectionStart = inputElement.selectionStart;
+    let rawVal = inputElement.value;
+    let isNegative = rawVal.startsWith('-');
+    let digits = rawVal.replace(/\D/g, '');
+    
+    if (digits === "") {
+        inputElement.value = isNegative ? "-" : "";
+        updateMenuItem(id, 'price', 0);
+        return;
+    }
+    
+    let formattedValue = (isNegative ? "-" : "") + digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    let dotsBeforeCursor = (inputElement.value.slice(0, selectionStart).match(/\./g) || []).length;
+    inputElement.value = formattedValue;
+    let newDotsBeforeCursor = (formattedValue.slice(0, selectionStart).match(/\./g) || []).length;
+    let diff = newDotsBeforeCursor - dotsBeforeCursor;
+    inputElement.setSelectionRange(selectionStart + diff, selectionStart + diff);
+    
+    updateMenuItem(id, 'price', inputElement.value);
+};
+
+window.addMenuItem = function() {
+    menuItems.push({ id: Date.now(), name: "Nhóm mới", volumePct: 0, price: 0, costPct: 0 });
+    renderMenuItems();
+};
+
+window.removeMenuItem = function(id) {
+    menuItems = menuItems.filter(i => i.id !== id);
+    renderMenuItems();
+};
+
+window.calculateWeightedMenu = function() {
+    let totalVol = 0;
+    let weightedPriceSum = 0;
+    let weightedCostAmountSum = 0;
+    
+    menuItems.forEach(item => {
+        let vol = parseFloat(item.volumePct) || 0;
+        let price = parseFloat(item.price) || 0;
+        let costPct = parseFloat(item.costPct) || 0;
+        
+        totalVol += vol;
+        weightedPriceSum += (price * vol);
+        weightedCostAmountSum += (price * (costPct / 100) * vol);
+    });
+    
+    let avgPrice = 0;
+    let avgCostPct = 0;
+    if (totalVol > 0) {
+        avgPrice = weightedPriceSum / totalVol;
+        if (weightedPriceSum > 0) {
+            avgCostPct = (weightedCostAmountSum / weightedPriceSum) * 100;
+        }
+    }
+    
+    document.getElementById('lbl-weighted-price').innerText = formatVND(avgPrice);
+    document.getElementById('lbl-weighted-cost').innerText = avgCostPct.toFixed(1) + '%';
+    
+    const inpPrice = document.getElementById('inp-price');
+    const inpCost = document.getElementById('inp-cost-pct');
+    if (inpPrice) inpPrice.value = Math.round(avgPrice);
+    if (inpCost) inpCost.value = avgCostPct.toFixed(2);
+    
+    updateDashboard();
+};
+
+// ======================================================================
 // Core setup on load
 // ======================================================================
 window.addEventListener('DOMContentLoaded', () => {
@@ -1726,6 +2040,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     setupInputFormatting();
     setupRentDepositSync();
+    renderMenuItems();
     
     // Bind change update on non-formatted fields
     document.getElementById('inp-interest').addEventListener('input', updateDashboard);

@@ -326,22 +326,36 @@
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="inp-price">Giá bán trung bình</label>
-                            <div class="input-wrapper">
-                                <input type="text" id="inp-price" value="25000">
-                                <span class="unit">đ/ly</span>
-                            </div>
+                    <!-- Menu Product Mix -->
+                    <div style="background: rgba(255,255,255,0.03); border-radius: 8px; padding: 14px; margin-top: 12px; border: 1px dashed var(--border-color);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
+                            <h4 style="font-size: 13px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">Cơ cấu Menu (Product Mix)</h4>
+                            <button class="btn btn-secondary" onclick="addMenuItem()" style="padding: 4px 8px; font-size: 11px;">+ Thêm nhóm</button>
                         </div>
-                        <div class="form-group">
-                            <label for="inp-cost-pct">Tỷ lệ Cost nguyên liệu</label>
-                            <div class="input-wrapper">
-                                <input type="number" id="inp-cost-pct" value="30" step="1" min="0" max="100">
-                                <span class="unit">%</span>
+                        <div style="display:grid; grid-template-columns: 2fr 1fr 1.5fr 1fr 24px; gap: 8px; margin-bottom: 8px; color: var(--text-muted); font-size: 11px; font-weight: 600;">
+                            <div>Nhóm món</div>
+                            <div>Tỷ trọng</div>
+                            <div>Giá bán</div>
+                            <div>Cost</div>
+                            <div></div>
+                        </div>
+                        <div id="menu-items-container">
+                            <!-- Dynamic menu items will go here -->
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1);">
+                            <div>
+                                <label style="font-size: 11px; margin-bottom: 4px;">Giá bán TB (Gia quyền)</label>
+                                <div style="font-size: 15px; font-weight: 800; color: var(--primary);" id="lbl-weighted-price">0 đ</div>
+                            </div>
+                            <div>
+                                <label style="font-size: 11px; margin-bottom: 4px;">Cost NVL TB (Gia quyền)</label>
+                                <div style="font-size: 15px; font-weight: 800; color: var(--warning);" id="lbl-weighted-cost">0%</div>
                             </div>
                         </div>
                     </div>
+                    <!-- Hidden inputs to maintain compatibility with existing JS logic -->
+                    <input type="hidden" id="inp-price" value="25000">
+                    <input type="hidden" id="inp-cost-pct" value="30">
                 </div>
             </div>
 
@@ -456,6 +470,7 @@
                     <button class="tab-btn" onclick="switchTab('cashflow')">🌊 Dòng tiền</button>
                     <button class="tab-btn" onclick="switchTab('structure')">🥧 Cơ cấu</button>
                     <button class="tab-btn" onclick="switchTab('investment')">📈 Phân tích Đầu tư</button>
+                    <button class="tab-btn" onclick="switchTab('longterm')">🚀 Dự phóng 3 Năm</button>
                     <button class="tab-btn" onclick="switchTab('sensitivity')">🎯 Độ nhạy</button>
                     <button class="tab-btn" onclick="switchTab('breakeven')">🎯 Hòa vốn</button>
                     <button class="tab-btn" onclick="switchTab('explanation')" style="color: var(--primary);">💡 Giải thích</button>
@@ -495,6 +510,21 @@
                 <!-- Breakeven Tab Wrapper -->
                 <div class="breakeven-wrapper" id="breakeven-tab" style="display:none; margin-top:12px;">
                     <!-- Populated dynamically by app.js -->
+                </div>
+                <!-- Long-term Projections Wrapper -->
+                <div class="longterm-wrapper" id="longterm-tab" style="display:none; margin-top:12px;">
+                    <div style="margin-bottom: 12px;">
+                        <h4 class="chart-sub-title" style="margin-bottom: 4px;">Dự Phóng Dòng Tiền & Định Giá Tương Lai (3 Năm)</h4>
+                        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                            Giả định lạm phát chi phí cố định (<span id="lbl-inf-opex">5</span>%/năm) và tăng trưởng doanh thu (<span id="lbl-inf-rev">10</span>%/năm).
+                        </p>
+                    </div>
+                    <div class="chart-container" style="height: 300px; margin-bottom: 24px;">
+                        <canvas id="longtermChart"></canvas>
+                    </div>
+                    <div id="longterm-valuation" style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; border: 1px dashed var(--glass-border);">
+                        <!-- Valuation details populated by JS -->
+                    </div>
                 </div>
                 <!-- Explanation Tab Wrapper -->
                 <div class="explanation-wrapper" id="explanation-tab" style="display:none; margin-top:12px; font-size: 14px; line-height: 1.6; color: var(--text-main);">
@@ -736,6 +766,35 @@
             </div>
         </main>
     </div>
+
+    <!-- Sticky Summary Bar -->
+    <div id="sticky-bar" class="sticky-summary-bar">
+        <div class="sticky-content">
+            <div class="sticky-item">
+                <span class="sticky-label">Vốn tổng</span>
+                <span class="sticky-val" id="sticky-cap">0 đ</span>
+            </div>
+            <div class="sticky-item">
+                <span class="sticky-label">Hòa vốn</span>
+                <span class="sticky-val" id="sticky-be">0 ly/n</span>
+            </div>
+            <div class="sticky-item hide-on-mobile">
+                <span class="sticky-label">Lãi Tốt</span>
+                <span class="sticky-val val-profit" id="sticky-good">0 đ</span>
+            </div>
+            <div class="sticky-item hide-on-mobile">
+                <span class="sticky-label">Lãi TB</span>
+                <span class="sticky-val val-profit" id="sticky-base">0 đ</span>
+            </div>
+            <div class="sticky-item hide-on-mobile">
+                <span class="sticky-label">Lãi Xấu</span>
+                <span class="sticky-val val-loss" id="sticky-worst">0 đ</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas Confetti for Wow effect -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <!-- Separated JS Application -->
     <script src="app.js"></script>
