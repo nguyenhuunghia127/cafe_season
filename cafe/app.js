@@ -1,4 +1,4 @@
-// ======================================================================
+﻿// ======================================================================
 // Coffeelytics - Financial Dashboard Application
 // ======================================================================
 
@@ -13,7 +13,7 @@ let costChartInstance = null;
 let equityChartInstance = null;
 let editingShareholderId = null;
 let shareholders = [
-    { id: 1, name: "Bạn (Cổ đông sáng lập)", contribution: 80000000, role: "operate" }
+    { id: 1, name: "Báº¡n (Cá»• Ä‘Ã´ng sÃ¡ng láº­p)", contribution: 80000000, role: "operate" }
 ];
 
 // ======================================================================
@@ -113,7 +113,7 @@ window.applyBusinessPreset = function(presetType) {
             'inp-div-payout': 80
         };
         newShareholders = [
-            { id: 1, name: "Chủ quán", contribution: 45000000, role: "operate" }
+            { id: 1, name: "Chá»§ quÃ¡n", contribution: 45000000, role: "operate" }
         ];
     } else if (presetType === 'garden') {
         data = {
@@ -152,11 +152,11 @@ window.applyBusinessPreset = function(presetType) {
             'inp-div-payout': 75
         };
         newShareholders = [
-            { id: 1, name: "Nhà sáng lập (Vận hành)", contribution: 100000000, role: "operate" },
-            { id: 2, name: "Cổ đông đầu tư A", contribution: 50000000, role: "invest" }
+            { id: 1, name: "NhÃ  sÃ¡ng láº­p (Váº­n hÃ nh)", contribution: 100000000, role: "operate" },
+            { id: 2, name: "Cá»• Ä‘Ã´ng Ä‘áº§u tÆ° A", contribution: 50000000, role: "invest" }
         ];
     } else {
-        // standard (Quán máy lạnh chuẩn 50m2)
+        // standard (QuÃ¡n mÃ¡y láº¡nh chuáº©n 50m2)
         data = {
             'inp-deposit': 18000000,
             'inp-renovate': 18000000,
@@ -193,7 +193,7 @@ window.applyBusinessPreset = function(presetType) {
             'inp-div-payout': 80
         };
         newShareholders = [
-            { id: 1, name: "Bạn (Cổ đông sáng lập)", contribution: 80000000, role: "operate" }
+            { id: 1, name: "Báº¡n (Cá»• Ä‘Ã´ng sÃ¡ng láº­p)", contribution: 80000000, role: "operate" }
         ];
     }
 
@@ -263,11 +263,11 @@ function formatShortVND(value) {
     let absVal = Math.abs(value);
     let formatted = '';
     if (absVal >= 1000000) {
-        formatted = (absVal / 1000000).toFixed(1) + 'M đ';
+        formatted = (absVal / 1000000).toFixed(1) + 'M Ä‘';
     } else if (absVal >= 1000) {
-        formatted = (absVal / 1000).toFixed(0) + 'k đ';
+        formatted = (absVal / 1000).toFixed(0) + 'k Ä‘';
     } else {
-        formatted = absVal + ' đ';
+        formatted = absVal + ' Ä‘';
     }
     return (isNegative ? '-' : '') + formatted;
 }
@@ -299,11 +299,11 @@ function calculateEMI(P, r_annual, N) {
 
 // ======================================================================
 // Tax calculation based on Vietnamese tax law 2025
-// Doanh nghiệp: Thuế TNDN tính trên lợi nhuận
-//   - DT năm ≤ 1 tỷ: miễn thuế TNDN
-//   - DT năm ≤ 3 tỷ: 15%
-//   - DT năm ≤ 50 tỷ: 17%
-//   - DT năm > 50 tỷ: 20%
+// Doanh nghiá»‡p: Thuáº¿ TNDN tÃ­nh trÃªn lá»£i nhuáº­n
+//   - DT nÄƒm â‰¤ 1 tá»·: miá»…n thuáº¿ TNDN
+//   - DT nÄƒm â‰¤ 3 tá»·: 15%
+//   - DT nÄƒm â‰¤ 50 tá»·: 17%
+//   - DT nÄƒm > 50 tá»·: 20%
 // User can override with manual % in inp-tax-rate
 // ======================================================================
 function calculateTax(monthlyProfit, annualRevenue) {
@@ -313,7 +313,7 @@ function calculateTax(monthlyProfit, annualRevenue) {
 }
 
 function getSuggestedTaxRate(annualRevenue) {
-    if (annualRevenue <= 1000000000) return 0; // miễn thuế
+    if (annualRevenue <= 1000000000) return 0; // miá»…n thuáº¿
     if (annualRevenue <= 3000000000) return 15;
     if (annualRevenue <= 50000000000) return 17;
     return 20;
@@ -395,7 +395,7 @@ function setupInputFormatting() {
 }
 
 // ======================================================================
-// Rent → Deposit synchronization (3 months)
+// Rent â†’ Deposit synchronization (3 months)
 // ======================================================================
 function setupRentDepositSync() {
     const rentInput = document.getElementById('inp-rent');
@@ -508,46 +508,46 @@ function validateInputs() {
     const discountRate = parseFloat(discountRateInput?.value) || 0;
     
     // Check bounds
-    if (deposit < 0) setError(depositInput, "Cọc mặt bằng không được âm.");
-    if (renovate < 0) setError(renovateInput, "Sửa chữa & Decor không được âm.");
-    if (equipment < 0) setError(equipmentInput, "Máy móc & Thiết bị không được âm.");
-    if (rawStart < 0) setError(rawStartInput, "Nguyên liệu ban đầu không được âm.");
-    if (decorMisc < 0) setError(decorMiscInput, "Decor nhỏ không được âm.");
-    if (buffer < 0) setError(bufferInput, "Quỹ dự phòng không được âm.");
+    if (deposit < 0) setError(depositInput, "Cá»c máº·t báº±ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (renovate < 0) setError(renovateInput, "Sá»­a chá»¯a & Decor khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (equipment < 0) setError(equipmentInput, "MÃ¡y mÃ³c & Thiáº¿t bá»‹ khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (rawStart < 0) setError(rawStartInput, "NguyÃªn liá»‡u ban Ä‘áº§u khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (decorMisc < 0) setError(decorMiscInput, "Decor nhá» khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (buffer < 0) setError(bufferInput, "Quá»¹ dá»± phÃ²ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
     
-    if (loan < 0) setError(loanInput, "Số tiền vay ngân hàng không được âm.");
-    if (interest < 0) setError(interestInput, "Lãi suất vay không được nhỏ hơn 0.");
-    if (term <= 0) setError(termInput, "Thời hạn vay phải lớn hơn 0 tháng.");
+    if (loan < 0) setError(loanInput, "Sá»‘ tiá»n vay ngÃ¢n hÃ ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (interest < 0) setError(interestInput, "LÃ£i suáº¥t vay khÃ´ng Ä‘Æ°á»£c nhá» hÆ¡n 0.");
+    if (term <= 0) setError(termInput, "Thá»i háº¡n vay pháº£i lá»›n hÆ¡n 0 thÃ¡ng.");
     
-    if (rent < 0) setError(rentInput, "Tiền thuê mặt bằng không được âm.");
-    if (utilities < 0) setError(utilitiesInput, "Chi phí điện nước không được âm.");
+    if (rent < 0) setError(rentInput, "Tiá»n thuÃª máº·t báº±ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (utilities < 0) setError(utilitiesInput, "Chi phÃ­ Ä‘iá»‡n nÆ°á»›c khÃ´ng Ä‘Æ°á»£c Ã¢m.");
     
-    if (shiftMorningStaff < 0) setError(shiftMorningStaffInput, "Số NV ca sáng không được âm.");
-    if (shiftMorningRate < 0) setError(shiftMorningRateInput, "Lương ca sáng không được âm.");
-    if (shiftAfternoonStaff < 0) setError(shiftAfternoonStaffInput, "Số NV ca chiều không được âm.");
-    if (shiftAfternoonRate < 0) setError(shiftAfternoonRateInput, "Lương ca chiều không được âm.");
-    if (shiftEveningStaff < 0) setError(shiftEveningStaffInput, "Số NV ca tối không được âm.");
-    if (shiftEveningRate < 0) setError(shiftEveningRateInput, "Lương ca tối không được âm.");
-    if (ftManagerCount < 0) setError(ftManagerCountInput, "Số quản lý không được âm.");
-    if (ftManagerSalary < 0) setError(ftManagerSalaryInput, "Lương quản lý không được âm.");
-    if (weekendMultiplier < 1.0) setError(weekendMultiplierInput, "Hệ số cuối tuần không được nhỏ hơn 1.0.");
-    if (commissionRate < 0 || commissionRate > 100) setError(commissionRateInput, "Tỷ lệ thưởng phải từ 0% đến 100%.");
+    if (shiftMorningStaff < 0) setError(shiftMorningStaffInput, "Sá»‘ NV ca sÃ¡ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (shiftMorningRate < 0) setError(shiftMorningRateInput, "LÆ°Æ¡ng ca sÃ¡ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (shiftAfternoonStaff < 0) setError(shiftAfternoonStaffInput, "Sá»‘ NV ca chiá»u khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (shiftAfternoonRate < 0) setError(shiftAfternoonRateInput, "LÆ°Æ¡ng ca chiá»u khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (shiftEveningStaff < 0) setError(shiftEveningStaffInput, "Sá»‘ NV ca tá»‘i khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (shiftEveningRate < 0) setError(shiftEveningRateInput, "LÆ°Æ¡ng ca tá»‘i khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (ftManagerCount < 0) setError(ftManagerCountInput, "Sá»‘ quáº£n lÃ½ khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (ftManagerSalary < 0) setError(ftManagerSalaryInput, "LÆ°Æ¡ng quáº£n lÃ½ khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (weekendMultiplier < 1.0) setError(weekendMultiplierInput, "Há»‡ sá»‘ cuá»‘i tuáº§n khÃ´ng Ä‘Æ°á»£c nhá» hÆ¡n 1.0.");
+    if (commissionRate < 0 || commissionRate > 100) setError(commissionRateInput, "Tá»· lá»‡ thÆ°á»Ÿng pháº£i tá»« 0% Ä‘áº¿n 100%.");
     
-    if (misc < 0) setError(miscInput, "Chi phí phát sinh không được âm.");
-    if (price <= 0) setError(priceInput, "Giá bán trung bình phải lớn hơn 0 đ/ly.");
+    if (misc < 0) setError(miscInput, "Chi phÃ­ phÃ¡t sinh khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (price <= 0) setError(priceInput, "GiÃ¡ bÃ¡n trung bÃ¬nh pháº£i lá»›n hÆ¡n 0 Ä‘/ly.");
     
-    if (costPct < 0 || costPct > 100) setError(costPctInput, "Tỷ lệ Cost nguyên vật liệu phải nằm từ 0% đến 100%.");
-    if (volWeak < 0) setError(volWeakInput, "Sản lượng kịch bản Yếu không được âm.");
-    if (volBase < 0) setError(volBaseInput, "Sản lượng kịch bản Trung bình không được âm.");
-    if (volGood < 0) setError(volGoodInput, "Sản lượng kịch bản Tốt không được âm.");
-    if (deprYears <= 0) setError(deprYearsInput, "Thời gian khấu hao tài sản phải lớn hơn 0 năm.");
-    if (discountRate < 0 || discountRate > 100) setError(discountRateInput, "Lãi suất chiết khấu kỳ vọng phải từ 0% đến 100%.");
+    if (costPct < 0 || costPct > 100) setError(costPctInput, "Tá»· lá»‡ Cost nguyÃªn váº­t liá»‡u pháº£i náº±m tá»« 0% Ä‘áº¿n 100%.");
+    if (volWeak < 0) setError(volWeakInput, "Sáº£n lÆ°á»£ng ká»‹ch báº£n Yáº¿u khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (volBase < 0) setError(volBaseInput, "Sáº£n lÆ°á»£ng ká»‹ch báº£n Trung bÃ¬nh khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (volGood < 0) setError(volGoodInput, "Sáº£n lÆ°á»£ng ká»‹ch báº£n Tá»‘t khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (deprYears <= 0) setError(deprYearsInput, "Thá»i gian kháº¥u hao tÃ i sáº£n pháº£i lá»›n hÆ¡n 0 nÄƒm.");
+    if (discountRate < 0 || discountRate > 100) setError(discountRateInput, "LÃ£i suáº¥t chiáº¿t kháº¥u ká»³ vá»ng pháº£i tá»« 0% Ä‘áº¿n 100%.");
     
     const setupCosts = deposit + renovate + equipment + rawStart + decorMisc;
     const totalCapitalNeeded = setupCosts + buffer;
     
     if (loan > totalCapitalNeeded) {
-        setError(loanInput, `Tiền vay ngân hàng (${formatVND(loan)}) đang lớn hơn Tổng vốn cần thiết (${formatVND(totalCapitalNeeded)}). Cổ đông không thể góp phần vốn âm.`);
+        setError(loanInput, `Tiá»n vay ngÃ¢n hÃ ng (${formatVND(loan)}) Ä‘ang lá»›n hÆ¡n Tá»•ng vá»‘n cáº§n thiáº¿t (${formatVND(totalCapitalNeeded)}). Cá»• Ä‘Ã´ng khÃ´ng thá»ƒ gÃ³p pháº§n vá»‘n Ã¢m.`);
     }
     
     const errorBox = document.getElementById('error-warning-box');
@@ -576,11 +576,11 @@ window.saveShareholder = function() {
     const role = roleInput ? roleInput.value : 'invest';
 
     if (!name) {
-        alert("Vui lòng nhập tên cổ đông!");
+        alert("Vui lÃ²ng nháº­p tÃªn cá»• Ä‘Ã´ng!");
         return;
     }
     if (contrib <= 0) {
-        alert("Vui lòng nhập số vốn góp lớn hơn 0!");
+        alert("Vui lÃ²ng nháº­p sá»‘ vá»‘n gÃ³p lá»›n hÆ¡n 0!");
         return;
     }
 
@@ -593,7 +593,7 @@ window.saveShareholder = function() {
             sh.role = role;
         }
         editingShareholderId = null;
-        document.getElementById('btn-save-shareholder').textContent = 'Thêm Cổ Đông';
+        document.getElementById('btn-save-shareholder').textContent = 'ThÃªm Cá»• ÄÃ´ng';
         document.getElementById('btn-cancel-edit').style.display = 'none';
     } else {
         // Add new shareholder
@@ -623,7 +623,7 @@ window.editShareholder = function(id) {
     const roleInput = document.getElementById('inp-sh-role');
     if (roleInput) roleInput.value = sh.role || 'invest';
     
-    document.getElementById('btn-save-shareholder').textContent = 'Lưu Thay Đổi';
+    document.getElementById('btn-save-shareholder').textContent = 'LÆ°u Thay Äá»•i';
     document.getElementById('btn-cancel-edit').style.display = 'inline-flex';
 
     // Scroll to the form
@@ -636,7 +636,7 @@ window.cancelEdit = function() {
     document.getElementById('inp-sh-contrib').value = '';
     const roleInput = document.getElementById('inp-sh-role');
     if (roleInput) roleInput.value = 'invest';
-    document.getElementById('btn-save-shareholder').textContent = 'Thêm Cổ Đông';
+    document.getElementById('btn-save-shareholder').textContent = 'ThÃªm Cá»• ÄÃ´ng';
     document.getElementById('btn-cancel-edit').style.display = 'none';
 }
 
@@ -651,9 +651,9 @@ window.deleteShareholder = function(id) {
 // Role label mapping
 function getRoleLabel(role) {
     switch (role) {
-        case 'operate': return '🔧 Góp vốn + Vận hành';
-        case 'invest': return '💰 Chỉ góp vốn';
-        default: return '💰 Chỉ góp vốn';
+        case 'operate': return 'ðŸ”§ GÃ³p vá»‘n + Váº­n hÃ nh';
+        case 'invest': return 'ðŸ’° Chá»‰ gÃ³p vá»‘n';
+        default: return 'ðŸ’° Chá»‰ gÃ³p vá»‘n';
     }
 }
 
@@ -668,7 +668,7 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
     const container = document.getElementById('sh-table-container');
     
     if (shareholders.length === 0) {
-        container.innerHTML = `<div class="empty-state">Chưa có cổ đông nào đóng góp vốn. Hãy thêm cổ đông bằng mẫu phía trên.</div>`;
+        container.innerHTML = `<div class="empty-state">ChÆ°a cÃ³ cá»• Ä‘Ã´ng nÃ o Ä‘Ã³ng gÃ³p vá»‘n. HÃ£y thÃªm cá»• Ä‘Ã´ng báº±ng máº«u phÃ­a trÃªn.</div>`;
         return;
     }
 
@@ -679,13 +679,13 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
             <table>
                 <thead>
                     <tr>
-                        <th>Cổ đông</th>
-                        <th>Vai trò</th>
-                        <th>Vốn góp (VND)</th>
-                        <th>% Cổ phần</th>
-                        <th>Cổ tức / tháng</th>
-                        <th>Hoàn vốn (Cổ tức)</th>
-                        <th class="td-actions">Hành động</th>
+                        <th>Cá»• Ä‘Ã´ng</th>
+                        <th>Vai trÃ²</th>
+                        <th>Vá»‘n gÃ³p (VND)</th>
+                        <th>% Cá»• pháº§n</th>
+                        <th>Cá»• tá»©c / thÃ¡ng</th>
+                        <th>HoÃ n vá»‘n (Cá»• tá»©c)</th>
+                        <th class="td-actions">HÃ nh Ä‘á»™ng</th>
                     </tr>
                 </thead>
                 <tbody id="sh-table-body"></tbody>
@@ -707,10 +707,10 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         const shDiv = (netProfit || 0) * (shPct / 100) * (payoutPct / 100);
         sumDiv += shDiv;
 
-        let paybackStr = "Vô hạn (Lỗ)";
+        let paybackStr = "VÃ´ háº¡n (Lá»—)";
         if (shDiv > 0) {
             const months = s.contribution / shDiv;
-            paybackStr = `${months.toFixed(1)} tháng`;
+            paybackStr = `${months.toFixed(1)} thÃ¡ng`;
         }
 
         const roleLabel = getRoleLabel(s.role);
@@ -720,13 +720,13 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         tr.innerHTML = `
             <td><strong>${s.name}</strong></td>
             <td><span class="role-badge ${roleBadgeClass}">${roleLabel}</span></td>
-            <td>${formatNumber(s.contribution)} đ</td>
+            <td>${formatNumber(s.contribution)} Ä‘</td>
             <td><span class="badge-leverage" style="display:inline-block">${shPct.toFixed(1)}%</span></td>
             <td class="${shDiv >= 0 ? 'val-profit' : 'val-loss'}">${shDiv >= 0 ? '+' : ''}${formatShortVND(shDiv)}</td>
             <td><em style="font-size:11px">${paybackStr}</em></td>
             <td class="td-actions">
-                <button class="btn btn-edit" onclick="editShareholder(${s.id})" style="padding: 4px 8px; font-size:11px; margin-right: 4px;">Sửa</button>
-                <button class="btn btn-danger" onclick="deleteShareholder(${s.id})" style="padding: 4px 8px; font-size:11px;">Xóa</button>
+                <button class="btn btn-edit" onclick="editShareholder(${s.id})" style="padding: 4px 8px; font-size:11px; margin-right: 4px;">Sá»­a</button>
+                <button class="btn btn-danger" onclick="deleteShareholder(${s.id})" style="padding: 4px 8px; font-size:11px;">XÃ³a</button>
             </td>
         `;
         activeTbody.appendChild(tr);
@@ -737,9 +737,9 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
     trSummary.style.fontWeight = 'bold';
     trSummary.style.background = 'rgba(255,255,255,0.02)';
     trSummary.innerHTML = `
-        <td>TỔNG CỘNG CỔ TỨC</td>
+        <td>Tá»”NG Cá»˜NG Cá»” Tá»¨C</td>
         <td>-</td>
-        <td>${formatNumber(totalEquityContributed)} đ</td>
+        <td>${formatNumber(totalEquityContributed)} Ä‘</td>
         <td>${totalPct.toFixed(0)}%</td>
         <td class="${sumDiv >= 0 ? 'val-profit' : 'val-loss'}">${sumDiv >= 0 ? '+' : ''}${formatShortVND(sumDiv)}</td>
         <td>-</td>
@@ -767,7 +767,7 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         statusDiv.style.color = isLight ? '#b91c1c' : 'var(--danger)';
         statusDiv.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-            <span>Thiếu vốn: Tổng vốn góp hiện tại (${formatNumber(totalEquityContributed)}đ) đang thiếu <strong>${formatNumber(Math.abs(diff))}đ</strong> so với nhu cầu vốn tự có (${formatNumber(requiredEquity)}đ). Hãy góp thêm hoặc tăng khoản vay.</span>
+            <span>Thiáº¿u vá»‘n: Tá»•ng vá»‘n gÃ³p hiá»‡n táº¡i (${formatNumber(totalEquityContributed)}Ä‘) Ä‘ang thiáº¿u <strong>${formatNumber(Math.abs(diff))}Ä‘</strong> so vá»›i nhu cáº§u vá»‘n tá»± cÃ³ (${formatNumber(requiredEquity)}Ä‘). HÃ£y gÃ³p thÃªm hoáº·c tÄƒng khoáº£n vay.</span>
         `;
     } else if (diff > 0) {
         statusDiv.style.background = 'rgba(52, 211, 153, 0.1)';
@@ -775,7 +775,7 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         statusDiv.style.color = isLight ? '#047857' : 'var(--success)';
         statusDiv.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-            <span>Dư vốn: Tổng vốn góp (${formatNumber(totalEquityContributed)}đ) thừa <strong>${formatNumber(diff)}đ</strong> so với nhu cầu vốn tự có (${formatNumber(requiredEquity)}đ). Số dư này giúp gia tăng Quỹ dự phòng thực tế.</span>
+            <span>DÆ° vá»‘n: Tá»•ng vá»‘n gÃ³p (${formatNumber(totalEquityContributed)}Ä‘) thá»«a <strong>${formatNumber(diff)}Ä‘</strong> so vá»›i nhu cáº§u vá»‘n tá»± cÃ³ (${formatNumber(requiredEquity)}Ä‘). Sá»‘ dÆ° nÃ y giÃºp gia tÄƒng Quá»¹ dá»± phÃ²ng thá»±c táº¿.</span>
         `;
     } else {
         statusDiv.style.background = 'var(--primary-glow)';
@@ -783,7 +783,7 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         statusDiv.style.color = isLight ? '#0369a1' : 'var(--primary)';
         statusDiv.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-            <span>Cân bằng: Tổng vốn góp khớp hoàn toàn với nhu cầu vốn tự có (${formatNumber(requiredEquity)}đ).</span>
+            <span>CÃ¢n báº±ng: Tá»•ng vá»‘n gÃ³p khá»›p hoÃ n toÃ n vá»›i nhu cáº§u vá»‘n tá»± cÃ³ (${formatNumber(requiredEquity)}Ä‘).</span>
         `;
     }
     container.appendChild(statusDiv);
@@ -806,13 +806,13 @@ function updateInvestorPitch(equity, baseNet, volBase, breakeven) {
         safetyValElement.innerText = `${safetyMargin.toFixed(1)}%`;
         if (safetyMargin > 30) {
             safetyValElement.style.color = 'var(--success)';
-            safetyDescElement.innerText = "Biên an toàn rất cao. Sản lượng bán có thể sụt giảm tới 30% mà quán vẫn không bị lỗ. Đây là luận điểm cực tốt để thuyết phục cổ đông.";
+            safetyDescElement.innerText = "BiÃªn an toÃ n ráº¥t cao. Sáº£n lÆ°á»£ng bÃ¡n cÃ³ thá»ƒ sá»¥t giáº£m tá»›i 30% mÃ  quÃ¡n váº«n khÃ´ng bá»‹ lá»—. ÄÃ¢y lÃ  luáº­n Ä‘iá»ƒm cá»±c tá»‘t Ä‘á»ƒ thuyáº¿t phá»¥c cá»• Ä‘Ã´ng.";
         } else if (safetyMargin > 0) {
             safetyValElement.style.color = 'var(--warning)';
-            safetyDescElement.innerText = "Biên an toàn dương nhưng ở mức hẹp. Cổ đông sẽ muốn thấy kế hoạch marketing rõ ràng để duy trì lượng khách ổn định.";
+            safetyDescElement.innerText = "BiÃªn an toÃ n dÆ°Æ¡ng nhÆ°ng á»Ÿ má»©c háº¹p. Cá»• Ä‘Ã´ng sáº½ muá»‘n tháº¥y káº¿ hoáº¡ch marketing rÃµ rÃ ng Ä‘á»ƒ duy trÃ¬ lÆ°á»£ng khÃ¡ch á»•n Ä‘á»‹nh.";
         } else {
             safetyValElement.style.color = 'var(--danger)';
-            safetyDescElement.innerText = "Hiện tại sản lượng bán dự kiến thấp hơn điểm hòa vốn. Cần giảm bớt định phí vận hành hoặc tăng giá bán để tạo sức hút với nhà đầu tư.";
+            safetyDescElement.innerText = "Hiá»‡n táº¡i sáº£n lÆ°á»£ng bÃ¡n dá»± kiáº¿n tháº¥p hÆ¡n Ä‘iá»ƒm hÃ²a vá»‘n. Cáº§n giáº£m bá»›t Ä‘á»‹nh phÃ­ váº­n hÃ nh hoáº·c tÄƒng giÃ¡ bÃ¡n Ä‘á»ƒ táº¡o sá»©c hÃºt vá»›i nhÃ  Ä‘áº§u tÆ°.";
         }
     }
 
@@ -823,13 +823,13 @@ function updateInvestorPitch(equity, baseNet, volBase, breakeven) {
         const baseDividend = baseNet * (payoutPct / 100);
         if (baseDividend > 0) {
             const paybackMonths = actualEquity / baseDividend;
-            paybackValElement.innerText = `${paybackMonths.toFixed(1)} tháng`;
+            paybackValElement.innerText = `${paybackMonths.toFixed(1)} thÃ¡ng`;
             paybackValElement.style.color = 'var(--success)';
-            paybackDescElement.innerText = `Thời gian hoàn vốn dự kiến bằng dòng tiền cổ tức thực nhận hàng tháng là khoảng ${paybackMonths.toFixed(1)} tháng. Đây là tốc độ hoàn vốn rất tốt.`;
+            paybackDescElement.innerText = `Thá»i gian hoÃ n vá»‘n dá»± kiáº¿n báº±ng dÃ²ng tiá»n cá»• tá»©c thá»±c nháº­n hÃ ng thÃ¡ng lÃ  khoáº£ng ${paybackMonths.toFixed(1)} thÃ¡ng. ÄÃ¢y lÃ  tá»‘c Ä‘á»™ hoÃ n vá»‘n ráº¥t tá»‘t.`;
         } else {
-            paybackValElement.innerText = "Không thể tính (Lỗ)";
+            paybackValElement.innerText = "KhÃ´ng thá»ƒ tÃ­nh (Lá»—)";
             paybackValElement.style.color = 'var(--danger)';
-            paybackDescElement.innerText = "Quán đang chịu lỗ hoặc không chi trả cổ tức. Cần tối ưu lại định phí hoặc tăng giá bán.";
+            paybackDescElement.innerText = "QuÃ¡n Ä‘ang chá»‹u lá»— hoáº·c khÃ´ng chi tráº£ cá»• tá»©c. Cáº§n tá»‘i Æ°u láº¡i Ä‘á»‹nh phÃ­ hoáº·c tÄƒng giÃ¡ bÃ¡n.";
         }
     }
 }
@@ -884,11 +884,11 @@ function renderSensitivityTable(basePrice, baseCostPct, fixedMonthlyOpex, monthl
     const table = document.getElementById('sensitivity-table');
     if (!table) return;
 
-    // Variations: price ±20% in steps of 10%, costPct ±10% in steps of 5%
+    // Variations: price Â±20% in steps of 10%, costPct Â±10% in steps of 5%
     const priceMultipliers = [-20, -10, 0, 10, 20];
     const costVariations = [-10, -5, 0, 5, 10];
 
-    let html = '<thead><tr><th class="sensitivity-corner">Giá bán \\ Cost %</th>';
+    let html = '<thead><tr><th class="sensitivity-corner">GiÃ¡ bÃ¡n \\ Cost %</th>';
     costVariations.forEach(cv => {
         const actualCost = baseCostPct + cv;
         html += `<th>Cost ${actualCost}%${cv !== 0 ? ' (' + (cv > 0 ? '+' : '') + cv + '%)' : ''}</th>`;
@@ -897,7 +897,7 @@ function renderSensitivityTable(basePrice, baseCostPct, fixedMonthlyOpex, monthl
 
     priceMultipliers.forEach(pm => {
         const actualPrice = basePrice * (1 + pm / 100);
-        html += `<tr><td class="sensitivity-row-label">${formatNumber(Math.round(actualPrice))}đ${pm !== 0 ? ' (' + (pm > 0 ? '+' : '') + pm + '%)' : ''}</td>`;
+        html += `<tr><td class="sensitivity-row-label">${formatNumber(Math.round(actualPrice))}Ä‘${pm !== 0 ? ' (' + (pm > 0 ? '+' : '') + pm + '%)' : ''}</td>`;
         
         costVariations.forEach(cv => {
             const actualCost = baseCostPct + cv;
@@ -916,7 +916,7 @@ function renderSensitivityTable(basePrice, baseCostPct, fixedMonthlyOpex, monthl
             // Highlight the center cell (base case)
             let extraClass = (pm === 0 && cv === 0) ? ' sensitivity-base' : '';
             
-            const tooltipText = `Doanh thu: ${formatNumber(Math.round(rev))}đ\n- Cost NVL (${actualCost}%): ${formatNumber(Math.round(cogs))}đ\n- Định phí: ${formatNumber(Math.round(fixedMonthlyOpex))}đ\n- Khấu hao: ${formatNumber(Math.round(monthlyDepreciation))}đ\n- Lãi vay: ${formatNumber(Math.round(monthlyDebt))}đ\n- Thuế TNDN (${dynamicTaxRate}%): ${formatNumber(Math.round(tax))}đ\n------------------------\n= Lợi nhuận ròng: ${formatNumber(Math.round(netProfit))}đ`;
+            const tooltipText = `Doanh thu: ${formatNumber(Math.round(rev))}Ä‘\n- Cost NVL (${actualCost}%): ${formatNumber(Math.round(cogs))}Ä‘\n- Äá»‹nh phÃ­: ${formatNumber(Math.round(fixedMonthlyOpex))}Ä‘\n- Kháº¥u hao: ${formatNumber(Math.round(monthlyDepreciation))}Ä‘\n- LÃ£i vay: ${formatNumber(Math.round(monthlyDebt))}Ä‘\n- Thuáº¿ TNDN (${dynamicTaxRate}%): ${formatNumber(Math.round(tax))}Ä‘\n------------------------\n= Lá»£i nhuáº­n rÃ²ng: ${formatNumber(Math.round(netProfit))}Ä‘`;
             
             html += `<td class="${cellClass}${extraClass}" title="${tooltipText}">${formatShortVND(netProfit)}</td>`;
         });
@@ -935,9 +935,9 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
     const rent = parseNumber(document.getElementById('inp-rent').value);
     const commissionRate = parseFloat(document.getElementById('inp-commission-rate')?.value || '0');
 
-    // Vary price by ±10k, ±5k
+    // Vary price by Â±10k, Â±5k
     const prices = [basePrice - 10000, basePrice - 5000, basePrice, basePrice + 5000, basePrice + 10000].filter(p => p > 0);
-    // Vary rent by ±5M, ±2.5M
+    // Vary rent by Â±5M, Â±2.5M
     const rents = [rent - 5000000, rent - 2500000, rent, rent + 2500000, rent + 5000000].filter(r => r >= 0);
 
     let priceRowsHtml = '';
@@ -947,7 +947,7 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
         
         rents.forEach(r => {
             if (unitMargin <= 0) {
-                cellsHtml += `<td style="text-align: right; padding: 8px; color: var(--danger); font-weight: 500;">Lỗ gộp/ly</td>`;
+                cellsHtml += `<td style="text-align: right; padding: 8px; color: var(--danger); font-weight: 500;">Lá»— gá»™p/ly</td>`;
             } else {
                 const newOpex = fixedMonthlyOpex - rent + r;
                 const beVol = (newOpex + monthlyDebt + monthlyDepreciation) / (30 * unitMargin);
@@ -959,16 +959,16 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
 
         priceRowsHtml += `
             <tr>
-                <td style="text-align: left; padding: 8px; font-weight: 500;">${formatNumber(p)}đ</td>
+                <td style="text-align: left; padding: 8px; font-weight: 500;">${formatNumber(p)}Ä‘</td>
                 ${cellsHtml}
             </tr>
         `;
     });
 
     wrapper.innerHTML = `
-        <h3 class="chart-sub-title">🎯 Ma Trận Sản Lượng Hòa Vốn (Ly/Ngày) Theo Giá Bán & Tiền Thuê</h3>
+        <h3 class="chart-sub-title">ðŸŽ¯ Ma Tráº­n Sáº£n LÆ°á»£ng HÃ²a Vá»‘n (Ly/NgÃ y) Theo GiÃ¡ BÃ¡n & Tiá»n ThuÃª</h3>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
-            Bảng dưới đây thể hiện số ly nước quán cần bán được <strong>mỗi ngày</strong> để hòa vốn (bao gồm định phí, nợ vay ngân hàng và khấu hao) khi thay đổi giá thuê mặt bằng (cột) và giá bán lẻ (dòng). Ô tô đậm có viền xanh là mức giá & tiền thuê hiện tại của bạn.
+            Báº£ng dÆ°á»›i Ä‘Ã¢y thá»ƒ hiá»‡n sá»‘ ly nÆ°á»›c quÃ¡n cáº§n bÃ¡n Ä‘Æ°á»£c <strong>má»—i ngÃ y</strong> Ä‘á»ƒ hÃ²a vá»‘n (bao gá»“m Ä‘á»‹nh phÃ­, ná»£ vay ngÃ¢n hÃ ng vÃ  kháº¥u hao) khi thay Ä‘á»•i giÃ¡ thuÃª máº·t báº±ng (cá»™t) vÃ  giÃ¡ bÃ¡n láº» (dÃ²ng). Ã” tÃ´ Ä‘áº­m cÃ³ viá»n xanh lÃ  má»©c giÃ¡ & tiá»n thuÃª hiá»‡n táº¡i cá»§a báº¡n.
         </p>
 
         <!-- Table -->
@@ -976,8 +976,8 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
             <table class="sensitivity-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                 <thead>
                     <tr>
-                        <th class="sensitivity-corner" style="text-align: left; padding: 8px; background: rgba(2, 132, 199, 0.08);">Giá bán \\ Tiền thuê</th>
-                        ${rents.map(r => `<th style="text-align: right; padding: 8px; background: rgba(2, 132, 199, 0.08);">${formatShortVND(r)}/tháng</th>`).join('')}
+                        <th class="sensitivity-corner" style="text-align: left; padding: 8px; background: rgba(2, 132, 199, 0.08);">GiÃ¡ bÃ¡n \\ Tiá»n thuÃª</th>
+                        ${rents.map(r => `<th style="text-align: right; padding: 8px; background: rgba(2, 132, 199, 0.08);">${formatShortVND(r)}/thÃ¡ng</th>`).join('')}
                     </tr>
                 </thead>
                 <tbody>
@@ -986,9 +986,9 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
             </table>
         </div>
 
-        <h3 class="chart-sub-title" style="margin-top: 24px; margin-bottom: 8px;">📈 Đồ Thị Điểm Hòa Vốn Cắt Nhau (Break-Even Point Chart)</h3>
+        <h3 class="chart-sub-title" style="margin-top: 24px; margin-bottom: 8px;">ðŸ“ˆ Äá»“ Thá»‹ Äiá»ƒm HÃ²a Vá»‘n Cáº¯t Nhau (Break-Even Point Chart)</h3>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
-            Giao điểm giữa hai đường thẳng chính là điểm hòa vốn của dự án.
+            Giao Ä‘iá»ƒm giá»¯a hai Ä‘Æ°á»ng tháº³ng chÃ­nh lÃ  Ä‘iá»ƒm hÃ²a vá»‘n cá»§a dá»± Ã¡n.
         </p>
         <div class="chart-container" style="position: relative; height: 280px; width: 100%; margin-bottom: 24px;">
             <canvas id="breakevenChart"></canvas>
@@ -1026,7 +1026,7 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Tổng Doanh Thu (VND)',
+                        label: 'Tá»•ng Doanh Thu (VND)',
                         data: dataRev,
                         borderColor: '#10b981',
                         backgroundColor: 'rgba(16, 185, 129, 0.05)',
@@ -1035,7 +1035,7 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
                         pointRadius: 3
                     },
                     {
-                        label: 'Tổng Chi Phí (VND)',
+                        label: 'Tá»•ng Chi PhÃ­ (VND)',
                         data: dataCost,
                         borderColor: '#ef4444',
                         backgroundColor: 'rgba(239, 68, 68, 0.05)',
@@ -1098,7 +1098,7 @@ function renderLongTermProjections(basePrice, baseCostPct, fixedOpex, monthlyDeb
     let currentCommission = currentRev * (commissionRate / 100);
     let currentOpex = (fixedOpex * 12) + currentCommission; 
 
-    const labels = ["Năm 1", "Năm 2", "Năm 3", "Năm 4", "Năm 5"];
+    const labels = ["NÄƒm 1", "NÄƒm 2", "NÄƒm 3", "NÄƒm 4", "NÄƒm 5"];
     const dataRev = [];
     const dataOpex = [];
     const dataNet = [];
@@ -1134,19 +1134,19 @@ function renderLongTermProjections(basePrice, baseCostPct, fixedOpex, monthlyDeb
         const valuation = year3Net > 0 ? year3Net * peRatio : 0;
         
         valContainer.innerHTML = `
-            <div style="font-size: 14px; margin-bottom: 12px;"><strong style="color:var(--primary);">💡 Phân Tích Định Giá Doanh Nghiệp (Cuối Năm 3)</strong></div>
+            <div style="font-size: 14px; margin-bottom: 12px;"><strong style="color:var(--primary);">ðŸ’¡ PhÃ¢n TÃ­ch Äá»‹nh GiÃ¡ Doanh Nghiá»‡p (Cuá»‘i NÄƒm 3)</strong></div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                 <div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Lợi nhuận ròng Năm 3:</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Lá»£i nhuáº­n rÃ²ng NÄƒm 3:</div>
                     <div style="font-size: 18px; font-weight: bold; color: ${year3Net > 0 ? 'var(--success)' : 'var(--danger)'};">${formatVND(year3Net)}</div>
                 </div>
                 <div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Định giá quán (P/E = 3):</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Äá»‹nh giÃ¡ quÃ¡n (P/E = 3):</div>
                     <div style="font-size: 18px; font-weight: bold; color: var(--primary);">${formatVND(valuation)}</div>
                 </div>
             </div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
-                * Nếu quán hoạt động ổn định tới năm thứ 3 với các giả định lạm phát/tăng trưởng trên, bạn có thể chào bán/sang nhượng lại quán với mức giá tham khảo khoảng ${formatShortVND(valuation)}.
+                * Náº¿u quÃ¡n hoáº¡t Ä‘á»™ng á»•n Ä‘á»‹nh tá»›i nÄƒm thá»© 3 vá»›i cÃ¡c giáº£ Ä‘á»‹nh láº¡m phÃ¡t/tÄƒng trÆ°á»Ÿng trÃªn, báº¡n cÃ³ thá»ƒ chÃ o bÃ¡n/sang nhÆ°á»£ng láº¡i quÃ¡n vá»›i má»©c giÃ¡ tham kháº£o khoáº£ng ${formatShortVND(valuation)}.
             </div>
         `;
     }
@@ -1172,13 +1172,13 @@ function renderLongTermProjections(basePrice, baseCostPct, fixedOpex, monthlyDeb
                         borderRadius: 4
                     },
                     {
-                        label: 'Tổng Chi Phí',
+                        label: 'Tá»•ng Chi PhÃ­',
                         data: dataOpex,
                         backgroundColor: 'rgba(248, 113, 113, 0.8)',
                         borderRadius: 4
                     },
                     {
-                        label: 'Lợi Nhuận Ròng',
+                        label: 'Lá»£i Nhuáº­n RÃ²ng',
                         data: dataNet,
                         backgroundColor: 'rgba(52, 211, 153, 0.8)',
                         borderRadius: 4
@@ -1234,51 +1234,51 @@ function renderExplanation(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt
     
     el.innerHTML = `
         <div style="background: rgba(15,23,42,0.03); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
-            <h3 style="margin-bottom: 16px; color: var(--primary); font-size: 18px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;">Diễn Giải Các Con Số Đang Hiển Thị</h3>
+            <h3 style="margin-bottom: 16px; color: var(--primary); font-size: 18px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;">Diá»…n Giáº£i CÃ¡c Con Sá»‘ Äang Hiá»ƒn Thá»‹</h3>
             
-            <p><strong>1. Nhu cầu vốn & Đầu tư ban đầu (Tổng: ${formatVND(totalCap)})</strong></p>
+            <p><strong>1. Nhu cáº§u vá»‘n & Äáº§u tÆ° ban Ä‘áº§u (Tá»•ng: ${formatVND(totalCap)})</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li><strong>Chi phí thiết lập (${formatVND(setupCosts)})</strong>: Đây là tiền "chết" đổ vào quán trước khi mở cửa.
-                    <br>Bao gồm: Cọc mặt bằng (${formatShortVND(deposit)}), Sửa chữa (${formatShortVND(renovate)}), Máy móc (${formatShortVND(equipment)}), Nguyên liệu (${formatShortVND(rawStart)}), Khác (${formatShortVND(decorMisc)}).
+                <li><strong>Chi phÃ­ thiáº¿t láº­p (${formatVND(setupCosts)})</strong>: ÄÃ¢y lÃ  tiá»n "cháº¿t" Ä‘á»• vÃ o quÃ¡n trÆ°á»›c khi má»Ÿ cá»­a.
+                    <br>Bao gá»“m: Cá»c máº·t báº±ng (${formatShortVND(deposit)}), Sá»­a chá»¯a (${formatShortVND(renovate)}), MÃ¡y mÃ³c (${formatShortVND(equipment)}), NguyÃªn liá»‡u (${formatShortVND(rawStart)}), KhÃ¡c (${formatShortVND(decorMisc)}).
                 </li>
-                <li><strong>Quỹ dự phòng (${formatVND(buffer)})</strong>: Tiền mặt để sẵn trong ngân hàng để gồng lỗ thời gian đầu.</li>
+                <li><strong>Quá»¹ dá»± phÃ²ng (${formatVND(buffer)})</strong>: Tiá»n máº·t Ä‘á»ƒ sáºµn trong ngÃ¢n hÃ ng Ä‘á»ƒ gá»“ng lá»— thá»i gian Ä‘áº§u.</li>
             </ul>
 
-            <p><strong>2. Nguồn vốn & Đòn bẩy tài chính</strong></p>
+            <p><strong>2. Nguá»“n vá»‘n & ÄÃ²n báº©y tÃ i chÃ­nh</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li><strong>Vốn tự có (Bạn và Cổ đông góp):</strong> ${formatVND(totalEquityContributed)} (${((totalEquityContributed / totalCap) * 100).toFixed(1)}%)</li>
-                <li><strong>Vốn đi vay ngân hàng:</strong> ${formatVND(loan)} (${((loan / totalCap) * 100).toFixed(1)}%)</li>
-                <li><strong>Chi phí trả nợ hàng tháng:</strong> Với lãi suất ${interest}%/năm vay trong ${term} tháng, mỗi tháng phải trả cả gốc lẫn lãi là <strong>${formatVND(Math.round(monthlyDebt))}</strong>.</li>
+                <li><strong>Vá»‘n tá»± cÃ³ (Báº¡n vÃ  Cá»• Ä‘Ã´ng gÃ³p):</strong> ${formatVND(totalEquityContributed)} (${((totalEquityContributed / totalCap) * 100).toFixed(1)}%)</li>
+                <li><strong>Vá»‘n Ä‘i vay ngÃ¢n hÃ ng:</strong> ${formatVND(loan)} (${((loan / totalCap) * 100).toFixed(1)}%)</li>
+                <li><strong>Chi phÃ­ tráº£ ná»£ hÃ ng thÃ¡ng:</strong> Vá»›i lÃ£i suáº¥t ${interest}%/nÄƒm vay trong ${term} thÃ¡ng, má»—i thÃ¡ng pháº£i tráº£ cáº£ gá»‘c láº«n lÃ£i lÃ  <strong>${formatVND(Math.round(monthlyDebt))}</strong>.</li>
             </ul>
 
-            <p><strong>3. Chi phí duy trì mỗi tháng (Định phí: ${formatVND(fixedMonthlyOpex)})</strong></p>
+            <p><strong>3. Chi phÃ­ duy trÃ¬ má»—i thÃ¡ng (Äá»‹nh phÃ­: ${formatVND(fixedMonthlyOpex)})</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li>Thuê mặt bằng: ${formatShortVND(rent)} | Điện nước: ${formatShortVND(utilities)} | Lương: ${formatShortVND(salary)} | Khác: ${formatShortVND(misc)}. Dù không bán được ly nào, tháng nào bạn cũng gánh chừng này chi phí.</li>
-                <li><strong>Khấu hao tài sản:</strong> Tính dựa trên Máy móc (${formatShortVND(equipment)}) + Decor (${formatShortVND(decorMisc)}) chia cho ${deprYears} năm = <strong>${formatVND(Math.round(monthlyDepreciation))}/tháng</strong>. (Đây không phải tiền chi ra, mà là sự hao mòn).</li>
+                <li>ThuÃª máº·t báº±ng: ${formatShortVND(rent)} | Äiá»‡n nÆ°á»›c: ${formatShortVND(utilities)} | LÆ°Æ¡ng: ${formatShortVND(salary)} | KhÃ¡c: ${formatShortVND(misc)}. DÃ¹ khÃ´ng bÃ¡n Ä‘Æ°á»£c ly nÃ o, thÃ¡ng nÃ o báº¡n cÅ©ng gÃ¡nh chá»«ng nÃ y chi phÃ­.</li>
+                <li><strong>Kháº¥u hao tÃ i sáº£n:</strong> TÃ­nh dá»±a trÃªn MÃ¡y mÃ³c (${formatShortVND(equipment)}) + Decor (${formatShortVND(decorMisc)}) chia cho ${deprYears} nÄƒm = <strong>${formatVND(Math.round(monthlyDepreciation))}/thÃ¡ng</strong>. (ÄÃ¢y khÃ´ng pháº£i tiá»n chi ra, mÃ  lÃ  sá»± hao mÃ²n).</li>
             </ul>
 
-            <p><strong>4. Cơ cấu Giá bán 1 ly nước</strong></p>
+            <p><strong>4. CÆ¡ cáº¥u GiÃ¡ bÃ¡n 1 ly nÆ°á»›c</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li>Giá bán trung bình: <strong>${formatVND(basePrice)}</strong></li>
-                <li>Tỷ lệ giá vốn (Cost): ${baseCostPct}% (Tương đương ${formatVND(basePrice * baseCostPct / 100)} tiền nguyên vật liệu).</li>
-                <li>Lãi gộp (Tiền lời sau khi trừ nguyên liệu): <strong>${formatVND(grossMargin)}/ly</strong>.</li>
+                <li>GiÃ¡ bÃ¡n trung bÃ¬nh: <strong>${formatVND(basePrice)}</strong></li>
+                <li>Tá»· lá»‡ giÃ¡ vá»‘n (Cost): ${baseCostPct}% (TÆ°Æ¡ng Ä‘Æ°Æ¡ng ${formatVND(basePrice * baseCostPct / 100)} tiá»n nguyÃªn váº­t liá»‡u).</li>
+                <li>LÃ£i gá»™p (Tiá»n lá»i sau khi trá»« nguyÃªn liá»‡u): <strong>${formatVND(grossMargin)}/ly</strong>.</li>
             </ul>
 
-            <p><strong>5. Số ly cần bán để HÒA VỐN: ${Math.ceil(breakeven)} ly/ngày</strong></p>
+            <p><strong>5. Sá»‘ ly cáº§n bÃ¡n Ä‘á»ƒ HÃ’A Vá»N: ${Math.ceil(breakeven)} ly/ngÃ y</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li>Mỗi tháng bạn cần gánh: Định phí (${formatShortVND(fixedMonthlyOpex)}) + Tiền nợ (${formatShortVND(monthlyDebt)}) + Khấu hao (${formatShortVND(monthlyDepreciation)}) = ${formatVND(fixedMonthlyOpex + monthlyDebt + monthlyDepreciation)}.</li>
-                <li>Với mức lãi gộp ${formatVND(grossMargin)}/ly, bạn cần bán được khoảng ${Math.ceil(breakeven * 30)} ly/tháng, tương đương <strong>~${Math.ceil(breakeven)} ly/ngày</strong> thì quán mới đủ tiền bù chi phí.</li>
+                <li>Má»—i thÃ¡ng báº¡n cáº§n gÃ¡nh: Äá»‹nh phÃ­ (${formatShortVND(fixedMonthlyOpex)}) + Tiá»n ná»£ (${formatShortVND(monthlyDebt)}) + Kháº¥u hao (${formatShortVND(monthlyDepreciation)}) = ${formatVND(fixedMonthlyOpex + monthlyDebt + monthlyDepreciation)}.</li>
+                <li>Vá»›i má»©c lÃ£i gá»™p ${formatVND(grossMargin)}/ly, báº¡n cáº§n bÃ¡n Ä‘Æ°á»£c khoáº£ng ${Math.ceil(breakeven * 30)} ly/thÃ¡ng, tÆ°Æ¡ng Ä‘Æ°Æ¡ng <strong>~${Math.ceil(breakeven)} ly/ngÃ y</strong> thÃ¬ quÃ¡n má»›i Ä‘á»§ tiá»n bÃ¹ chi phÃ­.</li>
             </ul>
 
-            <p><strong>6. Kết quả Dự Kiến (Bán được ${volBase} ly/ngày)</strong></p>
+            <p><strong>6. Káº¿t quáº£ Dá»± Kiáº¿n (BÃ¡n Ä‘Æ°á»£c ${volBase} ly/ngÃ y)</strong></p>
             <ul style="margin-top: 4px; padding-left: 20px;">
-                <li><strong>Doanh thu:</strong> ${volBase} ly × 30 ngày × ${formatVND(basePrice)} = <strong>${formatVND(baseScenario.rev)}</strong></li>
-                <li><strong>Trừ Nguyên liệu (${baseCostPct}%):</strong> - ${formatVND(baseScenario.cogs)}</li>
-                <li><strong>Trừ Định phí hàng tháng:</strong> - ${formatVND(fixedMonthlyOpex)}</li>
-                <li><strong>Trừ Tiền trả nợ ngân hàng:</strong> - ${formatVND(Math.round(monthlyDebt))}</li>
-                <li><strong>Trừ Khấu hao máy móc:</strong> - ${formatVND(Math.round(monthlyDepreciation))}</li>
-                <li><strong>Thuế TNDN (${taxRate}%):</strong> - ${formatVND(Math.round(baseScenario.tax))}</li>
-                <li style="margin-top:8px;">=> <strong>LỢI NHUẬN RÒNG (Cất túi): <span style="color:${baseScenario.net >= 0 ? 'var(--success)' : 'var(--danger)'};">${formatVND(baseScenario.net)}</span> / tháng</strong></li>
+                <li><strong>Doanh thu:</strong> ${volBase} ly Ã— 30 ngÃ y Ã— ${formatVND(basePrice)} = <strong>${formatVND(baseScenario.rev)}</strong></li>
+                <li><strong>Trá»« NguyÃªn liá»‡u (${baseCostPct}%):</strong> - ${formatVND(baseScenario.cogs)}</li>
+                <li><strong>Trá»« Äá»‹nh phÃ­ hÃ ng thÃ¡ng:</strong> - ${formatVND(fixedMonthlyOpex)}</li>
+                <li><strong>Trá»« Tiá»n tráº£ ná»£ ngÃ¢n hÃ ng:</strong> - ${formatVND(Math.round(monthlyDebt))}</li>
+                <li><strong>Trá»« Kháº¥u hao mÃ¡y mÃ³c:</strong> - ${formatVND(Math.round(monthlyDepreciation))}</li>
+                <li><strong>Thuáº¿ TNDN (${taxRate}%):</strong> - ${formatVND(Math.round(baseScenario.tax))}</li>
+                <li style="margin-top:8px;">=> <strong>Lá»¢I NHUáº¬N RÃ’NG (Cáº¥t tÃºi): <span style="color:${baseScenario.net >= 0 ? 'var(--success)' : 'var(--danger)'};">${formatVND(baseScenario.net)}</span> / thÃ¡ng</strong></li>
             </ul>
         </div>
     `;
@@ -1322,19 +1322,19 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     if (rentPct <= 12) {
         rentScore = 25;
         rentStatus = 'excellent';
-        rentComment = `Chi phí mặt bằng rất tối ưu (${rentPct.toFixed(1)}% doanh thu). Bạn chỉ cần ${rentDaysNeeded} ngày doanh thu để trả tiền nhà.`;
+        rentComment = `Chi phÃ­ máº·t báº±ng ráº¥t tá»‘i Æ°u (${rentPct.toFixed(1)}% doanh thu). Báº¡n chá»‰ cáº§n ${rentDaysNeeded} ngÃ y doanh thu Ä‘á»ƒ tráº£ tiá»n nhÃ .`;
     } else if (rentPct <= 15) {
         rentScore = 20;
         rentStatus = 'good';
-        rentComment = `Đạt chuẩn tỷ lệ vàng F&B (ngưỡng an toàn ≤ 15%). Mất ${rentDaysNeeded} ngày doanh thu để trang trải tiền thuê.`;
+        rentComment = `Äáº¡t chuáº©n tá»· lá»‡ vÃ ng F&B (ngÆ°á»¡ng an toÃ n â‰¤ 15%). Máº¥t ${rentDaysNeeded} ngÃ y doanh thu Ä‘á»ƒ trang tráº£i tiá»n thuÃª.`;
     } else if (rentPct <= 20) {
         rentScore = 12;
         rentStatus = 'warning';
-        rentComment = `Hơi cao (${rentPct.toFixed(1)}%). Cần đẩy mạnh doanh thu hoặc đàm phán thêm ưu đãi mặt bằng để tránh áp lực định phí.`;
+        rentComment = `HÆ¡i cao (${rentPct.toFixed(1)}%). Cáº§n Ä‘áº©y máº¡nh doanh thu hoáº·c Ä‘Ã m phÃ¡n thÃªm Æ°u Ä‘Ã£i máº·t báº±ng Ä‘á»ƒ trÃ¡nh Ã¡p lá»±c Ä‘á»‹nh phÃ­.`;
     } else {
         rentScore = 5;
         rentStatus = 'danger';
-        rentComment = `Vượt ngưỡng rủi ro (${rentPct.toFixed(1)}%). Bạn mất tới ${rentDaysNeeded} ngày bán hàng chỉ để nuôi chủ nhà.`;
+        rentComment = `VÆ°á»£t ngÆ°á»¡ng rá»§i ro (${rentPct.toFixed(1)}%). Báº¡n máº¥t tá»›i ${rentDaysNeeded} ngÃ y bÃ¡n hÃ ng chá»‰ Ä‘á»ƒ nuÃ´i chá»§ nhÃ .`;
     }
     score += rentScore;
 
@@ -1345,19 +1345,19 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     if (laborPct <= 18) {
         laborScore = 25;
         laborStatus = 'excellent';
-        laborComment = `Tối ưu định biên nhân sự xuất sắc (${laborPct.toFixed(1)}% DT). Năng suất lao động cao.`;
+        laborComment = `Tá»‘i Æ°u Ä‘á»‹nh biÃªn nhÃ¢n sá»± xuáº¥t sáº¯c (${laborPct.toFixed(1)}% DT). NÄƒng suáº¥t lao Ä‘á»™ng cao.`;
     } else if (laborPct <= 22) {
         laborScore = 20;
         laborStatus = 'good';
-        laborComment = `Đạt chuẩn quản trị F&B (ngưỡng chuẩn 18% - 22%). Cơ cấu ca kíp hợp lý.`;
+        laborComment = `Äáº¡t chuáº©n quáº£n trá»‹ F&B (ngÆ°á»¡ng chuáº©n 18% - 22%). CÆ¡ cáº¥u ca kÃ­p há»£p lÃ½.`;
     } else if (laborPct <= 28) {
         laborScore = 12;
         laborStatus = 'warning';
-        laborComment = `Quỹ lương đang chiếm ${laborPct.toFixed(1)}% DT. Nên áp dụng ca gãy linh hoạt và tuyển thêm part-time theo giờ cao điểm.`;
+        laborComment = `Quá»¹ lÆ°Æ¡ng Ä‘ang chiáº¿m ${laborPct.toFixed(1)}% DT. NÃªn Ã¡p dá»¥ng ca gÃ£y linh hoáº¡t vÃ  tuyá»ƒn thÃªm part-time theo giá» cao Ä‘iá»ƒm.`;
     } else {
         laborScore = 5;
         laborStatus = 'danger';
-        laborComment = `Chi phí nhân sự quá nặng (${laborPct.toFixed(1)}% DT). Nguy cơ ăn mòn toàn bộ lợi nhuận ròng.`;
+        laborComment = `Chi phÃ­ nhÃ¢n sá»± quÃ¡ náº·ng (${laborPct.toFixed(1)}% DT). Nguy cÆ¡ Äƒn mÃ²n toÃ n bá»™ lá»£i nhuáº­n rÃ²ng.`;
     }
     score += laborScore;
 
@@ -1368,19 +1368,19 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     if (cogsPct <= 25) {
         cogsScore = 25;
         cogsStatus = 'excellent';
-        cogsComment = `Biên lãi gộp cực dày (${(100 - cogsPct).toFixed(1)}%). Kiểm soát hao hụt và giá vốn nguyên vật liệu rất tốt.`;
+        cogsComment = `BiÃªn lÃ£i gá»™p cá»±c dÃ y (${(100 - cogsPct).toFixed(1)}%). Kiá»ƒm soÃ¡t hao há»¥t vÃ  giÃ¡ vá»‘n nguyÃªn váº­t liá»‡u ráº¥t tá»‘t.`;
     } else if (cogsPct <= 30) {
         cogsScore = 20;
         cogsStatus = 'good';
-        cogsComment = `Đạt tỷ lệ vàng giá vốn đồ uống (${cogsPct.toFixed(1)}% DT). Menu có cấu trúc định giá vững chắc.`;
+        cogsComment = `Äáº¡t tá»· lá»‡ vÃ ng giÃ¡ vá»‘n Ä‘á»“ uá»‘ng (${cogsPct.toFixed(1)}% DT). Menu cÃ³ cáº¥u trÃºc Ä‘á»‹nh giÃ¡ vá»¯ng cháº¯c.`;
     } else if (cogsPct <= 35) {
         cogsScore = 12;
         cogsStatus = 'warning';
-        cogsComment = `Giá vốn hơi cao (${cogsPct.toFixed(1)}%). Cần kiểm tra lại định lượng (recipe) và tìm nhà cung cấp giá sỉ tốt hơn.`;
+        cogsComment = `GiÃ¡ vá»‘n hÆ¡i cao (${cogsPct.toFixed(1)}%). Cáº§n kiá»ƒm tra láº¡i Ä‘á»‹nh lÆ°á»£ng (recipe) vÃ  tÃ¬m nhÃ  cung cáº¥p giÃ¡ sá»‰ tá»‘t hÆ¡n.`;
     } else {
         cogsScore = 5;
         cogsStatus = 'danger';
-        cogsComment = `Giá vốn chiếm ${cogsPct.toFixed(1)}% DT. Biên lãi gộp bị bóp nghẹt, rủi ro cao khi giá nguyên liệu thị trường biến động.`;
+        cogsComment = `GiÃ¡ vá»‘n chiáº¿m ${cogsPct.toFixed(1)}% DT. BiÃªn lÃ£i gá»™p bá»‹ bÃ³p ngháº¹t, rá»§i ro cao khi giÃ¡ nguyÃªn liá»‡u thá»‹ trÆ°á»ng biáº¿n Ä‘á»™ng.`;
     }
     score += cogsScore;
 
@@ -1391,19 +1391,19 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     if (marginOfSafety >= 40 && netMarginPct >= 20) {
         safetyScore = 25;
         safetyStatus = 'excellent';
-        safetyComment = `Biên an toàn cực lớn (${marginOfSafety.toFixed(1)}%) và tỷ suất lãi ròng đạt ${netMarginPct.toFixed(1)}%. Dự án có sức chống chịu biến động thị trường hoàn hảo.`;
+        safetyComment = `BiÃªn an toÃ n cá»±c lá»›n (${marginOfSafety.toFixed(1)}%) vÃ  tá»· suáº¥t lÃ£i rÃ²ng Ä‘áº¡t ${netMarginPct.toFixed(1)}%. Dá»± Ã¡n cÃ³ sá»©c chá»‘ng chá»‹u biáº¿n Ä‘á»™ng thá»‹ trÆ°á»ng hoÃ n háº£o.`;
     } else if (marginOfSafety >= 25 && netProfit > 0) {
         safetyScore = 20;
         safetyStatus = 'good';
-        safetyComment = `Biên an toàn tốt (${marginOfSafety.toFixed(1)}%). Quán sinh lời dương (${formatShortVND(netProfit)}/tháng) và có khoảng đệm an toàn trước rủi ro vắng khách.`;
+        safetyComment = `BiÃªn an toÃ n tá»‘t (${marginOfSafety.toFixed(1)}%). QuÃ¡n sinh lá»i dÆ°Æ¡ng (${formatShortVND(netProfit)}/thÃ¡ng) vÃ  cÃ³ khoáº£ng Ä‘á»‡m an toÃ n trÆ°á»›c rá»§i ro váº¯ng khÃ¡ch.`;
     } else if (marginOfSafety > 0 && netProfit > 0) {
         safetyScore = 12;
         safetyStatus = 'warning';
-        safetyComment = `Biên an toàn mỏng (${marginOfSafety.toFixed(1)}%). Chỉ cần sản lượng giảm nhẹ là rơi vào vùng thua lỗ. Cần tăng tốc marketing kéo khách.`;
+        safetyComment = `BiÃªn an toÃ n má»ng (${marginOfSafety.toFixed(1)}%). Chá»‰ cáº§n sáº£n lÆ°á»£ng giáº£m nháº¹ lÃ  rÆ¡i vÃ o vÃ¹ng thua lá»—. Cáº§n tÄƒng tá»‘c marketing kÃ©o khÃ¡ch.`;
     } else {
         safetyScore = 0;
         safetyStatus = 'danger';
-        safetyComment = `Đang hoạt động dưới điểm hòa vốn (${volBase} ly < ${Math.ceil(breakeven)} ly). Đang bị thâm hụt dòng tiền mỗi tháng.`;
+        safetyComment = `Äang hoáº¡t Ä‘á»™ng dÆ°á»›i Ä‘iá»ƒm hÃ²a vá»‘n (${volBase} ly < ${Math.ceil(breakeven)} ly). Äang bá»‹ thÃ¢m há»¥t dÃ²ng tiá»n má»—i thÃ¡ng.`;
     }
     score += safetyScore;
 
@@ -1414,25 +1414,25 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     let overallColor = '';
 
     if (score >= 85) {
-        overallBadge = '🌟 Xuất Sắc - Chuẩn Vàng F&B';
+        overallBadge = 'ðŸŒŸ Xuáº¥t Sáº¯c - Chuáº©n VÃ ng F&B';
         overallBadgeClass = 'badge-excellent';
         overallColor = 'var(--success)';
-        overallDesc = `Mô hình tài chính của quán được tối ưu ở mức <strong>cực kỳ xuất sắc</strong>. Cả 3 cấu phần chi phí lớn nhất (Mặt bằng, Nhân sự, Giá vốn) đều nằm trọn trong "Vùng Tỷ Lệ Vàng" chuẩn quốc tế. Dự án có biên an toàn dày, khả năng sinh lời và thu hồi vốn vượt trội, rất dễ thuyết phục nhà đầu tư & cổ đông.`;
+        overallDesc = `MÃ´ hÃ¬nh tÃ i chÃ­nh cá»§a quÃ¡n Ä‘Æ°á»£c tá»‘i Æ°u á»Ÿ má»©c <strong>cá»±c ká»³ xuáº¥t sáº¯c</strong>. Cáº£ 3 cáº¥u pháº§n chi phÃ­ lá»›n nháº¥t (Máº·t báº±ng, NhÃ¢n sá»±, GiÃ¡ vá»‘n) Ä‘á»u náº±m trá»n trong "VÃ¹ng Tá»· Lá»‡ VÃ ng" chuáº©n quá»‘c táº¿. Dá»± Ã¡n cÃ³ biÃªn an toÃ n dÃ y, kháº£ nÄƒng sinh lá»i vÃ  thu há»“i vá»‘n vÆ°á»£t trá»™i, ráº¥t dá»… thuyáº¿t phá»¥c nhÃ  Ä‘áº§u tÆ° & cá»• Ä‘Ã´ng.`;
     } else if (score >= 70) {
-        overallBadge = '✅ Tốt - Sức Khỏe Vững Chắc';
+        overallBadge = 'âœ… Tá»‘t - Sá»©c Khá»e Vá»¯ng Cháº¯c';
         overallBadgeClass = 'badge-good';
         overallColor = 'var(--primary)';
-        overallDesc = `Mô hình tài chính đạt mức <strong>khỏe mạnh và khả thi cao</strong>. Các chỉ số cốt lõi đều nằm trong ngưỡng an toàn cho phép của ngành F&B. Chỉ cần lưu ý kiểm soát ổn định chất lượng dịch vụ và quản trị chặt chẽ hàng tồn kho để bảo toàn dòng tiền.`;
+        overallDesc = `MÃ´ hÃ¬nh tÃ i chÃ­nh Ä‘áº¡t má»©c <strong>khá»e máº¡nh vÃ  kháº£ thi cao</strong>. CÃ¡c chá»‰ sá»‘ cá»‘t lÃµi Ä‘á»u náº±m trong ngÆ°á»¡ng an toÃ n cho phÃ©p cá»§a ngÃ nh F&B. Chá»‰ cáº§n lÆ°u Ã½ kiá»ƒm soÃ¡t á»•n Ä‘á»‹nh cháº¥t lÆ°á»£ng dá»‹ch vá»¥ vÃ  quáº£n trá»‹ cháº·t cháº½ hÃ ng tá»“n kho Ä‘á»ƒ báº£o toÃ n dÃ²ng tiá»n.`;
     } else if (score >= 50) {
-        overallBadge = '⚠️ Cảnh Báo - Cần Tinh Chỉnh';
+        overallBadge = 'âš ï¸ Cáº£nh BÃ¡o - Cáº§n Tinh Chá»‰nh';
         overallBadgeClass = 'badge-warning';
         overallColor = 'var(--warning)';
-        overallDesc = `Dự án có một số chỉ số tài chính <strong>đang tiệm cận ngưỡng rủi ro</strong>. Áp lực từ chi phí cố định (Mặt bằng hoặc Quỹ lương) hoặc giá vốn đang làm giảm biên lợi nhuận ròng. Bạn nên rà soát lại các gợi ý chiến lược bên dưới để tối ưu trước khi rót vốn thực tế.`;
+        overallDesc = `Dá»± Ã¡n cÃ³ má»™t sá»‘ chá»‰ sá»‘ tÃ i chÃ­nh <strong>Ä‘ang tiá»‡m cáº­n ngÆ°á»¡ng rá»§i ro</strong>. Ãp lá»±c tá»« chi phÃ­ cá»‘ Ä‘á»‹nh (Máº·t báº±ng hoáº·c Quá»¹ lÆ°Æ¡ng) hoáº·c giÃ¡ vá»‘n Ä‘ang lÃ m giáº£m biÃªn lá»£i nhuáº­n rÃ²ng. Báº¡n nÃªn rÃ  soÃ¡t láº¡i cÃ¡c gá»£i Ã½ chiáº¿n lÆ°á»£c bÃªn dÆ°á»›i Ä‘á»ƒ tá»‘i Æ°u trÆ°á»›c khi rÃ³t vá»‘n thá»±c táº¿.`;
     } else {
-        overallBadge = '🚨 Rủi Ro Cao - Cần Tái Cấu Trúc';
+        overallBadge = 'ðŸš¨ Rá»§i Ro Cao - Cáº§n TÃ¡i Cáº¥u TrÃºc';
         overallBadgeClass = 'badge-danger';
         overallColor = 'var(--danger)';
-        overallDesc = `Cảnh báo rủi ro nghiêm trọng: Dự án đang chịu áp lực chi phí quá lớn so với doanh thu dự kiến hoặc hoạt động dưới điểm hòa vốn. Cần giảm ngay chi phí thuê, tinh gọn bộ máy nhân sự hoặc nâng giá trị đơn hàng trung bình để tránh cạn kiệt vốn lưu động.`;
+        overallDesc = `Cáº£nh bÃ¡o rá»§i ro nghiÃªm trá»ng: Dá»± Ã¡n Ä‘ang chá»‹u Ã¡p lá»±c chi phÃ­ quÃ¡ lá»›n so vá»›i doanh thu dá»± kiáº¿n hoáº·c hoáº¡t Ä‘á»™ng dÆ°á»›i Ä‘iá»ƒm hÃ²a vá»‘n. Cáº§n giáº£m ngay chi phÃ­ thuÃª, tinh gá»n bá»™ mÃ¡y nhÃ¢n sá»± hoáº·c nÃ¢ng giÃ¡ trá»‹ Ä‘Æ¡n hÃ ng trung bÃ¬nh Ä‘á»ƒ trÃ¡nh cáº¡n kiá»‡t vá»‘n lÆ°u Ä‘á»™ng.`;
     }
 
     // Helper for status badge
@@ -1459,13 +1459,13 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     const dividendYield = totalEquityContributed > 0 ? (annualDividend / totalEquityContributed) * 100 : 0;
     
     // Cash Runway
-    let runwayMonths = 'Vô hạn (Đang lãi)';
+    let runwayMonths = 'VÃ´ háº¡n (Äang lÃ£i)';
     if (netProfit < 0) {
         const actualLoss = Math.abs(netProfit);
-        runwayMonths = actualLoss > 0 ? (buffer / actualLoss).toFixed(1) + ' tháng' : 'N/A';
+        runwayMonths = actualLoss > 0 ? (buffer / actualLoss).toFixed(1) + ' thÃ¡ng' : 'N/A';
     } else {
         const worstCaseOpex = fixedMonthlyOpex + monthlyDebt;
-        runwayMonths = worstCaseOpex > 0 ? (buffer / worstCaseOpex).toFixed(1) + ' tháng (Zero DT)' : 'N/A';
+        runwayMonths = worstCaseOpex > 0 ? (buffer / worstCaseOpex).toFixed(1) + ' thÃ¡ng (Zero DT)' : 'N/A';
     }
 
     // Shift metrics
@@ -1479,11 +1479,11 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
         <div class="advisor-hero-card">
             <div class="health-score-circle-wrap" style="border-color:${overallColor}; box-shadow: 0 0 20px ${overallColor}40;">
                 <div class="health-score-val" style="color:${overallColor};">${score}</div>
-                <div class="health-score-max">/ 100 ĐIỂM FHI</div>
+                <div class="health-score-max">/ 100 ÄIá»‚M FHI</div>
             </div>
             <div class="advisor-hero-content">
                 <div class="advisor-hero-title">
-                    Chỉ Số Sức Khỏe Tài Chính F&B (Financial Health Index)
+                    Chá»‰ Sá»‘ Sá»©c Khá»e TÃ i ChÃ­nh F&B (Financial Health Index)
                     <span class="advisor-hero-badge ${overallBadgeClass}">${overallBadge}</span>
                 </div>
                 <div class="advisor-hero-desc">
@@ -1495,23 +1495,23 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
         <!-- 4 Golden Ratios of F&B -->
         <div>
             <div class="advice-section-title">
-                <span>🏆</span> Bộ Tứ Tỷ Lệ Vàng Trong Kinh Doanh Quán Cà Phê
+                <span>ðŸ†</span> Bá»™ Tá»© Tá»· Lá»‡ VÃ ng Trong Kinh Doanh QuÃ¡n CÃ  PhÃª
             </div>
             <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px; margin-top: 2px;">
-                Được tổng hợp từ mô hình chuẩn của hơn 500+ chuỗi và quán cà phê thành công tại Việt Nam.
+                ÄÆ°á»£c tá»•ng há»£p tá»« mÃ´ hÃ¬nh chuáº©n cá»§a hÆ¡n 500+ chuá»—i vÃ  quÃ¡n cÃ  phÃª thÃ nh cÃ´ng táº¡i Viá»‡t Nam.
             </p>
             <div class="golden-ratio-grid">
                 <!-- 1. Rent Ratio -->
                 <div class="ratio-card">
                     <div class="ratio-header">
-                        <span class="ratio-title">🏢 Mặt Bằng / Doanh Thu</span>
-                        <span class="ratio-benchmark-tag">Chuẩn Vàng: ≤ 15%</span>
+                        <span class="ratio-title">ðŸ¢ Máº·t Báº±ng / Doanh Thu</span>
+                        <span class="ratio-benchmark-tag">Chuáº©n VÃ ng: â‰¤ 15%</span>
                     </div>
                     <div class="ratio-value-row">
                         <div class="ratio-val-num" style="color:${rentStatus === 'excellent' || rentStatus === 'good' ? 'var(--success)' : rentStatus === 'warning' ? 'var(--warning)' : 'var(--danger)'};">
                             ${rentPct.toFixed(1)}%
                         </div>
-                        ${getStatusPill(rentStatus, rentStatus === 'excellent' ? '🟢 Xuất sắc' : rentStatus === 'good' ? '🟢 Đạt Chuẩn' : rentStatus === 'warning' ? '🟡 Chấp nhận' : '🔴 Vượt trần')}
+                        ${getStatusPill(rentStatus, rentStatus === 'excellent' ? 'ðŸŸ¢ Xuáº¥t sáº¯c' : rentStatus === 'good' ? 'ðŸŸ¢ Äáº¡t Chuáº©n' : rentStatus === 'warning' ? 'ðŸŸ¡ Cháº¥p nháº­n' : 'ðŸ”´ VÆ°á»£t tráº§n')}
                     </div>
                     ${getMeterFill(rentPct, 30, rentStatus === 'danger' ? 'var(--danger)' : rentStatus === 'warning' ? 'var(--warning)' : 'var(--success)')}
                     <div class="ratio-desc">${rentComment}</div>
@@ -1520,14 +1520,14 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
                 <!-- 2. Labor Cost Ratio -->
                 <div class="ratio-card">
                     <div class="ratio-header">
-                        <span class="ratio-title">👥 Nhân Sự / Doanh Thu</span>
-                        <span class="ratio-benchmark-tag">Chuẩn Vàng: ≤ 22%</span>
+                        <span class="ratio-title">ðŸ‘¥ NhÃ¢n Sá»± / Doanh Thu</span>
+                        <span class="ratio-benchmark-tag">Chuáº©n VÃ ng: â‰¤ 22%</span>
                     </div>
                     <div class="ratio-value-row">
                         <div class="ratio-val-num" style="color:${laborStatus === 'excellent' || laborStatus === 'good' ? 'var(--success)' : laborStatus === 'warning' ? 'var(--warning)' : 'var(--danger)'};">
                             ${laborPct.toFixed(1)}%
                         </div>
-                        ${getStatusPill(laborStatus, laborStatus === 'excellent' ? '🟢 Xuất sắc' : laborStatus === 'good' ? '🟢 Đạt Chuẩn' : laborStatus === 'warning' ? '🟡 Chấp nhận' : '🔴 Vượt trần')}
+                        ${getStatusPill(laborStatus, laborStatus === 'excellent' ? 'ðŸŸ¢ Xuáº¥t sáº¯c' : laborStatus === 'good' ? 'ðŸŸ¢ Äáº¡t Chuáº©n' : laborStatus === 'warning' ? 'ðŸŸ¡ Cháº¥p nháº­n' : 'ðŸ”´ VÆ°á»£t tráº§n')}
                     </div>
                     ${getMeterFill(laborPct, 40, laborStatus === 'danger' ? 'var(--danger)' : laborStatus === 'warning' ? 'var(--warning)' : 'var(--success)')}
                     <div class="ratio-desc">${laborComment}</div>
@@ -1536,14 +1536,14 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
                 <!-- 3. COGS Ratio -->
                 <div class="ratio-card">
                     <div class="ratio-header">
-                        <span class="ratio-title">☕ Giá Vốn (COGS) / Doanh Thu</span>
-                        <span class="ratio-benchmark-tag">Chuẩn Vàng: ≤ 30%</span>
+                        <span class="ratio-title">â˜• GiÃ¡ Vá»‘n (COGS) / Doanh Thu</span>
+                        <span class="ratio-benchmark-tag">Chuáº©n VÃ ng: â‰¤ 30%</span>
                     </div>
                     <div class="ratio-value-row">
                         <div class="ratio-val-num" style="color:${cogsStatus === 'excellent' || cogsStatus === 'good' ? 'var(--success)' : cogsStatus === 'warning' ? 'var(--warning)' : 'var(--danger)'};">
                             ${cogsPct.toFixed(1)}%
                         </div>
-                        ${getStatusPill(cogsStatus, cogsStatus === 'excellent' ? '🟢 Xuất sắc' : cogsStatus === 'good' ? '🟢 Đạt Chuẩn' : cogsStatus === 'warning' ? '🟡 Chấp nhận' : '🔴 Vượt trần')}
+                        ${getStatusPill(cogsStatus, cogsStatus === 'excellent' ? 'ðŸŸ¢ Xuáº¥t sáº¯c' : cogsStatus === 'good' ? 'ðŸŸ¢ Äáº¡t Chuáº©n' : cogsStatus === 'warning' ? 'ðŸŸ¡ Cháº¥p nháº­n' : 'ðŸ”´ VÆ°á»£t tráº§n')}
                     </div>
                     ${getMeterFill(cogsPct, 50, cogsStatus === 'danger' ? 'var(--danger)' : cogsStatus === 'warning' ? 'var(--warning)' : 'var(--success)')}
                     <div class="ratio-desc">${cogsComment}</div>
@@ -1552,14 +1552,14 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
                 <!-- 4. Margin of Safety -->
                 <div class="ratio-card">
                     <div class="ratio-header">
-                        <span class="ratio-title">🛡️ Biên An Toàn Hòa Vốn</span>
-                        <span class="ratio-benchmark-tag">Chuẩn Vàng: ≥ 35%</span>
+                        <span class="ratio-title">ðŸ›¡ï¸ BiÃªn An ToÃ n HÃ²a Vá»‘n</span>
+                        <span class="ratio-benchmark-tag">Chuáº©n VÃ ng: â‰¥ 35%</span>
                     </div>
                     <div class="ratio-value-row">
                         <div class="ratio-val-num" style="color:${safetyStatus === 'excellent' || safetyStatus === 'good' ? 'var(--success)' : safetyStatus === 'warning' ? 'var(--warning)' : 'var(--danger)'};">
                             ${marginOfSafety.toFixed(1)}%
                         </div>
-                        ${getStatusPill(safetyStatus, safetyStatus === 'excellent' ? '🟢 Cực Dày' : safetyStatus === 'good' ? '🟢 An Toàn' : safetyStatus === 'warning' ? '🟡 Hẹp' : '🔴 Nguy Hiểm')}
+                        ${getStatusPill(safetyStatus, safetyStatus === 'excellent' ? 'ðŸŸ¢ Cá»±c DÃ y' : safetyStatus === 'good' ? 'ðŸŸ¢ An ToÃ n' : safetyStatus === 'warning' ? 'ðŸŸ¡ Háº¹p' : 'ðŸ”´ Nguy Hiá»ƒm')}
                     </div>
                     ${getMeterFill(Math.max(marginOfSafety, 0), 60, safetyStatus === 'danger' ? 'var(--danger)' : safetyStatus === 'warning' ? 'var(--warning)' : 'var(--success)')}
                     <div class="ratio-desc">${safetyComment}</div>
@@ -1570,53 +1570,53 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
         <!-- 4 Strategic Actionable Recommendations -->
         <div>
             <div class="advice-section-title">
-                <span>🎯</span> Khuyến Nghị Chiến Lược Vận Hành & Gọi Vốn
+                <span>ðŸŽ¯</span> Khuyáº¿n Nghá»‹ Chiáº¿n LÆ°á»£c Váº­n HÃ nh & Gá»i Vá»‘n
             </div>
             <div class="advice-cards-grid" style="margin-top: 10px;">
                 <!-- 1. Location Strategy -->
                 <div class="advice-card">
                     <div class="advice-card-header">
-                        <div class="advice-icon-wrap advice-icon-blue">🏢</div>
-                        <div class="advice-card-title">Chiến Lược Mặt Bằng & Điểm Bán</div>
+                        <div class="advice-icon-wrap advice-icon-blue">ðŸ¢</div>
+                        <div class="advice-card-title">Chiáº¿n LÆ°á»£c Máº·t Báº±ng & Äiá»ƒm BÃ¡n</div>
                     </div>
                     <div class="advice-card-body">
-                        Mặt bằng tiêu tốn <strong>${formatVND(rent)}/tháng</strong>. Bạn cần đạt doanh thu tối thiểu <strong>${formatShortVND(rent / 0.15)}/tháng</strong> để đưa tỷ lệ tiền thuê về mức an toàn chuẩn 15%.
-                        ${rentPct > 15 ? '<br><span style="color:var(--warning);">⚠️ Mẹo: Hãy tận dụng vỉa hè hoặc mở thêm quầy Takeaway buổi sáng để gia tăng doanh thu trên cùng 1 mét vuông thuê.</span>' : '<br><span style="color:var(--success);">✨ Vị thế mặt bằng tốt, áp lực định phí mặt bằng ở mức lý tưởng.</span>'}
+                        Máº·t báº±ng tiÃªu tá»‘n <strong>${formatVND(rent)}/thÃ¡ng</strong>. Báº¡n cáº§n Ä‘áº¡t doanh thu tá»‘i thiá»ƒu <strong>${formatShortVND(rent / 0.15)}/thÃ¡ng</strong> Ä‘á»ƒ Ä‘Æ°a tá»· lá»‡ tiá»n thuÃª vá» má»©c an toÃ n chuáº©n 15%.
+                        ${rentPct > 15 ? '<br><span style="color:var(--warning);">âš ï¸ Máº¹o: HÃ£y táº­n dá»¥ng vá»‰a hÃ¨ hoáº·c má»Ÿ thÃªm quáº§y Takeaway buá»•i sÃ¡ng Ä‘á»ƒ gia tÄƒng doanh thu trÃªn cÃ¹ng 1 mÃ©t vuÃ´ng thuÃª.</span>' : '<br><span style="color:var(--success);">âœ¨ Vá»‹ tháº¿ máº·t báº±ng tá»‘t, Ã¡p lá»±c Ä‘á»‹nh phÃ­ máº·t báº±ng á»Ÿ má»©c lÃ½ tÆ°á»Ÿng.</span>'}
                     </div>
                     <div class="advice-key-stat">
-                        <span class="advice-stat-label">Số ngày bán trả tiền nhà:</span>
-                        <span class="advice-stat-val" style="color:${rentDaysNeeded <= 4.5 ? 'var(--success)' : 'var(--warning)'};">${rentDaysNeeded} ngày / tháng</span>
+                        <span class="advice-stat-label">Sá»‘ ngÃ y bÃ¡n tráº£ tiá»n nhÃ :</span>
+                        <span class="advice-stat-val" style="color:${rentDaysNeeded <= 4.5 ? 'var(--success)' : 'var(--warning)'};">${rentDaysNeeded} ngÃ y / thÃ¡ng</span>
                     </div>
                 </div>
 
                 <!-- 2. Staffing Strategy -->
                 <div class="advice-card">
                     <div class="advice-card-header">
-                        <div class="advice-icon-wrap advice-icon-green">👥</div>
-                        <div class="advice-card-title">Chiến Lược Quản Trị Nhân Sự & Ca Kíp</div>
+                        <div class="advice-icon-wrap advice-icon-green">ðŸ‘¥</div>
+                        <div class="advice-card-title">Chiáº¿n LÆ°á»£c Quáº£n Trá»‹ NhÃ¢n Sá»± & Ca KÃ­p</div>
                     </div>
                     <div class="advice-card-body">
-                        Tổng định biên có <strong>${totalShiftsPerDay} nhân sự/ngày</strong> chia 3 ca. Bình quân mỗi nhân viên phục vụ tạo ra khoảng <strong>${totalShiftsPerDay > 0 ? formatShortVND(dailyRev / totalShiftsPerDay) : '0'} doanh thu/ngày</strong>.
-                        ${laborPct > 22 ? '<br><span style="color:var(--warning);">⚠️ Mẹo: Nên chuyển 1 phần nhân viên full-time sang part-time theo giờ (18k - 22k/h) để chỉ tăng cường vào khung giờ cao điểm (7h-9h sáng & 19h-21h tối).</span>' : '<br><span style="color:var(--success);">✨ Cơ cấu lương và phân ca đang vận hành rất hiệu quả.</span>'}
+                        Tá»•ng Ä‘á»‹nh biÃªn cÃ³ <strong>${totalShiftsPerDay} nhÃ¢n sá»±/ngÃ y</strong> chia 3 ca. BÃ¬nh quÃ¢n má»—i nhÃ¢n viÃªn phá»¥c vá»¥ táº¡o ra khoáº£ng <strong>${totalShiftsPerDay > 0 ? formatShortVND(dailyRev / totalShiftsPerDay) : '0'} doanh thu/ngÃ y</strong>.
+                        ${laborPct > 22 ? '<br><span style="color:var(--warning);">âš ï¸ Máº¹o: NÃªn chuyá»ƒn 1 pháº§n nhÃ¢n viÃªn full-time sang part-time theo giá» (18k - 22k/h) Ä‘á»ƒ chá»‰ tÄƒng cÆ°á»ng vÃ o khung giá» cao Ä‘iá»ƒm (7h-9h sÃ¡ng & 19h-21h tá»‘i).</span>' : '<br><span style="color:var(--success);">âœ¨ CÆ¡ cáº¥u lÆ°Æ¡ng vÃ  phÃ¢n ca Ä‘ang váº­n hÃ nh ráº¥t hiá»‡u quáº£.</span>'}
                     </div>
                     <div class="advice-key-stat">
-                        <span class="advice-stat-label">Quỹ lương trung bình/ngày:</span>
-                        <span class="advice-stat-val">${formatShortVND(totalSalary / 30)}/ngày</span>
+                        <span class="advice-stat-label">Quá»¹ lÆ°Æ¡ng trung bÃ¬nh/ngÃ y:</span>
+                        <span class="advice-stat-val">${formatShortVND(totalSalary / 30)}/ngÃ y</span>
                     </div>
                 </div>
 
                 <!-- 3. Pitching Strategy -->
                 <div class="advice-card">
                     <div class="advice-card-header">
-                        <div class="advice-icon-wrap advice-icon-purple">🤝</div>
-                        <div class="advice-card-title">Chiến Lược Cổ Đông & Gọi Vốn (Pitching)</div>
+                        <div class="advice-icon-wrap advice-icon-purple">ðŸ¤</div>
+                        <div class="advice-card-title">Chiáº¿n LÆ°á»£c Cá»• ÄÃ´ng & Gá»i Vá»‘n (Pitching)</div>
                     </div>
                     <div class="advice-card-body">
-                        Với mức chi trả cổ tức ${payoutPct}%, tỷ suất cổ tức thực nhận hàng năm dự kiến đạt <strong>${dividendYield.toFixed(1)}%/năm</strong> trên tổng vốn góp.
-                        ${dividendYield > 20 ? '<br><span style="color:var(--success);">✨ Tỷ suất sinh lời vượt trội so với gửi tiết kiệm ngân hàng (5-6%/năm), là luận điểm vàng để chốt deal với cổ đông.</span>' : '<br><span style="color:var(--warning);">⚠️ Tỷ suất cổ tức đang ở mức vừa phải. Cân nhắc giữ lại thêm quỹ tái đầu tư để mở rộng quy mô.</span>'}
+                        Vá»›i má»©c chi tráº£ cá»• tá»©c ${payoutPct}%, tá»· suáº¥t cá»• tá»©c thá»±c nháº­n hÃ ng nÄƒm dá»± kiáº¿n Ä‘áº¡t <strong>${dividendYield.toFixed(1)}%/nÄƒm</strong> trÃªn tá»•ng vá»‘n gÃ³p.
+                        ${dividendYield > 20 ? '<br><span style="color:var(--success);">âœ¨ Tá»· suáº¥t sinh lá»i vÆ°á»£t trá»™i so vá»›i gá»­i tiáº¿t kiá»‡m ngÃ¢n hÃ ng (5-6%/nÄƒm), lÃ  luáº­n Ä‘iá»ƒm vÃ ng Ä‘á»ƒ chá»‘t deal vá»›i cá»• Ä‘Ã´ng.</span>' : '<br><span style="color:var(--warning);">âš ï¸ Tá»· suáº¥t cá»• tá»©c Ä‘ang á»Ÿ má»©c vá»«a pháº£i. CÃ¢n nháº¯c giá»¯ láº¡i thÃªm quá»¹ tÃ¡i Ä‘áº§u tÆ° Ä‘á»ƒ má»Ÿ rá»™ng quy mÃ´.</span>'}
                     </div>
                     <div class="advice-key-stat">
-                        <span class="advice-stat-label">Tỷ lệ sở hữu của Founder:</span>
+                        <span class="advice-stat-label">Tá»· lá»‡ sá»Ÿ há»¯u cá»§a Founder:</span>
                         <span class="advice-stat-val" style="color:var(--primary);">${founderRatio.toFixed(1)}% (${formatShortVND(founderEquity)})</span>
                     </div>
                 </div>
@@ -1624,16 +1624,16 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
                 <!-- 4. Runway Strategy -->
                 <div class="advice-card">
                     <div class="advice-card-header">
-                        <div class="advice-icon-wrap advice-icon-amber">🛡️</div>
-                        <div class="advice-card-title">Khả Năng Phòng Vệ & Quỹ Dự Phòng</div>
+                        <div class="advice-icon-wrap advice-icon-amber">ðŸ›¡ï¸</div>
+                        <div class="advice-card-title">Kháº£ NÄƒng PhÃ²ng Vá»‡ & Quá»¹ Dá»± PhÃ²ng</div>
                     </div>
                     <div class="advice-card-body">
-                        Quỹ dự phòng tiền mặt hiện có <strong>${formatVND(buffer)}</strong>. 
-                        ${netProfit >= 0 ? `Nếu quán không có bất kỳ doanh thu nào (Zero Revenue), quỹ này cho phép duy trì trả mặt bằng và nợ vay trong <strong>${runwayMonths}</strong>.` : `Với mức thâm hụt hiện tại, quán có thể gồng lỗ trong tối đa <strong>${runwayMonths}</strong> trước khi cạn tiền.`}
-                        <br><span style="color:${buffer >= fixedMonthlyOpex * 3 ? 'var(--success)' : 'var(--warning)'};">${buffer >= fixedMonthlyOpex * 3 ? '✨ Quỹ dự phòng đạt chuẩn bảo hiểm an toàn (≥ 3 tháng định phí).' : '⚠️ Khuyến nghị: Nên chuẩn bị quỹ dự phòng tối thiểu tương đương 3 tháng tiền nhà + nợ vay để yên tâm vận hành.'}</span>
+                        Quá»¹ dá»± phÃ²ng tiá»n máº·t hiá»‡n cÃ³ <strong>${formatVND(buffer)}</strong>. 
+                        ${netProfit >= 0 ? `Náº¿u quÃ¡n khÃ´ng cÃ³ báº¥t ká»³ doanh thu nÃ o (Zero Revenue), quá»¹ nÃ y cho phÃ©p duy trÃ¬ tráº£ máº·t báº±ng vÃ  ná»£ vay trong <strong>${runwayMonths}</strong>.` : `Vá»›i má»©c thÃ¢m há»¥t hiá»‡n táº¡i, quÃ¡n cÃ³ thá»ƒ gá»“ng lá»— trong tá»‘i Ä‘a <strong>${runwayMonths}</strong> trÆ°á»›c khi cáº¡n tiá»n.`}
+                        <br><span style="color:${buffer >= fixedMonthlyOpex * 3 ? 'var(--success)' : 'var(--warning)'};">${buffer >= fixedMonthlyOpex * 3 ? 'âœ¨ Quá»¹ dá»± phÃ²ng Ä‘áº¡t chuáº©n báº£o hiá»ƒm an toÃ n (â‰¥ 3 thÃ¡ng Ä‘á»‹nh phÃ­).' : 'âš ï¸ Khuyáº¿n nghá»‹: NÃªn chuáº©n bá»‹ quá»¹ dá»± phÃ²ng tá»‘i thiá»ƒu tÆ°Æ¡ng Ä‘Æ°Æ¡ng 3 thÃ¡ng tiá»n nhÃ  + ná»£ vay Ä‘á»ƒ yÃªn tÃ¢m váº­n hÃ nh.'}</span>
                     </div>
                     <div class="advice-key-stat">
-                        <span class="advice-stat-label">Thời gian sinh tồn an toàn:</span>
+                        <span class="advice-stat-label">Thá»i gian sinh tá»“n an toÃ n:</span>
                         <span class="advice-stat-val" style="color:${netProfit >= 0 ? 'var(--success)' : 'var(--danger)'};">${runwayMonths}</span>
                     </div>
                 </div>
@@ -1758,7 +1758,7 @@ function updateDashboard() {
     
     if (kpiCap) animateValue(kpiCap, 0, totalCapitalNeeded, 800, formatShortVND);
     if (kpiDebt) animateValue(kpiDebt, 0, monthlyDebt, 800, formatShortVND);
-    if (kpiBe) animateValue(kpiBe, 0, breakEvenDailyVol, 800, (val) => Math.ceil(val) + ' ly/ngày');
+    if (kpiBe) animateValue(kpiBe, 0, breakEvenDailyVol, 800, (val) => Math.ceil(val) + ' ly/ngÃ y');
 
     const lblLeverage = document.getElementById('lbl-leverage-ratio');
     if (lblLeverage) lblLeverage.innerText = leverageRatio.toFixed(0) + '%';
@@ -1815,7 +1815,7 @@ function updateDashboard() {
         const elNet = document.getElementById(`fc-${level}-net`);
         const elStatus = document.getElementById(`fc-${level}-status`);
 
-        if (elVol) elVol.innerText = sc.vol + ' ly/ngày';
+        if (elVol) elVol.innerText = sc.vol + ' ly/ngÃ y';
         if (elRev) elRev.innerText = formatShortVND(sc.rev);
         if (elCost) elCost.innerText = formatShortVND(sc.totalExpense);
         if (elNet) {
@@ -1824,13 +1824,13 @@ function updateDashboard() {
         }
         if (elStatus) {
             if (sc.net < 0) {
-                elStatus.innerText = 'Cần bù lỗ: ' + formatShortVND(Math.abs(sc.net)) + '/th';
+                elStatus.innerText = 'Cáº§n bÃ¹ lá»—: ' + formatShortVND(Math.abs(sc.net)) + '/th';
                 elStatus.style.color = 'var(--danger)';
             } else if (sc.net === 0) {
-                elStatus.innerText = 'Hòa vốn kinh doanh';
+                elStatus.innerText = 'HÃ²a vá»‘n kinh doanh';
                 elStatus.style.color = 'var(--warning)';
             } else {
-                elStatus.innerText = (level === 'good' ? 'Tối ưu: Lãi +' : 'Lãi +') + formatShortVND(sc.net) + '/th';
+                elStatus.innerText = (level === 'good' ? 'Tá»‘i Æ°u: LÃ£i +' : 'LÃ£i +') + formatShortVND(sc.net) + '/th';
                 elStatus.style.color = 'var(--success)';
             }
         }
@@ -1888,8 +1888,8 @@ function updateDashboard() {
         alertContainer.style.borderRadius = '12px';
         alertContainer.style.border = '1px solid';
         
-        let statusIcon = '🟢';
-        let statusText = 'An toàn';
+        let statusIcon = 'ðŸŸ¢';
+        let statusText = 'An toÃ n';
         let badgeBg = 'rgba(16, 185, 129, 0.1)';
         let badgeColor = isLightAlert ? '#047857' : '#34d399';
         let badgeBorder = 'rgba(16, 185, 129, 0.3)';
@@ -1897,17 +1897,17 @@ function updateDashboard() {
         let textColor = isLightAlert ? '#0f172a' : '#f8fafc';
         let containerBg = isLightAlert ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.02)';
         let containerBorder = 'rgba(16, 185, 129, 0.25)';
-        let warningMessage = 'Quỹ dự phòng ở mức an toàn. Doanh số dự kiến đảm bảo khả năng sinh lời hoặc sinh tồn ổn định.';
-        let runwayText = 'Vô hạn (Không cạn kiệt)';
+        let warningMessage = 'Quá»¹ dá»± phÃ²ng á»Ÿ má»©c an toÃ n. Doanh sá»‘ dá»± kiáº¿n Ä‘áº£m báº£o kháº£ nÄƒng sinh lá»i hoáº·c sinh tá»“n á»•n Ä‘á»‹nh.';
+        let runwayText = 'VÃ´ háº¡n (KhÃ´ng cáº¡n kiá»‡t)';
 
         if (runwayMonths !== Infinity) {
-            runwayText = runwayMonths.toFixed(1) + ' tháng';
+            runwayText = runwayMonths.toFixed(1) + ' thÃ¡ng';
         }
 
         if (burnRate > 0) {
             if (runwayMonths < 3) {
-                statusIcon = '🔴';
-                statusText = 'Nguy hiểm';
+                statusIcon = 'ðŸ”´';
+                statusText = 'Nguy hiá»ƒm';
                 badgeBg = 'rgba(239, 68, 68, 0.1)';
                 badgeColor = isLightAlert ? '#b91c1c' : '#f87171';
                 badgeBorder = 'rgba(239, 68, 68, 0.3)';
@@ -1915,11 +1915,11 @@ function updateDashboard() {
                 textColor = isLightAlert ? '#b91c1c' : '#fca5a5';
                 containerBg = 'var(--danger-glow)';
                 containerBorder = 'rgba(239, 68, 68, 0.3)';
-                warningMessage = `Với mức lỗ ${formatShortVND(burnRate)}/tháng, quỹ dự phòng của bạn sẽ cạn kiệt trong khoảng ${runwayMonths.toFixed(1)} tháng. Cần cải thiện doanh số hoặc cắt giảm định phí.`;
+                warningMessage = `Vá»›i má»©c lá»— ${formatShortVND(burnRate)}/thÃ¡ng, quá»¹ dá»± phÃ²ng cá»§a báº¡n sáº½ cáº¡n kiá»‡t trong khoáº£ng ${runwayMonths.toFixed(1)} thÃ¡ng. Cáº§n cáº£i thiá»‡n doanh sá»‘ hoáº·c cáº¯t giáº£m Ä‘á»‹nh phÃ­.`;
                 alertContainer.classList.add('danger-alert');
             } else if (runwayMonths <= 6) {
-                statusIcon = '🟡';
-                statusText = 'Cảnh báo';
+                statusIcon = 'ðŸŸ¡';
+                statusText = 'Cáº£nh bÃ¡o';
                 badgeBg = 'rgba(245, 158, 11, 0.1)';
                 badgeColor = isLightAlert ? '#b45309' : '#fbbf24';
                 badgeBorder = 'rgba(245, 158, 11, 0.3)';
@@ -1927,7 +1927,7 @@ function updateDashboard() {
                 textColor = isLightAlert ? '#92400e' : '#fde68a';
                 containerBg = 'var(--warning-glow)';
                 containerBorder = 'rgba(245, 158, 11, 0.3)';
-                warningMessage = `Quỹ dự phòng đủ gánh lỗ trong khoảng ${runwayMonths.toFixed(1)} tháng. Mức độ an toàn ở mức trung bình, cần chú ý tối ưu định phí hoặc tăng doanh số.`;
+                warningMessage = `Quá»¹ dá»± phÃ²ng Ä‘á»§ gÃ¡nh lá»— trong khoáº£ng ${runwayMonths.toFixed(1)} thÃ¡ng. Má»©c Ä‘á»™ an toÃ n á»Ÿ má»©c trung bÃ¬nh, cáº§n chÃº Ã½ tá»‘i Æ°u Ä‘á»‹nh phÃ­ hoáº·c tÄƒng doanh sá»‘.`;
                 alertContainer.classList.remove('danger-alert');
             } else {
                 alertContainer.classList.remove('danger-alert');
@@ -1945,7 +1945,7 @@ function updateDashboard() {
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                     <div style="display: flex; align-items: center; gap: 6px; font-weight: bold; font-size: 13.5px;">
                         <span>${statusIcon}</span>
-                        <span>Khả Năng Sinh Tồn Tài Chính (Cash Runway)</span>
+                        <span>Kháº£ NÄƒng Sinh Tá»“n TÃ i ChÃ­nh (Cash Runway)</span>
                     </div>
                     <span style="padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; background: ${badgeBg}; color: ${badgeColor}; border: 1px solid ${badgeBorder};">
                         ${statusText}
@@ -1953,13 +1953,13 @@ function updateDashboard() {
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-top: 1px dashed ${borderColor}; padding-top: 8px; margin-top: 4px;">
                     <div>
-                        <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">TỐC ĐỘ ĐỐT TIỀN (BURN RATE)</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">Tá»C Äá»˜ Äá»T TIá»€N (BURN RATE)</div>
                         <div style="font-size: 15px; font-weight: bold; margin-top: 2px; color: ${burnRate > 0 ? 'var(--danger)' : 'var(--success)'};">
-                            ${base.net < 0 ? '-' + formatShortVND(burnRate) : '+' + formatShortVND(base.net)}/tháng
+                            ${base.net < 0 ? '-' + formatShortVND(burnRate) : '+' + formatShortVND(base.net)}/thÃ¡ng
                         </div>
                     </div>
                     <div>
-                        <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">THỜI GIAN SINH TỒN (RUNWAY)</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">THá»œI GIAN SINH Tá»’N (RUNWAY)</div>
                         <div style="font-size: 15px; font-weight: bold; margin-top: 2px;">
                             ${runwayText}
                         </div>
@@ -2075,7 +2075,7 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
         costChartInstance = new Chart(ctxCost, {
             type: 'doughnut',
             data: {
-                labels: ['Cọc mặt bằng', 'Thi công sửa chữa', 'Thiết bị & Bàn ghế', 'Nguyên liệu đầu'],
+                labels: ['Cá»c máº·t báº±ng', 'Thi cÃ´ng sá»­a chá»¯a', 'Thiáº¿t bá»‹ & BÃ n gháº¿', 'NguyÃªn liá»‡u Ä‘áº§u'],
                 datasets: [{
                     data: costData,
                     backgroundColor: [
@@ -2127,7 +2127,7 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
         equityChartInstance = new Chart(ctxEquity, {
             type: 'doughnut',
             data: {
-                labels: labels.length > 0 ? labels : ['Chưa góp vốn'],
+                labels: labels.length > 0 ? labels : ['ChÆ°a gÃ³p vá»‘n'],
                 datasets: [{
                     data: data.length > 0 ? data : [1],
                     backgroundColor: data.length > 0 ? colors.slice(0, data.length) : ['rgba(148, 163, 184, 0.3)'],
@@ -2147,7 +2147,7 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                if (context.label === 'Chưa góp vốn') return ' Chưa góp vốn';
+                                if (context.label === 'ChÆ°a gÃ³p vá»‘n') return ' ChÆ°a gÃ³p vá»‘n';
                                 return ' ' + context.label + ': ' + formatVND(context.raw) + ` (${((context.raw / totalEquityContributed)*100).toFixed(1)}%)`;
                             }
                         }
@@ -2173,15 +2173,15 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
         const canvasEl = document.getElementById('financialChart');
         if (canvasEl && activeTab === 'cashflow') {
             const ctx = canvasEl.getContext('2d');
-            const monthsLabel = ['Bắt đầu'];
-            for (let i = 1; i <= 12; i++) monthsLabel.push('Tháng ' + i);
+            const monthsLabel = ['Báº¯t Ä‘áº§u'];
+            for (let i = 1; i <= 12; i++) monthsLabel.push('ThÃ¡ng ' + i);
             chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: monthsLabel,
                     datasets: [
                         {
-                            label: 'Quỹ tiền mặt dự kiến (VND)',
+                            label: 'Quá»¹ tiá»n máº·t dá»± kiáº¿n (VND)',
                             data: baseTrend,
                             borderColor: isLight ? '#0284c7' : '#38bdf8',
                             backgroundColor: isLight ? 'rgba(2, 132, 199, 0.08)' : 'rgba(56, 189, 248, 0.1)',
@@ -2200,7 +2200,7 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
                         legend: { display: true, position: 'top', labels: { color: textColor } },
                         tooltip: {
                             callbacks: {
-                                label: function(context) { return 'Số dư quỹ: ' + formatVND(context.raw); }
+                                label: function(context) { return 'Sá»‘ dÆ° quá»¹: ' + formatVND(context.raw); }
                             }
                         },
                         datalabels: getDataLabelConfig(isLight, 'line')
@@ -2264,9 +2264,9 @@ window.exportPDF = function() {
 // Product Mix Logic
 // ======================================================================
 let menuItems = [
-    { id: 1, name: "Cà phê", volumePct: 40, price: 25000, costPct: 25 },
-    { id: 2, name: "Trà & Sinh tố", volumePct: 40, price: 35000, costPct: 30 },
-    { id: 3, name: "Bánh & Đồ ăn", volumePct: 20, price: 30000, costPct: 45 }
+    { id: 1, name: "CÃ  phÃª", volumePct: 40, price: 25000, costPct: 25 },
+    { id: 2, name: "TrÃ  & Sinh tá»‘", volumePct: 40, price: 35000, costPct: 30 },
+    { id: 3, name: "BÃ¡nh & Äá»“ Äƒn", volumePct: 20, price: 30000, costPct: 45 }
 ];
 
 function updateMenuVolumeWarning() {
@@ -2275,7 +2275,7 @@ function updateMenuVolumeWarning() {
     if (warnEl) {
         if (Math.abs(totalVol - 100) > 0.1) {
             warnEl.style.display = 'block';
-            warnEl.innerText = `Lưu ý: Tổng tỷ trọng bán = ${totalVol.toFixed(1)}%. Nên điều chỉnh lại cho đủ 100%.`;
+            warnEl.innerText = `LÆ°u Ã½: Tá»•ng tá»· trá»ng bÃ¡n = ${totalVol.toFixed(1)}%. NÃªn Ä‘iá»u chá»‰nh láº¡i cho Ä‘á»§ 100%.`;
         } else {
             warnEl.style.display = 'none';
         }
@@ -2302,7 +2302,7 @@ window.renderMenuItems = function() {
                     <input type="number" class="menu-cost" value="${item.costPct}" oninput="updateMenuItem(${item.id}, 'costPct', this.value)" style="padding:6px 8px; font-size:12px;">
                     <span class="unit">%</span>
                 </div>
-                <button onclick="removeMenuItem(${item.id})" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">×</button>
+                <button onclick="removeMenuItem(${item.id})" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">Ã—</button>
             </div>
         `;
     });
@@ -2357,7 +2357,7 @@ window.formatAndSetMenuPrice = function(inputElement, id) {
 };
 
 window.addMenuItem = function() {
-    menuItems.push({ id: Date.now(), name: "Nhóm mới", volumePct: 0, price: 0, costPct: 0 });
+    menuItems.push({ id: Date.now(), name: "NhÃ³m má»›i", volumePct: 0, price: 0, costPct: 0 });
     renderMenuItems();
 };
 
@@ -2452,7 +2452,8 @@ window.addEventListener('DOMContentLoaded', () => {
         'inp-ft-manager-count', 'inp-ft-manager-salary',
         'inp-weekend-multiplier', 'inp-commission-rate',
         'inp-discount-rate', 'inp-growth-rev', 'inp-growth-opex',
-        'inp-term', 'inp-cost-pct', 'inp-vol-weak', 'inp-vol-base', 'inp-vol-good', 'inp-depr-years'
+        'inp-term', 'inp-cost-pct', 'inp-vol-weak', 'inp-vol-base', 'inp-vol-good', 'inp-depr-years',
+        'inp-tax-rate', 'inp-price', 'inp-div-payout'
     ].forEach(id => safeAddListener(id, 'input', updateDashboard));
 
     updateDashboard();
@@ -2500,13 +2501,13 @@ const DEFAULT_INPUTS = {
 };
 
 const DEFAULT_MENU_ITEMS = [
-    { id: 1, name: "Cà phê", volumePct: 40, price: 25000, costPct: 25 },
-    { id: 2, name: "Trà & Sinh tố", volumePct: 40, price: 35000, costPct: 30 },
-    { id: 3, name: "Bánh & Đồ ăn", volumePct: 20, price: 30000, costPct: 45 }
+    { id: 1, name: "CÃ  phÃª", volumePct: 40, price: 25000, costPct: 25 },
+    { id: 2, name: "TrÃ  & Sinh tá»‘", volumePct: 40, price: 35000, costPct: 30 },
+    { id: 3, name: "BÃ¡nh & Äá»“ Äƒn", volumePct: 20, price: 30000, costPct: 45 }
 ];
 
 const DEFAULT_SHAREHOLDERS = [
-    { id: 1, name: "Bạn (Cổ đông sáng lập)", contribution: 80000000, role: "operate" }
+    { id: 1, name: "Báº¡n (Cá»• Ä‘Ã´ng sÃ¡ng láº­p)", contribution: 80000000, role: "operate" }
 ];
 
 function getInputsData() {
@@ -2576,10 +2577,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Clear the URL parameter so it doesn't re-trigger on reload
                 window.history.replaceState({}, document.title, window.location.pathname);
-                alert("Đã tải dữ liệu từ đường link chia sẻ thành công!");
+                alert("ÄÃ£ táº£i dá»¯ liá»‡u tá»« Ä‘Æ°á»ng link chia sáº» thÃ nh cÃ´ng!");
             }
         } catch (err) {
-            console.error("Lỗi giải mã liên kết chia sẻ:", err);
+            console.error("Lá»—i giáº£i mÃ£ liÃªn káº¿t chia sáº»:", err);
         }
     }
 });
@@ -2723,8 +2724,8 @@ function renderInvestmentAnalysis() {
     let roi = ((totalInflow - totalCapital) / totalCapital) * 100;
     let pi = pvCashflowsIn / totalCapital;
 
-    let paybackText = paybackMonth > 0 ? paybackMonth.toFixed(1) + " tháng" : "Không trong 3 năm";
-    let discPaybackText = discPaybackMonth > 0 ? discPaybackMonth.toFixed(1) + " tháng" : "Không trong 3 năm";
+    let paybackText = paybackMonth > 0 ? paybackMonth.toFixed(1) + " thÃ¡ng" : "KhÃ´ng trong 3 nÄƒm";
+    let discPaybackText = discPaybackMonth > 0 ? discPaybackMonth.toFixed(1) + " thÃ¡ng" : "KhÃ´ng trong 3 nÄƒm";
 
     let npvColor = npv >= 0 ? 'val-profit' : 'val-loss';
     let irrColor = irrAnnual >= discountRatePct ? 'val-profit' : 'val-loss';
@@ -2740,65 +2741,65 @@ function renderInvestmentAnalysis() {
     const breakEvenDailyVol = unitContributionMargin > 0 ? (fixedMonthlyOpex + monthlyDebt + monthlyDepreciation) / (30 * unitContributionMargin) : 0;
 
     let html = `
-        <h3 class="chart-sub-title">Phân tích Hiệu Quả Đầu Tư (Tầm nhìn 3 năm)</h3>
+        <h3 class="chart-sub-title">PhÃ¢n tÃ­ch Hiá»‡u Quáº£ Äáº§u TÆ° (Táº§m nhÃ¬n 3 nÄƒm)</h3>
         
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
-            Sản lượng dự kiến: <strong>${vol} ly/ngày</strong>. Tổng vốn: ${formatShortVND(totalCapital)}. Tăng trưởng DT: ${growthRevPct}%/năm | Tăng chi phí: ${growthOpexPct}%/năm.
+            Sáº£n lÆ°á»£ng dá»± kiáº¿n: <strong>${vol} ly/ngÃ y</strong>. Tá»•ng vá»‘n: ${formatShortVND(totalCapital)}. TÄƒng trÆ°á»Ÿng DT: ${growthRevPct}%/nÄƒm | TÄƒng chi phÃ­: ${growthOpexPct}%/nÄƒm.
         </p>
 
         <div class="scenarios-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Hoàn vốn đơn giản</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">HoÃ n vá»‘n Ä‘Æ¡n giáº£n</span>
                     <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${paybackText}</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Hoàn vốn chiết khấu</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">HoÃ n vá»‘n chiáº¿t kháº¥u</span>
                     <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${discPaybackText}</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Sản lượng hòa vốn</span>
-                    <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${Math.ceil(breakEvenDailyVol)} ly/ngày</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Sáº£n lÆ°á»£ng hÃ²a vá»‘n</span>
+                    <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${Math.ceil(breakEvenDailyVol)} ly/ngÃ y</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">NPV (Hiện giá thuần)</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">NPV (Hiá»‡n giÃ¡ thuáº§n)</span>
                     <span class="${npvColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${npv >= 0 ? '+' : ''}${formatShortVND(npv)}</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">IRR (Tỷ suất nội bộ)</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">IRR (Tá»· suáº¥t ná»™i bá»™)</span>
                     <span class="${irrColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${totalInflow > totalCapital && irrAnnual > -100 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">ROI (Tỷ lệ hoàn vốn)</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">ROI (Tá»· lá»‡ hoÃ n vá»‘n)</span>
                     <span class="${roiColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${roi.toFixed(1)}%</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">PI (Chỉ số sinh lời)</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">PI (Chá»‰ sá»‘ sinh lá»i)</span>
                     <span class="${piColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${pi.toFixed(2)}</span>
                 </div>
             </div>
         </div>
 
         <div class="explanation-box" style="margin-top:16px; padding: 12px 16px; background: rgba(15,23,42,0.02); border-radius: 6px; border-left: 4px solid ${npv >= 0 ? 'var(--primary)' : 'var(--danger)'};">
-            <strong>Kết luận tài chính:</strong> 
-            ${npv >= 0 ? `<span style="color:var(--val-profit)">Dự án khả thi về mặt tài chính (NPV &gt; 0, chỉ số PI đạt ${pi.toFixed(2)} &gt; 1). IRR đạt ${irrAnnual.toFixed(1)}% lớn hơn lãi suất chiết khấu ${discountRatePct}%.</span>` : `<span style="color:var(--val-loss)">Dự án không hiệu quả với mức lãi suất chiết khấu này (NPV &lt; 0, PI đạt ${pi.toFixed(2)} &lt; 1). Bạn nên cân nhắc điều chỉnh định phí, giá bán hoặc cải thiện sản lượng bán.</span>`}
+            <strong>Káº¿t luáº­n tÃ i chÃ­nh:</strong> 
+            ${npv >= 0 ? `<span style="color:var(--val-profit)">Dá»± Ã¡n kháº£ thi vá» máº·t tÃ i chÃ­nh (NPV &gt; 0, chá»‰ sá»‘ PI Ä‘áº¡t ${pi.toFixed(2)} &gt; 1). IRR Ä‘áº¡t ${irrAnnual.toFixed(1)}% lá»›n hÆ¡n lÃ£i suáº¥t chiáº¿t kháº¥u ${discountRatePct}%.</span>` : `<span style="color:var(--val-loss)">Dá»± Ã¡n khÃ´ng hiá»‡u quáº£ vá»›i má»©c lÃ£i suáº¥t chiáº¿t kháº¥u nÃ y (NPV &lt; 0, PI Ä‘áº¡t ${pi.toFixed(2)} &lt; 1). Báº¡n nÃªn cÃ¢n nháº¯c Ä‘iá»u chá»‰nh Ä‘á»‹nh phÃ­, giÃ¡ bÃ¡n hoáº·c cáº£i thiá»‡n sáº£n lÆ°á»£ng bÃ¡n.</span>`}
         </div>
 
         <!-- Cumulative Cash Flow Chart -->
         <div style="margin-top: 24px;">
-            <h4 class="chart-sub-title" style="margin-bottom: 8px;">Đồ Thị Dòng Tiền Tích Lũy 36 Tháng (Hòa vốn khi đường tích lũy vượt mức 0)</h4>
+            <h4 class="chart-sub-title" style="margin-bottom: 8px;">Äá»“ Thá»‹ DÃ²ng Tiá»n TÃ­ch LÅ©y 36 ThÃ¡ng (HÃ²a vá»‘n khi Ä‘Æ°á»ng tÃ­ch lÅ©y vÆ°á»£t má»©c 0)</h4>
             <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
                 <canvas id="cumulativeCashFlowChart"></canvas>
             </div>
@@ -2806,66 +2807,66 @@ function renderInvestmentAnalysis() {
 
         <!-- Detailed Year-by-Year Table -->
         <div style="margin-top: 24px; overflow-x: auto;">
-            <h4 class="chart-sub-title" style="margin-bottom: 8px;">Bảng Chi Tiết Dòng Tiền 3 Năm (đơn vị: đ)</h4>
+            <h4 class="chart-sub-title" style="margin-bottom: 8px;">Báº£ng Chi Tiáº¿t DÃ²ng Tiá»n 3 NÄƒm (Ä‘Æ¡n vá»‹: Ä‘)</h4>
             <table class="sensitivity-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                 <thead>
                     <tr>
-                        <th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Khoản mục \\ Thời điểm</th>
-                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">Năm 0 (Hiện tại)</th>
-                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">Năm 1</th>
-                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">Năm 2</th>
-                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">Năm 3</th>
+                        <th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Khoáº£n má»¥c \\ Thá»i Ä‘iá»ƒm</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">NÄƒm 0 (Hiá»‡n táº¡i)</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">NÄƒm 1</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">NÄƒm 2</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">NÄƒm 3</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align: left; padding: 8px; font-weight: 500;">Doanh thu thuần</td>
+                        <td style="text-align: left; padding: 8px; font-weight: 500;">Doanh thu thuáº§n</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">--</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].rev))}đ</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].rev))}đ</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].rev))}đ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].rev))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].rev))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].rev))}Ä‘</td>
                     </tr>
                     <tr>
-                        <td style="text-align: left; padding: 8px; font-weight: 500;">Tổng chi phí hoạt động (gồm COGS & Nợ vay)</td>
+                        <td style="text-align: left; padding: 8px; font-weight: 500;">Tá»•ng chi phÃ­ hoáº¡t Ä‘á»™ng (gá»“m COGS & Ná»£ vay)</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">--</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].opex))}đ</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].opex))}đ</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].opex))}đ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].opex))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].opex))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].opex))}Ä‘</td>
                     </tr>
                     <tr>
-                        <td style="text-align: left; padding: 8px; font-weight: 500;">Thuế TNDN</td>
+                        <td style="text-align: left; padding: 8px; font-weight: 500;">Thuáº¿ TNDN</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">--</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].tax))}đ</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].tax))}đ</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].tax))}đ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].tax))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].tax))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].tax))}Ä‘</td>
                     </tr>
                     <tr style="border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); font-weight: 600; background: rgba(15,23,42,0.01);">
-                        <td style="text-align: left; padding: 8px;">Dòng tiền ròng (Net Cash Flow)</td>
-                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}đ</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[1].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].net))}đ</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[2].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].net))}đ</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[3].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].net))}đ</td>
+                        <td style="text-align: left; padding: 8px;">DÃ²ng tiá»n rÃ²ng (Net Cash Flow)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[1].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].net))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[2].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].net))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[3].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].net))}Ä‘</td>
                     </tr>
                     <tr>
-                        <td style="text-align: left; padding: 8px; font-weight: 500; color: var(--text-muted);">Hệ số chiết khấu</td>
+                        <td style="text-align: left; padding: 8px; font-weight: 500; color: var(--text-muted);">Há»‡ sá»‘ chiáº¿t kháº¥u</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">1.000</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">${(1 / Math.pow(1 + (discountRatePct / 100), 1)).toFixed(3)}</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">${(1 / Math.pow(1 + (discountRatePct / 100), 2)).toFixed(3)}</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">${(1 / Math.pow(1 + (discountRatePct / 100), 3)).toFixed(3)}</td>
                     </tr>
                     <tr style="font-weight: 600; border-top: 1px dashed var(--border-color);">
-                        <td style="text-align: left; padding: 8px;">Dòng tiền chiết khấu (PV)</td>
-                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}đ</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[1].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].pv))}đ</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[2].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].pv))}đ</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[3].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].pv))}đ</td>
+                        <td style="text-align: left; padding: 8px;">DÃ²ng tiá»n chiáº¿t kháº¥u (PV)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[1].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].pv))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[2].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].pv))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[3].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].pv))}Ä‘</td>
                     </tr>
                     <tr style="background: rgba(15,23,42,0.03); font-weight: bold; border-top: 2px solid var(--border-color);">
-                        <td style="text-align: left; padding: 8px;">Tích lũy chiết khấu (Cumulative PV)</td>
-                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}đ</td>
-                        <td style="text-align: right; padding: 8px; color: ${cumY1 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY1 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY1))}đ</td>
-                        <td style="text-align: right; padding: 8px; color: ${cumY2 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY2 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY2))}đ</td>
-                        <td style="text-align: right; padding: 8px; color: ${cumY3 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY3 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY3))}đ</td>
+                        <td style="text-align: left; padding: 8px;">TÃ­ch lÅ©y chiáº¿t kháº¥u (Cumulative PV)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px; color: ${cumY1 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY1 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY1))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px; color: ${cumY2 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY2 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY2))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px; color: ${cumY3 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY3 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY3))}Ä‘</td>
                     </tr>
                 </tbody>
             </table>
@@ -2874,62 +2875,62 @@ function renderInvestmentAnalysis() {
         <!-- Detailed explanation of metrics -->
         <div class="glass-card" style="margin-top: 24px; padding: 16px; font-size: 13.5px; line-height: 1.6; color: var(--text-main);">
             <h4 class="chart-sub-title" style="margin-bottom: 12px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; color: var(--primary);">
-                💡 Diễn giải & Công thức tính chi tiết (Sản lượng ${vol} ly/ngày)
+                ðŸ’¡ Diá»…n giáº£i & CÃ´ng thá»©c tÃ­nh chi tiáº¿t (Sáº£n lÆ°á»£ng ${vol} ly/ngÃ y)
             </h4>
             <div style="display: flex; flex-direction: column; gap: 14px;">
                 <div>
-                    <strong>1. Tổng vốn đầu tư ban đầu (Vốn cần thiết):</strong>
+                    <strong>1. Tá»•ng vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u (Vá»‘n cáº§n thiáº¿t):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        • Công thức: Cọc mặt bằng (${formatShortVND(deposit)}) + Thi công sửa chữa (${formatShortVND(renovate)}) + Thiết bị máy móc (${formatShortVND(equipment)}) + Nguyên liệu khởi tạo (${formatShortVND(rawStart)}) + Decor & Khác (${formatShortVND(decorMisc)}) + Dự phòng gồng lỗ (${formatShortVND(buffer)}).
-                        <br>• Kết quả: <strong>${formatNumber(totalCapital)} đ</strong>.
+                        â€¢ CÃ´ng thá»©c: Cá»c máº·t báº±ng (${formatShortVND(deposit)}) + Thi cÃ´ng sá»­a chá»¯a (${formatShortVND(renovate)}) + Thiáº¿t bá»‹ mÃ¡y mÃ³c (${formatShortVND(equipment)}) + NguyÃªn liá»‡u khá»Ÿi táº¡o (${formatShortVND(rawStart)}) + Decor & KhÃ¡c (${formatShortVND(decorMisc)}) + Dá»± phÃ²ng gá»“ng lá»— (${formatShortVND(buffer)}).
+                        <br>â€¢ Káº¿t quáº£: <strong>${formatNumber(totalCapital)} Ä‘</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>2. Thời gian hoàn vốn đơn giản (Simple Payback):</strong>
+                    <strong>2. Thá»i gian hoÃ n vá»‘n Ä‘Æ¡n giáº£n (Simple Payback):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        • Công thức: Tổng vốn đầu tư / Dòng tiền ròng hàng tháng trung bình năm 1.
-                        <br>• Cách tính: ${formatNumber(totalCapital)} đ / ${formatNumber(Math.round(yearData[1].net / 12))} đ (dòng tiền ròng trung bình/tháng của Năm 1).
-                        <br>• Kết quả: <strong>${paybackText}</strong>.
+                        â€¢ CÃ´ng thá»©c: Tá»•ng vá»‘n Ä‘áº§u tÆ° / DÃ²ng tiá»n rÃ²ng hÃ ng thÃ¡ng trung bÃ¬nh nÄƒm 1.
+                        <br>â€¢ CÃ¡ch tÃ­nh: ${formatNumber(totalCapital)} Ä‘ / ${formatNumber(Math.round(yearData[1].net / 12))} Ä‘ (dÃ²ng tiá»n rÃ²ng trung bÃ¬nh/thÃ¡ng cá»§a NÄƒm 1).
+                        <br>â€¢ Káº¿t quáº£: <strong>${paybackText}</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>3. Thời gian hoàn vốn chiết khấu (Discounted Payback):</strong>
+                    <strong>3. Thá»i gian hoÃ n vá»‘n chiáº¿t kháº¥u (Discounted Payback):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        • Công thức: Thời điểm mà tổng hiện giá các dòng tiền tích luỹ đạt trạng thái hòa vốn (lớn hơn hoặc bằng 0).
-                        <br>• Cách tính: Quy đổi dòng tiền từng tháng về hiện giá (PV) theo tỷ lệ chiết khấu hàng tháng hiệu dụng r_m = (1 + ${discountRatePct}%)^(1/12) - 1 ≈ ${(monthlyRate*100).toFixed(3)}%/tháng. Sau đó cộng dồn từng tháng để xem khi nào thu hồi đủ vốn hiện giá.
-                        <br>• Kết quả: <strong>${discPaybackText}</strong>.
+                        â€¢ CÃ´ng thá»©c: Thá»i Ä‘iá»ƒm mÃ  tá»•ng hiá»‡n giÃ¡ cÃ¡c dÃ²ng tiá»n tÃ­ch luá»¹ Ä‘áº¡t tráº¡ng thÃ¡i hÃ²a vá»‘n (lá»›n hÆ¡n hoáº·c báº±ng 0).
+                        <br>â€¢ CÃ¡ch tÃ­nh: Quy Ä‘á»•i dÃ²ng tiá»n tá»«ng thÃ¡ng vá» hiá»‡n giÃ¡ (PV) theo tá»· lá»‡ chiáº¿t kháº¥u hÃ ng thÃ¡ng hiá»‡u dá»¥ng r_m = (1 + ${discountRatePct}%)^(1/12) - 1 â‰ˆ ${(monthlyRate*100).toFixed(3)}%/thÃ¡ng. Sau Ä‘Ã³ cá»™ng dá»“n tá»«ng thÃ¡ng Ä‘á»ƒ xem khi nÃ o thu há»“i Ä‘á»§ vá»‘n hiá»‡n giÃ¡.
+                        <br>â€¢ Káº¿t quáº£: <strong>${discPaybackText}</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>4. Giá trị hiện tại thuần (NPV - Net Present Value):</strong>
+                    <strong>4. GiÃ¡ trá»‹ hiá»‡n táº¡i thuáº§n (NPV - Net Present Value):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        • Công thức: -Vốn đầu tư ban đầu + Tổng PV của dòng tiền 36 tháng.
-                        <br>• Ý nghĩa: Thể hiện số tiền lãi ròng thực tế thu về (sau khi đã khấu trừ đi trượt giá và chi phí cơ hội là lãi suất chiết khấu ${discountRatePct}%).
-                        <br>• Kết quả: <strong class="${npvColor}">${npv >= 0 ? '+' : ''}${formatNumber(Math.round(npv))} đ</strong>.
+                        â€¢ CÃ´ng thá»©c: -Vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u + Tá»•ng PV cá»§a dÃ²ng tiá»n 36 thÃ¡ng.
+                        <br>â€¢ Ã nghÄ©a: Thá»ƒ hiá»‡n sá»‘ tiá»n lÃ£i rÃ²ng thá»±c táº¿ thu vá» (sau khi Ä‘Ã£ kháº¥u trá»« Ä‘i trÆ°á»£t giÃ¡ vÃ  chi phÃ­ cÆ¡ há»™i lÃ  lÃ£i suáº¥t chiáº¿t kháº¥u ${discountRatePct}%).
+                        <br>â€¢ Káº¿t quáº£: <strong class="${npvColor}">${npv >= 0 ? '+' : ''}${formatNumber(Math.round(npv))} Ä‘</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>5. Tỷ suất sinh lời nội bộ (IRR - Internal Rate of Return):</strong>
+                    <strong>5. Tá»· suáº¥t sinh lá»i ná»™i bá»™ (IRR - Internal Rate of Return):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        • Khái niệm: Mức lãi suất chiết khấu mà tại đó NPV = 0.
-                        <br>• Ý nghĩa: Tỷ suất sinh lời thực tế của quán. Nếu IRR lớn hơn Lãi suất chiết khấu kì vọng (${discountRatePct}%) thì dự án đáng để đầu tư.
-                        <br>• Kết quả: <strong class="${irrColor}">${totalInflow > totalCapital && irrAnnual > -100 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</strong>.
+                        â€¢ KhÃ¡i niá»‡m: Má»©c lÃ£i suáº¥t chiáº¿t kháº¥u mÃ  táº¡i Ä‘Ã³ NPV = 0.
+                        <br>â€¢ Ã nghÄ©a: Tá»· suáº¥t sinh lá»i thá»±c táº¿ cá»§a quÃ¡n. Náº¿u IRR lá»›n hÆ¡n LÃ£i suáº¥t chiáº¿t kháº¥u kÃ¬ vá»ng (${discountRatePct}%) thÃ¬ dá»± Ã¡n Ä‘Ã¡ng Ä‘á»ƒ Ä‘áº§u tÆ°.
+                        <br>â€¢ Káº¿t quáº£: <strong class="${irrColor}">${totalInflow > totalCapital && irrAnnual > -100 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>6. Tỷ lệ hoàn vốn đầu tư (ROI - Return on Investment):</strong>
+                    <strong>6. Tá»· lá»‡ hoÃ n vá»‘n Ä‘áº§u tÆ° (ROI - Return on Investment):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        • Công thức: (Tổng dòng tiền ròng 3 năm - Vốn đầu tư ban đầu) / Vốn đầu tư ban đầu × 100%.
-                        <br>• Cách tính: (${formatNumber(Math.round(totalInflow))} đ dòng tiền thu về - ${formatNumber(totalCapital)} đ vốn bỏ ra) / ${formatNumber(totalCapital)} đ.
-                        <br>• Kết quả: <strong class="${roiColor}">${roi.toFixed(1)}%</strong> trong vòng 3 năm (tương đương trung bình khoảng ${(roi/3).toFixed(1)}%/năm).
+                        â€¢ CÃ´ng thá»©c: (Tá»•ng dÃ²ng tiá»n rÃ²ng 3 nÄƒm - Vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u) / Vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u Ã— 100%.
+                        <br>â€¢ CÃ¡ch tÃ­nh: (${formatNumber(Math.round(totalInflow))} Ä‘ dÃ²ng tiá»n thu vá» - ${formatNumber(totalCapital)} Ä‘ vá»‘n bá» ra) / ${formatNumber(totalCapital)} Ä‘.
+                        <br>â€¢ Káº¿t quáº£: <strong class="${roiColor}">${roi.toFixed(1)}%</strong> trong vÃ²ng 3 nÄƒm (tÆ°Æ¡ng Ä‘Æ°Æ¡ng trung bÃ¬nh khoáº£ng ${(roi/3).toFixed(1)}%/nÄƒm).
                     </div>
                 </div>
                 <div>
-                    <strong>7. Chỉ số sinh lời (PI - Profitability Index):</strong>
+                    <strong>7. Chá»‰ sá»‘ sinh lá»i (PI - Profitability Index):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        • Công thức: Tổng hiện giá dòng tiền vào (PV) / Vốn đầu tư ban đầu.
-                        <br>• Ý nghĩa: Cứ 1 đồng vốn đầu tư ban đầu đem lại bao nhiêu đồng giá trị hiện tại. Dự án có khả thi khi PI > 1.
-                        <br>• Kết quả: <strong class="${piColor}">${pi.toFixed(2)}</strong>.
+                        â€¢ CÃ´ng thá»©c: Tá»•ng hiá»‡n giÃ¡ dÃ²ng tiá»n vÃ o (PV) / Vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u.
+                        <br>â€¢ Ã nghÄ©a: Cá»© 1 Ä‘á»“ng vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u Ä‘em láº¡i bao nhiÃªu Ä‘á»“ng giÃ¡ trá»‹ hiá»‡n táº¡i. Dá»± Ã¡n cÃ³ kháº£ thi khi PI > 1.
+                        <br>â€¢ Káº¿t quáº£: <strong class="${piColor}">${pi.toFixed(2)}</strong>.
                     </div>
                 </div>
             </div>
@@ -2959,7 +2960,7 @@ function renderInvestmentAnalysis() {
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Tích lũy thực tế',
+                        label: 'TÃ­ch lÅ©y thá»±c táº¿',
                         data: dataCumCash,
                         borderColor: '#38bdf8',
                         backgroundColor: 'rgba(56, 189, 248, 0.05)',
@@ -2968,7 +2969,7 @@ function renderInvestmentAnalysis() {
                         fill: true
                     },
                     {
-                        label: 'Tích lũy chiết khấu (PV)',
+                        label: 'TÃ­ch lÅ©y chiáº¿t kháº¥u (PV)',
                         data: dataCumPv,
                         borderColor: '#fbbf24',
                         backgroundColor: 'rgba(251, 191, 36, 0.05)',
@@ -2990,7 +2991,7 @@ function renderInvestmentAnalysis() {
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                return context.dataset.label + ': ' + formatNumber(context.raw) + 'đ';
+                                return context.dataset.label + ': ' + formatNumber(context.raw) + 'Ä‘';
                             }
                         }
                     },
@@ -3059,15 +3060,15 @@ window.shareCurrentState = function() {
         const label = document.getElementById('share-btn-label');
         if (btn && label) {
             btn.classList.add('share-success');
-            label.textContent = '✓ Đã Copy!';
+            label.textContent = 'âœ“ ÄÃ£ Copy!';
             setTimeout(() => {
                 btn.classList.remove('share-success');
-                label.textContent = 'Chia Sẻ';
+                label.textContent = 'Chia Sáº»';
             }, 2500);
         }
     }).catch(() => {
         // Fallback: prompt the user to copy manually
-        prompt('Sao chép link chia sẻ bên dưới:', shareUrl);
+        prompt('Sao chÃ©p link chia sáº» bÃªn dÆ°á»›i:', shareUrl);
     });
 };
 
@@ -3112,7 +3113,7 @@ function loadStateFromURL() {
         }, 300);
 
     } catch(e) {
-        console.warn('Không thể load state từ URL:', e);
+        console.warn('KhÃ´ng thá»ƒ load state tá»« URL:', e);
     }
 }
 
@@ -3123,7 +3124,7 @@ function showShareLoadedNotification() {
         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
         </svg>
-        <span>Đã tải số liệu được chia sẻ thành công!</span>
+        <span>ÄÃ£ táº£i sá»‘ liá»‡u Ä‘Æ°á»£c chia sáº» thÃ nh cÃ´ng!</span>
     `;
     document.body.appendChild(notif);
 
@@ -3138,3 +3139,4 @@ function showShareLoadedNotification() {
 document.addEventListener('DOMContentLoaded', () => {
     loadStateFromURL();
 });
+
