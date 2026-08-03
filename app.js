@@ -3014,4 +3014,127 @@ function renderInvestmentAnalysis() {
     }, 50);
 }
 
+// ======================================================================
+// Share URL - Encode / Decode all inputs into URL hash
+// ======================================================================
 
+// All input IDs to capture
+const SHARE_INPUT_IDS = [
+    'inp-deposit','inp-renovate','inp-equipment','inp-raw-start','inp-decor-misc',
+    'inp-depr-years','inp-buffer','inp-loan','inp-interest','inp-term',
+    'inp-rent','inp-utilities','inp-misc',
+    'inp-shift-morning-staff','inp-shift-morning-rate',
+    'inp-shift-afternoon-staff','inp-shift-afternoon-rate',
+    'inp-shift-evening-staff','inp-shift-evening-rate',
+    'inp-ft-manager-count','inp-ft-manager-salary',
+    'inp-weekend-multiplier','inp-commission-rate',
+    'inp-price','inp-cost-pct',
+    'inp-vol-weak','inp-vol-base','inp-vol-good',
+    'inp-tax-rate','inp-discount-rate','inp-growth-rev','inp-growth-opex',
+    'inp-div-retained','inp-div-payout'
+];
+
+window.shareCurrentState = function() {
+    // Collect all input values
+    const state = {};
+    SHARE_INPUT_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) state[id] = el.value;
+    });
+
+    // Include shareholders data
+    state._shareholders = JSON.stringify(shareholders);
+
+    // Encode to base64 URL-safe string
+    const json = JSON.stringify(state);
+    const encoded = btoa(unescape(encodeURIComponent(json)));
+
+    // Build shareable URL
+    const shareUrl = `${location.origin}${location.pathname}#state=${encoded}`;
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(shareUrl).then(() => {
+        // Show success feedback on button
+        const btn = document.getElementById('share-link-btn');
+        const label = document.getElementById('share-btn-label');
+        if (btn && label) {
+            btn.classList.add('share-success');
+            label.textContent = '✓ Đã Copy!';
+            setTimeout(() => {
+                btn.classList.remove('share-success');
+                label.textContent = 'Chia Sẻ';
+            }, 2500);
+        }
+    }).catch(() => {
+        // Fallback: prompt the user to copy manually
+        prompt('Sao chép link chia sẻ bên dưới:', shareUrl);
+    });
+};
+
+// Load state from URL hash on page load
+function loadStateFromURL() {
+    const hash = location.hash;
+    if (!hash || !hash.startsWith('#state=')) return;
+
+    try {
+        const encoded = hash.replace('#state=', '');
+        const json = decodeURIComponent(escape(atob(encoded)));
+        const state = JSON.parse(json);
+
+        // Restore all inputs
+        SHARE_INPUT_IDS.forEach(id => {
+            if (state[id] !== undefined) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.value = state[id];
+                    // Trigger input event to reformat display
+                    el.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            }
+        });
+
+        // Restore shareholders
+        if (state._shareholders) {
+            try {
+                const parsed = JSON.parse(state._shareholders);
+                if (Array.isArray(parsed)) {
+                    shareholders = parsed;
+                    renderShareholderList();
+                }
+            } catch(e) {}
+        }
+
+        // Re-run dashboard after loading
+        setTimeout(() => {
+            updateDashboard();
+            // Show a brief notification
+            showShareLoadedNotification();
+        }, 300);
+
+    } catch(e) {
+        console.warn('Không thể load state từ URL:', e);
+    }
+}
+
+function showShareLoadedNotification() {
+    const notif = document.createElement('div');
+    notif.className = 'share-load-notif';
+    notif.innerHTML = `
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+        </svg>
+        <span>Đã tải số liệu được chia sẻ thành công!</span>
+    `;
+    document.body.appendChild(notif);
+
+    requestAnimationFrame(() => notif.classList.add('show'));
+    setTimeout(() => {
+        notif.classList.remove('show');
+        setTimeout(() => notif.remove(), 400);
+    }, 3500);
+}
+
+// Auto-load from URL on page start
+document.addEventListener('DOMContentLoaded', () => {
+    loadStateFromURL();
+});
