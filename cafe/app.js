@@ -13,7 +13,7 @@ let costChartInstance = null;
 let equityChartInstance = null;
 let editingShareholderId = null;
 let shareholders = [
-    { id: 1, name: "Báº¡n (Cá»• Ä‘Ã´ng sÃ¡ng láº­p)", contribution: 80000000, role: "operate" }
+    { id: 1, name: "Bß║ín (Cß╗ò ─æ├┤ng s├íng lß║¡p)", contribution: 80000000, role: "operate" }
 ];
 
 // ======================================================================
@@ -113,7 +113,7 @@ window.applyBusinessPreset = function(presetType) {
             'inp-div-payout': 80
         };
         newShareholders = [
-            { id: 1, name: "Chá»§ quÃ¡n", contribution: 45000000, role: "operate" }
+            { id: 1, name: "Chß╗º qu├ín", contribution: 45000000, role: "operate" }
         ];
     } else if (presetType === 'garden') {
         data = {
@@ -152,11 +152,11 @@ window.applyBusinessPreset = function(presetType) {
             'inp-div-payout': 75
         };
         newShareholders = [
-            { id: 1, name: "NhÃ  sÃ¡ng láº­p (Váº­n hÃ nh)", contribution: 100000000, role: "operate" },
-            { id: 2, name: "Cá»• Ä‘Ã´ng Ä‘áº§u tÆ° A", contribution: 50000000, role: "invest" }
+            { id: 1, name: "Nh├á s├íng lß║¡p (Vß║¡n h├ánh)", contribution: 100000000, role: "operate" },
+            { id: 2, name: "Cß╗ò ─æ├┤ng ─æß║ºu t╞░ A", contribution: 50000000, role: "invest" }
         ];
     } else {
-        // standard (QuÃ¡n mÃ¡y láº¡nh chuáº©n 50m2)
+        // standard (Qu├ín m├íy lß║ính chuß║⌐n 50m2)
         data = {
             'inp-deposit': 18000000,
             'inp-renovate': 18000000,
@@ -193,7 +193,7 @@ window.applyBusinessPreset = function(presetType) {
             'inp-div-payout': 80
         };
         newShareholders = [
-            { id: 1, name: "Báº¡n (Cá»• Ä‘Ã´ng sÃ¡ng láº­p)", contribution: 80000000, role: "operate" }
+            { id: 1, name: "Bß║ín (Cß╗ò ─æ├┤ng s├íng lß║¡p)", contribution: 80000000, role: "operate" }
         ];
     }
 
@@ -263,11 +263,11 @@ function formatShortVND(value) {
     let absVal = Math.abs(value);
     let formatted = '';
     if (absVal >= 1000000) {
-        formatted = (absVal / 1000000).toFixed(1) + 'M Ä‘';
+        formatted = (absVal / 1000000).toFixed(1) + 'M ─æ';
     } else if (absVal >= 1000) {
-        formatted = (absVal / 1000).toFixed(0) + 'k Ä‘';
+        formatted = (absVal / 1000).toFixed(0) + 'k ─æ';
     } else {
-        formatted = absVal + ' Ä‘';
+        formatted = absVal + ' ─æ';
     }
     return (isNegative ? '-' : '') + formatted;
 }
@@ -299,11 +299,11 @@ function calculateEMI(P, r_annual, N) {
 
 // ======================================================================
 // Tax calculation based on Vietnamese tax law 2025
-// Doanh nghiá»‡p: Thuáº¿ TNDN tÃ­nh trÃªn lá»£i nhuáº­n
-//   - DT nÄƒm â‰¤ 1 tá»·: miá»…n thuáº¿ TNDN
-//   - DT nÄƒm â‰¤ 3 tá»·: 15%
-//   - DT nÄƒm â‰¤ 50 tá»·: 17%
-//   - DT nÄƒm > 50 tá»·: 20%
+// Doanh nghiß╗çp: Thuß║┐ TNDN t├¡nh tr├¬n lß╗úi nhuß║¡n
+//   - DT n─âm Γëñ 1 tß╗╖: miß╗àn thuß║┐ TNDN
+//   - DT n─âm Γëñ 3 tß╗╖: 15%
+//   - DT n─âm Γëñ 50 tß╗╖: 17%
+//   - DT n─âm > 50 tß╗╖: 20%
 // User can override with manual % in inp-tax-rate
 // ======================================================================
 function calculateTax(monthlyProfit, annualRevenue) {
@@ -313,7 +313,7 @@ function calculateTax(monthlyProfit, annualRevenue) {
 }
 
 function getSuggestedTaxRate(annualRevenue) {
-    if (annualRevenue <= 1000000000) return 0; // miá»…n thuáº¿
+    if (annualRevenue <= 1000000000) return 0; // miß╗àn thuß║┐
     if (annualRevenue <= 3000000000) return 15;
     if (annualRevenue <= 50000000000) return 17;
     return 20;
@@ -395,7 +395,7 @@ function setupInputFormatting() {
 }
 
 // ======================================================================
-// Rent â†’ Deposit synchronization (3 months)
+// Rent ΓåÆ Deposit synchronization (3 months)
 // ======================================================================
 function setupRentDepositSync() {
     const rentInput = document.getElementById('inp-rent');
@@ -508,46 +508,46 @@ function validateInputs() {
     const discountRate = parseFloat(discountRateInput?.value) || 0;
     
     // Check bounds
-    if (deposit < 0) setError(depositInput, "Cá»c máº·t báº±ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (renovate < 0) setError(renovateInput, "Sá»­a chá»¯a & Decor khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (equipment < 0) setError(equipmentInput, "MÃ¡y mÃ³c & Thiáº¿t bá»‹ khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (rawStart < 0) setError(rawStartInput, "NguyÃªn liá»‡u ban Ä‘áº§u khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (decorMisc < 0) setError(decorMiscInput, "Decor nhá» khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (buffer < 0) setError(bufferInput, "Quá»¹ dá»± phÃ²ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (deposit < 0) setError(depositInput, "Cß╗ìc mß║╖t bß║▒ng kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (renovate < 0) setError(renovateInput, "Sß╗¡a chß╗»a & Decor kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (equipment < 0) setError(equipmentInput, "M├íy m├│c & Thiß║┐t bß╗ï kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (rawStart < 0) setError(rawStartInput, "Nguy├¬n liß╗çu ban ─æß║ºu kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (decorMisc < 0) setError(decorMiscInput, "Decor nhß╗Å kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (buffer < 0) setError(bufferInput, "Quß╗╣ dß╗▒ ph├▓ng kh├┤ng ─æ╞░ß╗úc ├óm.");
     
-    if (loan < 0) setError(loanInput, "Sá»‘ tiá»n vay ngÃ¢n hÃ ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (interest < 0) setError(interestInput, "LÃ£i suáº¥t vay khÃ´ng Ä‘Æ°á»£c nhá» hÆ¡n 0.");
-    if (term <= 0) setError(termInput, "Thá»i háº¡n vay pháº£i lá»›n hÆ¡n 0 thÃ¡ng.");
+    if (loan < 0) setError(loanInput, "Sß╗æ tiß╗ün vay ng├ón h├áng kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (interest < 0) setError(interestInput, "L├úi suß║Ñt vay kh├┤ng ─æ╞░ß╗úc nhß╗Å h╞ín 0.");
+    if (term <= 0) setError(termInput, "Thß╗¥i hß║ín vay phß║úi lß╗¢n h╞ín 0 th├íng.");
     
-    if (rent < 0) setError(rentInput, "Tiá»n thuÃª máº·t báº±ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (utilities < 0) setError(utilitiesInput, "Chi phÃ­ Ä‘iá»‡n nÆ°á»›c khÃ´ng Ä‘Æ°á»£c Ã¢m.");
+    if (rent < 0) setError(rentInput, "Tiß╗ün thu├¬ mß║╖t bß║▒ng kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (utilities < 0) setError(utilitiesInput, "Chi ph├¡ ─æiß╗çn n╞░ß╗¢c kh├┤ng ─æ╞░ß╗úc ├óm.");
     
-    if (shiftMorningStaff < 0) setError(shiftMorningStaffInput, "Sá»‘ NV ca sÃ¡ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (shiftMorningRate < 0) setError(shiftMorningRateInput, "LÆ°Æ¡ng ca sÃ¡ng khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (shiftAfternoonStaff < 0) setError(shiftAfternoonStaffInput, "Sá»‘ NV ca chiá»u khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (shiftAfternoonRate < 0) setError(shiftAfternoonRateInput, "LÆ°Æ¡ng ca chiá»u khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (shiftEveningStaff < 0) setError(shiftEveningStaffInput, "Sá»‘ NV ca tá»‘i khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (shiftEveningRate < 0) setError(shiftEveningRateInput, "LÆ°Æ¡ng ca tá»‘i khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (ftManagerCount < 0) setError(ftManagerCountInput, "Sá»‘ quáº£n lÃ½ khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (ftManagerSalary < 0) setError(ftManagerSalaryInput, "LÆ°Æ¡ng quáº£n lÃ½ khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (weekendMultiplier < 1.0) setError(weekendMultiplierInput, "Há»‡ sá»‘ cuá»‘i tuáº§n khÃ´ng Ä‘Æ°á»£c nhá» hÆ¡n 1.0.");
-    if (commissionRate < 0 || commissionRate > 100) setError(commissionRateInput, "Tá»· lá»‡ thÆ°á»Ÿng pháº£i tá»« 0% Ä‘áº¿n 100%.");
+    if (shiftMorningStaff < 0) setError(shiftMorningStaffInput, "Sß╗æ NV ca s├íng kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (shiftMorningRate < 0) setError(shiftMorningRateInput, "L╞░╞íng ca s├íng kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (shiftAfternoonStaff < 0) setError(shiftAfternoonStaffInput, "Sß╗æ NV ca chiß╗üu kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (shiftAfternoonRate < 0) setError(shiftAfternoonRateInput, "L╞░╞íng ca chiß╗üu kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (shiftEveningStaff < 0) setError(shiftEveningStaffInput, "Sß╗æ NV ca tß╗æi kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (shiftEveningRate < 0) setError(shiftEveningRateInput, "L╞░╞íng ca tß╗æi kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (ftManagerCount < 0) setError(ftManagerCountInput, "Sß╗æ quß║ún l├╜ kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (ftManagerSalary < 0) setError(ftManagerSalaryInput, "L╞░╞íng quß║ún l├╜ kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (weekendMultiplier < 1.0) setError(weekendMultiplierInput, "Hß╗ç sß╗æ cuß╗æi tuß║ºn kh├┤ng ─æ╞░ß╗úc nhß╗Å h╞ín 1.0.");
+    if (commissionRate < 0 || commissionRate > 100) setError(commissionRateInput, "Tß╗╖ lß╗ç th╞░ß╗ƒng phß║úi tß╗½ 0% ─æß║┐n 100%.");
     
-    if (misc < 0) setError(miscInput, "Chi phÃ­ phÃ¡t sinh khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (price <= 0) setError(priceInput, "GiÃ¡ bÃ¡n trung bÃ¬nh pháº£i lá»›n hÆ¡n 0 Ä‘/ly.");
+    if (misc < 0) setError(miscInput, "Chi ph├¡ ph├ít sinh kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (price <= 0) setError(priceInput, "Gi├í b├ín trung b├¼nh phß║úi lß╗¢n h╞ín 0 ─æ/ly.");
     
-    if (costPct < 0 || costPct > 100) setError(costPctInput, "Tá»· lá»‡ Cost nguyÃªn váº­t liá»‡u pháº£i náº±m tá»« 0% Ä‘áº¿n 100%.");
-    if (volWeak < 0) setError(volWeakInput, "Sáº£n lÆ°á»£ng ká»‹ch báº£n Yáº¿u khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (volBase < 0) setError(volBaseInput, "Sáº£n lÆ°á»£ng ká»‹ch báº£n Trung bÃ¬nh khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (volGood < 0) setError(volGoodInput, "Sáº£n lÆ°á»£ng ká»‹ch báº£n Tá»‘t khÃ´ng Ä‘Æ°á»£c Ã¢m.");
-    if (deprYears <= 0) setError(deprYearsInput, "Thá»i gian kháº¥u hao tÃ i sáº£n pháº£i lá»›n hÆ¡n 0 nÄƒm.");
-    if (discountRate < 0 || discountRate > 100) setError(discountRateInput, "LÃ£i suáº¥t chiáº¿t kháº¥u ká»³ vá»ng pháº£i tá»« 0% Ä‘áº¿n 100%.");
+    if (costPct < 0 || costPct > 100) setError(costPctInput, "Tß╗╖ lß╗ç Cost nguy├¬n vß║¡t liß╗çu phß║úi nß║▒m tß╗½ 0% ─æß║┐n 100%.");
+    if (volWeak < 0) setError(volWeakInput, "Sß║ún l╞░ß╗úng kß╗ïch bß║ún Yß║┐u kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (volBase < 0) setError(volBaseInput, "Sß║ún l╞░ß╗úng kß╗ïch bß║ún Trung b├¼nh kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (volGood < 0) setError(volGoodInput, "Sß║ún l╞░ß╗úng kß╗ïch bß║ún Tß╗æt kh├┤ng ─æ╞░ß╗úc ├óm.");
+    if (deprYears <= 0) setError(deprYearsInput, "Thß╗¥i gian khß║Ñu hao t├ái sß║ún phß║úi lß╗¢n h╞ín 0 n─âm.");
+    if (discountRate < 0 || discountRate > 100) setError(discountRateInput, "L├úi suß║Ñt chiß║┐t khß║Ñu kß╗│ vß╗ìng phß║úi tß╗½ 0% ─æß║┐n 100%.");
     
     const setupCosts = deposit + renovate + equipment + rawStart + decorMisc;
     const totalCapitalNeeded = setupCosts + buffer;
     
     if (loan > totalCapitalNeeded) {
-        setError(loanInput, `Tiá»n vay ngÃ¢n hÃ ng (${formatVND(loan)}) Ä‘ang lá»›n hÆ¡n Tá»•ng vá»‘n cáº§n thiáº¿t (${formatVND(totalCapitalNeeded)}). Cá»• Ä‘Ã´ng khÃ´ng thá»ƒ gÃ³p pháº§n vá»‘n Ã¢m.`);
+        setError(loanInput, `Tiß╗ün vay ng├ón h├áng (${formatVND(loan)}) ─æang lß╗¢n h╞ín Tß╗òng vß╗æn cß║ºn thiß║┐t (${formatVND(totalCapitalNeeded)}). Cß╗ò ─æ├┤ng kh├┤ng thß╗â g├│p phß║ºn vß╗æn ├óm.`);
     }
     
     const errorBox = document.getElementById('error-warning-box');
@@ -576,11 +576,11 @@ window.saveShareholder = function() {
     const role = roleInput ? roleInput.value : 'invest';
 
     if (!name) {
-        alert("Vui lÃ²ng nháº­p tÃªn cá»• Ä‘Ã´ng!");
+        alert("Vui l├▓ng nhß║¡p t├¬n cß╗ò ─æ├┤ng!");
         return;
     }
     if (contrib <= 0) {
-        alert("Vui lÃ²ng nháº­p sá»‘ vá»‘n gÃ³p lá»›n hÆ¡n 0!");
+        alert("Vui l├▓ng nhß║¡p sß╗æ vß╗æn g├│p lß╗¢n h╞ín 0!");
         return;
     }
 
@@ -593,7 +593,7 @@ window.saveShareholder = function() {
             sh.role = role;
         }
         editingShareholderId = null;
-        document.getElementById('btn-save-shareholder').textContent = 'ThÃªm Cá»• ÄÃ´ng';
+        document.getElementById('btn-save-shareholder').textContent = 'Th├¬m Cß╗ò ─É├┤ng';
         document.getElementById('btn-cancel-edit').style.display = 'none';
     } else {
         // Add new shareholder
@@ -623,7 +623,7 @@ window.editShareholder = function(id) {
     const roleInput = document.getElementById('inp-sh-role');
     if (roleInput) roleInput.value = sh.role || 'invest';
     
-    document.getElementById('btn-save-shareholder').textContent = 'LÆ°u Thay Äá»•i';
+    document.getElementById('btn-save-shareholder').textContent = 'L╞░u Thay ─Éß╗òi';
     document.getElementById('btn-cancel-edit').style.display = 'inline-flex';
 
     // Scroll to the form
@@ -636,7 +636,7 @@ window.cancelEdit = function() {
     document.getElementById('inp-sh-contrib').value = '';
     const roleInput = document.getElementById('inp-sh-role');
     if (roleInput) roleInput.value = 'invest';
-    document.getElementById('btn-save-shareholder').textContent = 'ThÃªm Cá»• ÄÃ´ng';
+    document.getElementById('btn-save-shareholder').textContent = 'Th├¬m Cß╗ò ─É├┤ng';
     document.getElementById('btn-cancel-edit').style.display = 'none';
 }
 
@@ -651,9 +651,9 @@ window.deleteShareholder = function(id) {
 // Role label mapping
 function getRoleLabel(role) {
     switch (role) {
-        case 'operate': return 'ðŸ”§ GÃ³p vá»‘n + Váº­n hÃ nh';
-        case 'invest': return 'ðŸ’° Chá»‰ gÃ³p vá»‘n';
-        default: return 'ðŸ’° Chá»‰ gÃ³p vá»‘n';
+        case 'operate': return '≡ƒöº G├│p vß╗æn + Vß║¡n h├ánh';
+        case 'invest': return '≡ƒÆ░ Chß╗ë g├│p vß╗æn';
+        default: return '≡ƒÆ░ Chß╗ë g├│p vß╗æn';
     }
 }
 
@@ -668,7 +668,7 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
     const container = document.getElementById('sh-table-container');
     
     if (shareholders.length === 0) {
-        container.innerHTML = `<div class="empty-state">ChÆ°a cÃ³ cá»• Ä‘Ã´ng nÃ o Ä‘Ã³ng gÃ³p vá»‘n. HÃ£y thÃªm cá»• Ä‘Ã´ng báº±ng máº«u phÃ­a trÃªn.</div>`;
+        container.innerHTML = `<div class="empty-state">Ch╞░a c├│ cß╗ò ─æ├┤ng n├áo ─æ├│ng g├│p vß╗æn. H├úy th├¬m cß╗ò ─æ├┤ng bß║▒ng mß║½u ph├¡a tr├¬n.</div>`;
         return;
     }
 
@@ -679,13 +679,13 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
             <table>
                 <thead>
                     <tr>
-                        <th>Cá»• Ä‘Ã´ng</th>
-                        <th>Vai trÃ²</th>
-                        <th>Vá»‘n gÃ³p (VND)</th>
-                        <th>% Cá»• pháº§n</th>
-                        <th>Cá»• tá»©c / thÃ¡ng</th>
-                        <th>HoÃ n vá»‘n (Cá»• tá»©c)</th>
-                        <th class="td-actions">HÃ nh Ä‘á»™ng</th>
+                        <th>Cß╗ò ─æ├┤ng</th>
+                        <th>Vai tr├▓</th>
+                        <th>Vß╗æn g├│p (VND)</th>
+                        <th>% Cß╗ò phß║ºn</th>
+                        <th>Cß╗ò tß╗⌐c / th├íng</th>
+                        <th>Ho├án vß╗æn (Cß╗ò tß╗⌐c)</th>
+                        <th class="td-actions">H├ánh ─æß╗Öng</th>
                     </tr>
                 </thead>
                 <tbody id="sh-table-body"></tbody>
@@ -707,10 +707,10 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         const shDiv = (netProfit || 0) * (shPct / 100) * (payoutPct / 100);
         sumDiv += shDiv;
 
-        let paybackStr = "VÃ´ háº¡n (Lá»—)";
+        let paybackStr = "V├┤ hß║ín (Lß╗ù)";
         if (shDiv > 0) {
             const months = s.contribution / shDiv;
-            paybackStr = `${months.toFixed(1)} thÃ¡ng`;
+            paybackStr = `${months.toFixed(1)} th├íng`;
         }
 
         const roleLabel = getRoleLabel(s.role);
@@ -720,13 +720,13 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         tr.innerHTML = `
             <td><strong>${s.name}</strong></td>
             <td><span class="role-badge ${roleBadgeClass}">${roleLabel}</span></td>
-            <td>${formatNumber(s.contribution)} Ä‘</td>
+            <td>${formatNumber(s.contribution)} ─æ</td>
             <td><span class="badge-leverage" style="display:inline-block">${shPct.toFixed(1)}%</span></td>
             <td class="${shDiv >= 0 ? 'val-profit' : 'val-loss'}">${shDiv >= 0 ? '+' : ''}${formatShortVND(shDiv)}</td>
             <td><em style="font-size:11px">${paybackStr}</em></td>
             <td class="td-actions">
-                <button class="btn btn-edit" onclick="editShareholder(${s.id})" style="padding: 4px 8px; font-size:11px; margin-right: 4px;">Sá»­a</button>
-                <button class="btn btn-danger" onclick="deleteShareholder(${s.id})" style="padding: 4px 8px; font-size:11px;">XÃ³a</button>
+                <button class="btn btn-edit" onclick="editShareholder(${s.id})" style="padding: 4px 8px; font-size:11px; margin-right: 4px;">Sß╗¡a</button>
+                <button class="btn btn-danger" onclick="deleteShareholder(${s.id})" style="padding: 4px 8px; font-size:11px;">X├│a</button>
             </td>
         `;
         activeTbody.appendChild(tr);
@@ -737,9 +737,9 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
     trSummary.style.fontWeight = 'bold';
     trSummary.style.background = 'rgba(255,255,255,0.02)';
     trSummary.innerHTML = `
-        <td>Tá»”NG Cá»˜NG Cá»” Tá»¨C</td>
+        <td>Tß╗öNG Cß╗ÿNG Cß╗ö Tß╗¿C</td>
         <td>-</td>
-        <td>${formatNumber(totalEquityContributed)} Ä‘</td>
+        <td>${formatNumber(totalEquityContributed)} ─æ</td>
         <td>${totalPct.toFixed(0)}%</td>
         <td class="${sumDiv >= 0 ? 'val-profit' : 'val-loss'}">${sumDiv >= 0 ? '+' : ''}${formatShortVND(sumDiv)}</td>
         <td>-</td>
@@ -767,7 +767,7 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         statusDiv.style.color = isLight ? '#b91c1c' : 'var(--danger)';
         statusDiv.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-            <span>Thiáº¿u vá»‘n: Tá»•ng vá»‘n gÃ³p hiá»‡n táº¡i (${formatNumber(totalEquityContributed)}Ä‘) Ä‘ang thiáº¿u <strong>${formatNumber(Math.abs(diff))}Ä‘</strong> so vá»›i nhu cáº§u vá»‘n tá»± cÃ³ (${formatNumber(requiredEquity)}Ä‘). HÃ£y gÃ³p thÃªm hoáº·c tÄƒng khoáº£n vay.</span>
+            <span>Thiß║┐u vß╗æn: Tß╗òng vß╗æn g├│p hiß╗çn tß║íi (${formatNumber(totalEquityContributed)}─æ) ─æang thiß║┐u <strong>${formatNumber(Math.abs(diff))}─æ</strong> so vß╗¢i nhu cß║ºu vß╗æn tß╗▒ c├│ (${formatNumber(requiredEquity)}─æ). H├úy g├│p th├¬m hoß║╖c t─âng khoß║ún vay.</span>
         `;
     } else if (diff > 0) {
         statusDiv.style.background = 'rgba(52, 211, 153, 0.1)';
@@ -775,7 +775,7 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         statusDiv.style.color = isLight ? '#047857' : 'var(--success)';
         statusDiv.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-            <span>DÆ° vá»‘n: Tá»•ng vá»‘n gÃ³p (${formatNumber(totalEquityContributed)}Ä‘) thá»«a <strong>${formatNumber(diff)}Ä‘</strong> so vá»›i nhu cáº§u vá»‘n tá»± cÃ³ (${formatNumber(requiredEquity)}Ä‘). Sá»‘ dÆ° nÃ y giÃºp gia tÄƒng Quá»¹ dá»± phÃ²ng thá»±c táº¿.</span>
+            <span>D╞░ vß╗æn: Tß╗òng vß╗æn g├│p (${formatNumber(totalEquityContributed)}─æ) thß╗½a <strong>${formatNumber(diff)}─æ</strong> so vß╗¢i nhu cß║ºu vß╗æn tß╗▒ c├│ (${formatNumber(requiredEquity)}─æ). Sß╗æ d╞░ n├áy gi├║p gia t─âng Quß╗╣ dß╗▒ ph├▓ng thß╗▒c tß║┐.</span>
         `;
     } else {
         statusDiv.style.background = 'var(--primary-glow)';
@@ -783,7 +783,7 @@ function renderShareholders(totalCapitalNeeded, loan, netProfit) {
         statusDiv.style.color = isLight ? '#0369a1' : 'var(--primary)';
         statusDiv.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-            <span>CÃ¢n báº±ng: Tá»•ng vá»‘n gÃ³p khá»›p hoÃ n toÃ n vá»›i nhu cáº§u vá»‘n tá»± cÃ³ (${formatNumber(requiredEquity)}Ä‘).</span>
+            <span>C├ón bß║▒ng: Tß╗òng vß╗æn g├│p khß╗¢p ho├án to├án vß╗¢i nhu cß║ºu vß╗æn tß╗▒ c├│ (${formatNumber(requiredEquity)}─æ).</span>
         `;
     }
     container.appendChild(statusDiv);
@@ -806,13 +806,13 @@ function updateInvestorPitch(equity, baseNet, volBase, breakeven) {
         safetyValElement.innerText = `${safetyMargin.toFixed(1)}%`;
         if (safetyMargin > 30) {
             safetyValElement.style.color = 'var(--success)';
-            safetyDescElement.innerText = "BiÃªn an toÃ n ráº¥t cao. Sáº£n lÆ°á»£ng bÃ¡n cÃ³ thá»ƒ sá»¥t giáº£m tá»›i 30% mÃ  quÃ¡n váº«n khÃ´ng bá»‹ lá»—. ÄÃ¢y lÃ  luáº­n Ä‘iá»ƒm cá»±c tá»‘t Ä‘á»ƒ thuyáº¿t phá»¥c cá»• Ä‘Ã´ng.";
+            safetyDescElement.innerText = "Bi├¬n an to├án rß║Ñt cao. Sß║ún l╞░ß╗úng b├ín c├│ thß╗â sß╗Ñt giß║úm tß╗¢i 30% m├á qu├ín vß║½n kh├┤ng bß╗ï lß╗ù. ─É├óy l├á luß║¡n ─æiß╗âm cß╗▒c tß╗æt ─æß╗â thuyß║┐t phß╗Ñc cß╗ò ─æ├┤ng.";
         } else if (safetyMargin > 0) {
             safetyValElement.style.color = 'var(--warning)';
-            safetyDescElement.innerText = "BiÃªn an toÃ n dÆ°Æ¡ng nhÆ°ng á»Ÿ má»©c háº¹p. Cá»• Ä‘Ã´ng sáº½ muá»‘n tháº¥y káº¿ hoáº¡ch marketing rÃµ rÃ ng Ä‘á»ƒ duy trÃ¬ lÆ°á»£ng khÃ¡ch á»•n Ä‘á»‹nh.";
+            safetyDescElement.innerText = "Bi├¬n an to├án d╞░╞íng nh╞░ng ß╗ƒ mß╗⌐c hß║╣p. Cß╗ò ─æ├┤ng sß║╜ muß╗æn thß║Ñy kß║┐ hoß║ích marketing r├╡ r├áng ─æß╗â duy tr├¼ l╞░ß╗úng kh├ích ß╗òn ─æß╗ïnh.";
         } else {
             safetyValElement.style.color = 'var(--danger)';
-            safetyDescElement.innerText = "Hiá»‡n táº¡i sáº£n lÆ°á»£ng bÃ¡n dá»± kiáº¿n tháº¥p hÆ¡n Ä‘iá»ƒm hÃ²a vá»‘n. Cáº§n giáº£m bá»›t Ä‘á»‹nh phÃ­ váº­n hÃ nh hoáº·c tÄƒng giÃ¡ bÃ¡n Ä‘á»ƒ táº¡o sá»©c hÃºt vá»›i nhÃ  Ä‘áº§u tÆ°.";
+            safetyDescElement.innerText = "Hiß╗çn tß║íi sß║ún l╞░ß╗úng b├ín dß╗▒ kiß║┐n thß║Ñp h╞ín ─æiß╗âm h├▓a vß╗æn. Cß║ºn giß║úm bß╗¢t ─æß╗ïnh ph├¡ vß║¡n h├ánh hoß║╖c t─âng gi├í b├ín ─æß╗â tß║ío sß╗⌐c h├║t vß╗¢i nh├á ─æß║ºu t╞░.";
         }
     }
 
@@ -823,13 +823,13 @@ function updateInvestorPitch(equity, baseNet, volBase, breakeven) {
         const baseDividend = baseNet * (payoutPct / 100);
         if (baseDividend > 0) {
             const paybackMonths = actualEquity / baseDividend;
-            paybackValElement.innerText = `${paybackMonths.toFixed(1)} thÃ¡ng`;
+            paybackValElement.innerText = `${paybackMonths.toFixed(1)} th├íng`;
             paybackValElement.style.color = 'var(--success)';
-            paybackDescElement.innerText = `Thá»i gian hoÃ n vá»‘n dá»± kiáº¿n báº±ng dÃ²ng tiá»n cá»• tá»©c thá»±c nháº­n hÃ ng thÃ¡ng lÃ  khoáº£ng ${paybackMonths.toFixed(1)} thÃ¡ng. ÄÃ¢y lÃ  tá»‘c Ä‘á»™ hoÃ n vá»‘n ráº¥t tá»‘t.`;
+            paybackDescElement.innerText = `Thß╗¥i gian ho├án vß╗æn dß╗▒ kiß║┐n bß║▒ng d├▓ng tiß╗ün cß╗ò tß╗⌐c thß╗▒c nhß║¡n h├áng th├íng l├á khoß║úng ${paybackMonths.toFixed(1)} th├íng. ─É├óy l├á tß╗æc ─æß╗Ö ho├án vß╗æn rß║Ñt tß╗æt.`;
         } else {
-            paybackValElement.innerText = "KhÃ´ng thá»ƒ tÃ­nh (Lá»—)";
+            paybackValElement.innerText = "Kh├┤ng thß╗â t├¡nh (Lß╗ù)";
             paybackValElement.style.color = 'var(--danger)';
-            paybackDescElement.innerText = "QuÃ¡n Ä‘ang chá»‹u lá»— hoáº·c khÃ´ng chi tráº£ cá»• tá»©c. Cáº§n tá»‘i Æ°u láº¡i Ä‘á»‹nh phÃ­ hoáº·c tÄƒng giÃ¡ bÃ¡n.";
+            paybackDescElement.innerText = "Qu├ín ─æang chß╗ïu lß╗ù hoß║╖c kh├┤ng chi trß║ú cß╗ò tß╗⌐c. Cß║ºn tß╗æi ╞░u lß║íi ─æß╗ïnh ph├¡ hoß║╖c t─âng gi├í b├ín.";
         }
     }
 }
@@ -884,11 +884,11 @@ function renderSensitivityTable(basePrice, baseCostPct, fixedMonthlyOpex, monthl
     const table = document.getElementById('sensitivity-table');
     if (!table) return;
 
-    // Variations: price Â±20% in steps of 10%, costPct Â±10% in steps of 5%
+    // Variations: price ┬▒20% in steps of 10%, costPct ┬▒10% in steps of 5%
     const priceMultipliers = [-20, -10, 0, 10, 20];
     const costVariations = [-10, -5, 0, 5, 10];
 
-    let html = '<thead><tr><th class="sensitivity-corner">GiÃ¡ bÃ¡n \\ Cost %</th>';
+    let html = '<thead><tr><th class="sensitivity-corner">Gi├í b├ín \\ Cost %</th>';
     costVariations.forEach(cv => {
         const actualCost = baseCostPct + cv;
         html += `<th>Cost ${actualCost}%${cv !== 0 ? ' (' + (cv > 0 ? '+' : '') + cv + '%)' : ''}</th>`;
@@ -897,7 +897,7 @@ function renderSensitivityTable(basePrice, baseCostPct, fixedMonthlyOpex, monthl
 
     priceMultipliers.forEach(pm => {
         const actualPrice = basePrice * (1 + pm / 100);
-        html += `<tr><td class="sensitivity-row-label">${formatNumber(Math.round(actualPrice))}Ä‘${pm !== 0 ? ' (' + (pm > 0 ? '+' : '') + pm + '%)' : ''}</td>`;
+        html += `<tr><td class="sensitivity-row-label">${formatNumber(Math.round(actualPrice))}─æ${pm !== 0 ? ' (' + (pm > 0 ? '+' : '') + pm + '%)' : ''}</td>`;
         
         costVariations.forEach(cv => {
             const actualCost = baseCostPct + cv;
@@ -916,7 +916,7 @@ function renderSensitivityTable(basePrice, baseCostPct, fixedMonthlyOpex, monthl
             // Highlight the center cell (base case)
             let extraClass = (pm === 0 && cv === 0) ? ' sensitivity-base' : '';
             
-            const tooltipText = `Doanh thu: ${formatNumber(Math.round(rev))}Ä‘\n- Cost NVL (${actualCost}%): ${formatNumber(Math.round(cogs))}Ä‘\n- Äá»‹nh phÃ­: ${formatNumber(Math.round(fixedMonthlyOpex))}Ä‘\n- Kháº¥u hao: ${formatNumber(Math.round(monthlyDepreciation))}Ä‘\n- LÃ£i vay: ${formatNumber(Math.round(monthlyDebt))}Ä‘\n- Thuáº¿ TNDN (${dynamicTaxRate}%): ${formatNumber(Math.round(tax))}Ä‘\n------------------------\n= Lá»£i nhuáº­n rÃ²ng: ${formatNumber(Math.round(netProfit))}Ä‘`;
+            const tooltipText = `Doanh thu: ${formatNumber(Math.round(rev))}─æ\n- Cost NVL (${actualCost}%): ${formatNumber(Math.round(cogs))}─æ\n- ─Éß╗ïnh ph├¡: ${formatNumber(Math.round(fixedMonthlyOpex))}─æ\n- Khß║Ñu hao: ${formatNumber(Math.round(monthlyDepreciation))}─æ\n- L├úi vay: ${formatNumber(Math.round(monthlyDebt))}─æ\n- Thuß║┐ TNDN (${dynamicTaxRate}%): ${formatNumber(Math.round(tax))}─æ\n------------------------\n= Lß╗úi nhuß║¡n r├▓ng: ${formatNumber(Math.round(netProfit))}─æ`;
             
             html += `<td class="${cellClass}${extraClass}" title="${tooltipText}">${formatShortVND(netProfit)}</td>`;
         });
@@ -935,9 +935,9 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
     const rent = parseNumber(document.getElementById('inp-rent').value);
     const commissionRate = parseFloat(document.getElementById('inp-commission-rate')?.value || '0');
 
-    // Vary price by Â±10k, Â±5k
+    // Vary price by ┬▒10k, ┬▒5k
     const prices = [basePrice - 10000, basePrice - 5000, basePrice, basePrice + 5000, basePrice + 10000].filter(p => p > 0);
-    // Vary rent by Â±5M, Â±2.5M
+    // Vary rent by ┬▒5M, ┬▒2.5M
     const rents = [rent - 5000000, rent - 2500000, rent, rent + 2500000, rent + 5000000].filter(r => r >= 0);
 
     let priceRowsHtml = '';
@@ -947,7 +947,7 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
         
         rents.forEach(r => {
             if (unitMargin <= 0) {
-                cellsHtml += `<td style="text-align: right; padding: 8px; color: var(--danger); font-weight: 500;">Lá»— gá»™p/ly</td>`;
+                cellsHtml += `<td style="text-align: right; padding: 8px; color: var(--danger); font-weight: 500;">Lß╗ù gß╗Öp/ly</td>`;
             } else {
                 const newOpex = fixedMonthlyOpex - rent + r;
                 const beVol = (newOpex + monthlyDebt + monthlyDepreciation) / (30 * unitMargin);
@@ -959,16 +959,16 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
 
         priceRowsHtml += `
             <tr>
-                <td style="text-align: left; padding: 8px; font-weight: 500;">${formatNumber(p)}Ä‘</td>
+                <td style="text-align: left; padding: 8px; font-weight: 500;">${formatNumber(p)}─æ</td>
                 ${cellsHtml}
             </tr>
         `;
     });
 
     wrapper.innerHTML = `
-        <h3 class="chart-sub-title">ðŸŽ¯ Ma Tráº­n Sáº£n LÆ°á»£ng HÃ²a Vá»‘n (Ly/NgÃ y) Theo GiÃ¡ BÃ¡n & Tiá»n ThuÃª</h3>
+        <h3 class="chart-sub-title">≡ƒÄ» Ma Trß║¡n Sß║ún L╞░ß╗úng H├▓a Vß╗æn (Ly/Ng├áy) Theo Gi├í B├ín & Tiß╗ün Thu├¬</h3>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
-            Báº£ng dÆ°á»›i Ä‘Ã¢y thá»ƒ hiá»‡n sá»‘ ly nÆ°á»›c quÃ¡n cáº§n bÃ¡n Ä‘Æ°á»£c <strong>má»—i ngÃ y</strong> Ä‘á»ƒ hÃ²a vá»‘n (bao gá»“m Ä‘á»‹nh phÃ­, ná»£ vay ngÃ¢n hÃ ng vÃ  kháº¥u hao) khi thay Ä‘á»•i giÃ¡ thuÃª máº·t báº±ng (cá»™t) vÃ  giÃ¡ bÃ¡n láº» (dÃ²ng). Ã” tÃ´ Ä‘áº­m cÃ³ viá»n xanh lÃ  má»©c giÃ¡ & tiá»n thuÃª hiá»‡n táº¡i cá»§a báº¡n.
+            Bß║úng d╞░ß╗¢i ─æ├óy thß╗â hiß╗çn sß╗æ ly n╞░ß╗¢c qu├ín cß║ºn b├ín ─æ╞░ß╗úc <strong>mß╗ùi ng├áy</strong> ─æß╗â h├▓a vß╗æn (bao gß╗ôm ─æß╗ïnh ph├¡, nß╗ú vay ng├ón h├áng v├á khß║Ñu hao) khi thay ─æß╗òi gi├í thu├¬ mß║╖t bß║▒ng (cß╗Öt) v├á gi├í b├ín lß║╗ (d├▓ng). ├ö t├┤ ─æß║¡m c├│ viß╗ün xanh l├á mß╗⌐c gi├í & tiß╗ün thu├¬ hiß╗çn tß║íi cß╗ºa bß║ín.
         </p>
 
         <!-- Table -->
@@ -976,8 +976,8 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
             <table class="sensitivity-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                 <thead>
                     <tr>
-                        <th class="sensitivity-corner" style="text-align: left; padding: 8px; background: rgba(2, 132, 199, 0.08);">GiÃ¡ bÃ¡n \\ Tiá»n thuÃª</th>
-                        ${rents.map(r => `<th style="text-align: right; padding: 8px; background: rgba(2, 132, 199, 0.08);">${formatShortVND(r)}/thÃ¡ng</th>`).join('')}
+                        <th class="sensitivity-corner" style="text-align: left; padding: 8px; background: rgba(2, 132, 199, 0.08);">Gi├í b├ín \\ Tiß╗ün thu├¬</th>
+                        ${rents.map(r => `<th style="text-align: right; padding: 8px; background: rgba(2, 132, 199, 0.08);">${formatShortVND(r)}/th├íng</th>`).join('')}
                     </tr>
                 </thead>
                 <tbody>
@@ -986,9 +986,9 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
             </table>
         </div>
 
-        <h3 class="chart-sub-title" style="margin-top: 24px; margin-bottom: 8px;">ðŸ“ˆ Äá»“ Thá»‹ Äiá»ƒm HÃ²a Vá»‘n Cáº¯t Nhau (Break-Even Point Chart)</h3>
+        <h3 class="chart-sub-title" style="margin-top: 24px; margin-bottom: 8px;">≡ƒôê ─Éß╗ô Thß╗ï ─Éiß╗âm H├▓a Vß╗æn Cß║»t Nhau (Break-Even Point Chart)</h3>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
-            Giao Ä‘iá»ƒm giá»¯a hai Ä‘Æ°á»ng tháº³ng chÃ­nh lÃ  Ä‘iá»ƒm hÃ²a vá»‘n cá»§a dá»± Ã¡n.
+            Giao ─æiß╗âm giß╗»a hai ─æ╞░ß╗¥ng thß║│ng ch├¡nh l├á ─æiß╗âm h├▓a vß╗æn cß╗ºa dß╗▒ ├ín.
         </p>
         <div class="chart-container" style="position: relative; height: 280px; width: 100%; margin-bottom: 24px;">
             <canvas id="breakevenChart"></canvas>
@@ -1026,7 +1026,7 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Tá»•ng Doanh Thu (VND)',
+                        label: 'Tß╗òng Doanh Thu (VND)',
                         data: dataRev,
                         borderColor: '#10b981',
                         backgroundColor: 'rgba(16, 185, 129, 0.05)',
@@ -1035,7 +1035,7 @@ function renderBreakevenAnalysis(basePrice, baseCostPct, fixedMonthlyOpex, month
                         pointRadius: 3
                     },
                     {
-                        label: 'Tá»•ng Chi PhÃ­ (VND)',
+                        label: 'Tß╗òng Chi Ph├¡ (VND)',
                         data: dataCost,
                         borderColor: '#ef4444',
                         backgroundColor: 'rgba(239, 68, 68, 0.05)',
@@ -1098,7 +1098,7 @@ function renderLongTermProjections(basePrice, baseCostPct, fixedOpex, monthlyDeb
     let currentCommission = currentRev * (commissionRate / 100);
     let currentOpex = (fixedOpex * 12) + currentCommission; 
 
-    const labels = ["NÄƒm 1", "NÄƒm 2", "NÄƒm 3", "NÄƒm 4", "NÄƒm 5"];
+    const labels = ["N─âm 1", "N─âm 2", "N─âm 3", "N─âm 4", "N─âm 5"];
     const dataRev = [];
     const dataOpex = [];
     const dataNet = [];
@@ -1134,19 +1134,19 @@ function renderLongTermProjections(basePrice, baseCostPct, fixedOpex, monthlyDeb
         const valuation = year3Net > 0 ? year3Net * peRatio : 0;
         
         valContainer.innerHTML = `
-            <div style="font-size: 14px; margin-bottom: 12px;"><strong style="color:var(--primary);">ðŸ’¡ PhÃ¢n TÃ­ch Äá»‹nh GiÃ¡ Doanh Nghiá»‡p (Cuá»‘i NÄƒm 3)</strong></div>
+            <div style="font-size: 14px; margin-bottom: 12px;"><strong style="color:var(--primary);">≡ƒÆí Ph├ón T├¡ch ─Éß╗ïnh Gi├í Doanh Nghiß╗çp (Cuß╗æi N─âm 3)</strong></div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                 <div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Lá»£i nhuáº­n rÃ²ng NÄƒm 3:</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Lß╗úi nhuß║¡n r├▓ng N─âm 3:</div>
                     <div style="font-size: 18px; font-weight: bold; color: ${year3Net > 0 ? 'var(--success)' : 'var(--danger)'};">${formatVND(year3Net)}</div>
                 </div>
                 <div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Äá»‹nh giÃ¡ quÃ¡n (P/E = 3):</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">─Éß╗ïnh gi├í qu├ín (P/E = 3):</div>
                     <div style="font-size: 18px; font-weight: bold; color: var(--primary);">${formatVND(valuation)}</div>
                 </div>
             </div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
-                * Náº¿u quÃ¡n hoáº¡t Ä‘á»™ng á»•n Ä‘á»‹nh tá»›i nÄƒm thá»© 3 vá»›i cÃ¡c giáº£ Ä‘á»‹nh láº¡m phÃ¡t/tÄƒng trÆ°á»Ÿng trÃªn, báº¡n cÃ³ thá»ƒ chÃ o bÃ¡n/sang nhÆ°á»£ng láº¡i quÃ¡n vá»›i má»©c giÃ¡ tham kháº£o khoáº£ng ${formatShortVND(valuation)}.
+                * Nß║┐u qu├ín hoß║ít ─æß╗Öng ß╗òn ─æß╗ïnh tß╗¢i n─âm thß╗⌐ 3 vß╗¢i c├íc giß║ú ─æß╗ïnh lß║ím ph├ít/t─âng tr╞░ß╗ƒng tr├¬n, bß║ín c├│ thß╗â ch├áo b├ín/sang nh╞░ß╗úng lß║íi qu├ín vß╗¢i mß╗⌐c gi├í tham khß║úo khoß║úng ${formatShortVND(valuation)}.
             </div>
         `;
     }
@@ -1172,13 +1172,13 @@ function renderLongTermProjections(basePrice, baseCostPct, fixedOpex, monthlyDeb
                         borderRadius: 4
                     },
                     {
-                        label: 'Tá»•ng Chi PhÃ­',
+                        label: 'Tß╗òng Chi Ph├¡',
                         data: dataOpex,
                         backgroundColor: 'rgba(248, 113, 113, 0.8)',
                         borderRadius: 4
                     },
                     {
-                        label: 'Lá»£i Nhuáº­n RÃ²ng',
+                        label: 'Lß╗úi Nhuß║¡n R├▓ng',
                         data: dataNet,
                         backgroundColor: 'rgba(52, 211, 153, 0.8)',
                         borderRadius: 4
@@ -1234,51 +1234,51 @@ function renderExplanation(basePrice, baseCostPct, fixedMonthlyOpex, monthlyDebt
     
     el.innerHTML = `
         <div style="background: rgba(15,23,42,0.03); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
-            <h3 style="margin-bottom: 16px; color: var(--primary); font-size: 18px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;">Diá»…n Giáº£i CÃ¡c Con Sá»‘ Äang Hiá»ƒn Thá»‹</h3>
+            <h3 style="margin-bottom: 16px; color: var(--primary); font-size: 18px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;">Diß╗àn Giß║úi C├íc Con Sß╗æ ─Éang Hiß╗ân Thß╗ï</h3>
             
-            <p><strong>1. Nhu cáº§u vá»‘n & Äáº§u tÆ° ban Ä‘áº§u (Tá»•ng: ${formatVND(totalCap)})</strong></p>
+            <p><strong>1. Nhu cß║ºu vß╗æn & ─Éß║ºu t╞░ ban ─æß║ºu (Tß╗òng: ${formatVND(totalCap)})</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li><strong>Chi phÃ­ thiáº¿t láº­p (${formatVND(setupCosts)})</strong>: ÄÃ¢y lÃ  tiá»n "cháº¿t" Ä‘á»• vÃ o quÃ¡n trÆ°á»›c khi má»Ÿ cá»­a.
-                    <br>Bao gá»“m: Cá»c máº·t báº±ng (${formatShortVND(deposit)}), Sá»­a chá»¯a (${formatShortVND(renovate)}), MÃ¡y mÃ³c (${formatShortVND(equipment)}), NguyÃªn liá»‡u (${formatShortVND(rawStart)}), KhÃ¡c (${formatShortVND(decorMisc)}).
+                <li><strong>Chi ph├¡ thiß║┐t lß║¡p (${formatVND(setupCosts)})</strong>: ─É├óy l├á tiß╗ün "chß║┐t" ─æß╗ò v├áo qu├ín tr╞░ß╗¢c khi mß╗ƒ cß╗¡a.
+                    <br>Bao gß╗ôm: Cß╗ìc mß║╖t bß║▒ng (${formatShortVND(deposit)}), Sß╗¡a chß╗»a (${formatShortVND(renovate)}), M├íy m├│c (${formatShortVND(equipment)}), Nguy├¬n liß╗çu (${formatShortVND(rawStart)}), Kh├íc (${formatShortVND(decorMisc)}).
                 </li>
-                <li><strong>Quá»¹ dá»± phÃ²ng (${formatVND(buffer)})</strong>: Tiá»n máº·t Ä‘á»ƒ sáºµn trong ngÃ¢n hÃ ng Ä‘á»ƒ gá»“ng lá»— thá»i gian Ä‘áº§u.</li>
+                <li><strong>Quß╗╣ dß╗▒ ph├▓ng (${formatVND(buffer)})</strong>: Tiß╗ün mß║╖t ─æß╗â sß║╡n trong ng├ón h├áng ─æß╗â gß╗ông lß╗ù thß╗¥i gian ─æß║ºu.</li>
             </ul>
 
-            <p><strong>2. Nguá»“n vá»‘n & ÄÃ²n báº©y tÃ i chÃ­nh</strong></p>
+            <p><strong>2. Nguß╗ôn vß╗æn & ─É├▓n bß║⌐y t├ái ch├¡nh</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li><strong>Vá»‘n tá»± cÃ³ (Báº¡n vÃ  Cá»• Ä‘Ã´ng gÃ³p):</strong> ${formatVND(totalEquityContributed)} (${((totalEquityContributed / totalCap) * 100).toFixed(1)}%)</li>
-                <li><strong>Vá»‘n Ä‘i vay ngÃ¢n hÃ ng:</strong> ${formatVND(loan)} (${((loan / totalCap) * 100).toFixed(1)}%)</li>
-                <li><strong>Chi phÃ­ tráº£ ná»£ hÃ ng thÃ¡ng:</strong> Vá»›i lÃ£i suáº¥t ${interest}%/nÄƒm vay trong ${term} thÃ¡ng, má»—i thÃ¡ng pháº£i tráº£ cáº£ gá»‘c láº«n lÃ£i lÃ  <strong>${formatVND(Math.round(monthlyDebt))}</strong>.</li>
+                <li><strong>Vß╗æn tß╗▒ c├│ (Bß║ín v├á Cß╗ò ─æ├┤ng g├│p):</strong> ${formatVND(totalEquityContributed)} (${((totalEquityContributed / totalCap) * 100).toFixed(1)}%)</li>
+                <li><strong>Vß╗æn ─æi vay ng├ón h├áng:</strong> ${formatVND(loan)} (${((loan / totalCap) * 100).toFixed(1)}%)</li>
+                <li><strong>Chi ph├¡ trß║ú nß╗ú h├áng th├íng:</strong> Vß╗¢i l├úi suß║Ñt ${interest}%/n─âm vay trong ${term} th├íng, mß╗ùi th├íng phß║úi trß║ú cß║ú gß╗æc lß║½n l├úi l├á <strong>${formatVND(Math.round(monthlyDebt))}</strong>.</li>
             </ul>
 
-            <p><strong>3. Chi phÃ­ duy trÃ¬ má»—i thÃ¡ng (Äá»‹nh phÃ­: ${formatVND(fixedMonthlyOpex)})</strong></p>
+            <p><strong>3. Chi ph├¡ duy tr├¼ mß╗ùi th├íng (─Éß╗ïnh ph├¡: ${formatVND(fixedMonthlyOpex)})</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li>ThuÃª máº·t báº±ng: ${formatShortVND(rent)} | Äiá»‡n nÆ°á»›c: ${formatShortVND(utilities)} | LÆ°Æ¡ng: ${formatShortVND(salary)} | KhÃ¡c: ${formatShortVND(misc)}. DÃ¹ khÃ´ng bÃ¡n Ä‘Æ°á»£c ly nÃ o, thÃ¡ng nÃ o báº¡n cÅ©ng gÃ¡nh chá»«ng nÃ y chi phÃ­.</li>
-                <li><strong>Kháº¥u hao tÃ i sáº£n:</strong> TÃ­nh dá»±a trÃªn MÃ¡y mÃ³c (${formatShortVND(equipment)}) + Decor (${formatShortVND(decorMisc)}) chia cho ${deprYears} nÄƒm = <strong>${formatVND(Math.round(monthlyDepreciation))}/thÃ¡ng</strong>. (ÄÃ¢y khÃ´ng pháº£i tiá»n chi ra, mÃ  lÃ  sá»± hao mÃ²n).</li>
+                <li>Thu├¬ mß║╖t bß║▒ng: ${formatShortVND(rent)} | ─Éiß╗çn n╞░ß╗¢c: ${formatShortVND(utilities)} | L╞░╞íng: ${formatShortVND(salary)} | Kh├íc: ${formatShortVND(misc)}. D├╣ kh├┤ng b├ín ─æ╞░ß╗úc ly n├áo, th├íng n├áo bß║ín c┼⌐ng g├ính chß╗½ng n├áy chi ph├¡.</li>
+                <li><strong>Khß║Ñu hao t├ái sß║ún:</strong> T├¡nh dß╗▒a tr├¬n M├íy m├│c (${formatShortVND(equipment)}) + Decor (${formatShortVND(decorMisc)}) chia cho ${deprYears} n─âm = <strong>${formatVND(Math.round(monthlyDepreciation))}/th├íng</strong>. (─É├óy kh├┤ng phß║úi tiß╗ün chi ra, m├á l├á sß╗▒ hao m├▓n).</li>
             </ul>
 
-            <p><strong>4. CÆ¡ cáº¥u GiÃ¡ bÃ¡n 1 ly nÆ°á»›c</strong></p>
+            <p><strong>4. C╞í cß║Ñu Gi├í b├ín 1 ly n╞░ß╗¢c</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li>GiÃ¡ bÃ¡n trung bÃ¬nh: <strong>${formatVND(basePrice)}</strong></li>
-                <li>Tá»· lá»‡ giÃ¡ vá»‘n (Cost): ${baseCostPct}% (TÆ°Æ¡ng Ä‘Æ°Æ¡ng ${formatVND(basePrice * baseCostPct / 100)} tiá»n nguyÃªn váº­t liá»‡u).</li>
-                <li>LÃ£i gá»™p (Tiá»n lá»i sau khi trá»« nguyÃªn liá»‡u): <strong>${formatVND(grossMargin)}/ly</strong>.</li>
+                <li>Gi├í b├ín trung b├¼nh: <strong>${formatVND(basePrice)}</strong></li>
+                <li>Tß╗╖ lß╗ç gi├í vß╗æn (Cost): ${baseCostPct}% (T╞░╞íng ─æ╞░╞íng ${formatVND(basePrice * baseCostPct / 100)} tiß╗ün nguy├¬n vß║¡t liß╗çu).</li>
+                <li>L├úi gß╗Öp (Tiß╗ün lß╗¥i sau khi trß╗½ nguy├¬n liß╗çu): <strong>${formatVND(grossMargin)}/ly</strong>.</li>
             </ul>
 
-            <p><strong>5. Sá»‘ ly cáº§n bÃ¡n Ä‘á»ƒ HÃ’A Vá»N: ${Math.ceil(breakeven)} ly/ngÃ y</strong></p>
+            <p><strong>5. Sß╗æ ly cß║ºn b├ín ─æß╗â H├ÆA Vß╗ÉN: ${Math.ceil(breakeven)} ly/ng├áy</strong></p>
             <ul style="margin-bottom: 16px; margin-top: 4px; padding-left: 20px;">
-                <li>Má»—i thÃ¡ng báº¡n cáº§n gÃ¡nh: Äá»‹nh phÃ­ (${formatShortVND(fixedMonthlyOpex)}) + Tiá»n ná»£ (${formatShortVND(monthlyDebt)}) + Kháº¥u hao (${formatShortVND(monthlyDepreciation)}) = ${formatVND(fixedMonthlyOpex + monthlyDebt + monthlyDepreciation)}.</li>
-                <li>Vá»›i má»©c lÃ£i gá»™p ${formatVND(grossMargin)}/ly, báº¡n cáº§n bÃ¡n Ä‘Æ°á»£c khoáº£ng ${Math.ceil(breakeven * 30)} ly/thÃ¡ng, tÆ°Æ¡ng Ä‘Æ°Æ¡ng <strong>~${Math.ceil(breakeven)} ly/ngÃ y</strong> thÃ¬ quÃ¡n má»›i Ä‘á»§ tiá»n bÃ¹ chi phÃ­.</li>
+                <li>Mß╗ùi th├íng bß║ín cß║ºn g├ính: ─Éß╗ïnh ph├¡ (${formatShortVND(fixedMonthlyOpex)}) + Tiß╗ün nß╗ú (${formatShortVND(monthlyDebt)}) + Khß║Ñu hao (${formatShortVND(monthlyDepreciation)}) = ${formatVND(fixedMonthlyOpex + monthlyDebt + monthlyDepreciation)}.</li>
+                <li>Vß╗¢i mß╗⌐c l├úi gß╗Öp ${formatVND(grossMargin)}/ly, bß║ín cß║ºn b├ín ─æ╞░ß╗úc khoß║úng ${Math.ceil(breakeven * 30)} ly/th├íng, t╞░╞íng ─æ╞░╞íng <strong>~${Math.ceil(breakeven)} ly/ng├áy</strong> th├¼ qu├ín mß╗¢i ─æß╗º tiß╗ün b├╣ chi ph├¡.</li>
             </ul>
 
-            <p><strong>6. Káº¿t quáº£ Dá»± Kiáº¿n (BÃ¡n Ä‘Æ°á»£c ${volBase} ly/ngÃ y)</strong></p>
+            <p><strong>6. Kß║┐t quß║ú Dß╗▒ Kiß║┐n (B├ín ─æ╞░ß╗úc ${volBase} ly/ng├áy)</strong></p>
             <ul style="margin-top: 4px; padding-left: 20px;">
-                <li><strong>Doanh thu:</strong> ${volBase} ly Ã— 30 ngÃ y Ã— ${formatVND(basePrice)} = <strong>${formatVND(baseScenario.rev)}</strong></li>
-                <li><strong>Trá»« NguyÃªn liá»‡u (${baseCostPct}%):</strong> - ${formatVND(baseScenario.cogs)}</li>
-                <li><strong>Trá»« Äá»‹nh phÃ­ hÃ ng thÃ¡ng:</strong> - ${formatVND(fixedMonthlyOpex)}</li>
-                <li><strong>Trá»« Tiá»n tráº£ ná»£ ngÃ¢n hÃ ng:</strong> - ${formatVND(Math.round(monthlyDebt))}</li>
-                <li><strong>Trá»« Kháº¥u hao mÃ¡y mÃ³c:</strong> - ${formatVND(Math.round(monthlyDepreciation))}</li>
-                <li><strong>Thuáº¿ TNDN (${taxRate}%):</strong> - ${formatVND(Math.round(baseScenario.tax))}</li>
-                <li style="margin-top:8px;">=> <strong>Lá»¢I NHUáº¬N RÃ’NG (Cáº¥t tÃºi): <span style="color:${baseScenario.net >= 0 ? 'var(--success)' : 'var(--danger)'};">${formatVND(baseScenario.net)}</span> / thÃ¡ng</strong></li>
+                <li><strong>Doanh thu:</strong> ${volBase} ly ├ù 30 ng├áy ├ù ${formatVND(basePrice)} = <strong>${formatVND(baseScenario.rev)}</strong></li>
+                <li><strong>Trß╗½ Nguy├¬n liß╗çu (${baseCostPct}%):</strong> - ${formatVND(baseScenario.cogs)}</li>
+                <li><strong>Trß╗½ ─Éß╗ïnh ph├¡ h├áng th├íng:</strong> - ${formatVND(fixedMonthlyOpex)}</li>
+                <li><strong>Trß╗½ Tiß╗ün trß║ú nß╗ú ng├ón h├áng:</strong> - ${formatVND(Math.round(monthlyDebt))}</li>
+                <li><strong>Trß╗½ Khß║Ñu hao m├íy m├│c:</strong> - ${formatVND(Math.round(monthlyDepreciation))}</li>
+                <li><strong>Thuß║┐ TNDN (${taxRate}%):</strong> - ${formatVND(Math.round(baseScenario.tax))}</li>
+                <li style="margin-top:8px;">=> <strong>Lß╗óI NHUß║¼N R├ÆNG (Cß║Ñt t├║i): <span style="color:${baseScenario.net >= 0 ? 'var(--success)' : 'var(--danger)'};">${formatVND(baseScenario.net)}</span> / th├íng</strong></li>
             </ul>
         </div>
     `;
@@ -1322,19 +1322,19 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     if (rentPct <= 12) {
         rentScore = 25;
         rentStatus = 'excellent';
-        rentComment = `Chi phÃ­ máº·t báº±ng ráº¥t tá»‘i Æ°u (${rentPct.toFixed(1)}% doanh thu). Báº¡n chá»‰ cáº§n ${rentDaysNeeded} ngÃ y doanh thu Ä‘á»ƒ tráº£ tiá»n nhÃ .`;
+        rentComment = `Chi ph├¡ mß║╖t bß║▒ng rß║Ñt tß╗æi ╞░u (${rentPct.toFixed(1)}% doanh thu). Bß║ín chß╗ë cß║ºn ${rentDaysNeeded} ng├áy doanh thu ─æß╗â trß║ú tiß╗ün nh├á.`;
     } else if (rentPct <= 15) {
         rentScore = 20;
         rentStatus = 'good';
-        rentComment = `Äáº¡t chuáº©n tá»· lá»‡ vÃ ng F&B (ngÆ°á»¡ng an toÃ n â‰¤ 15%). Máº¥t ${rentDaysNeeded} ngÃ y doanh thu Ä‘á»ƒ trang tráº£i tiá»n thuÃª.`;
+        rentComment = `─Éß║ít chuß║⌐n tß╗╖ lß╗ç v├áng F&B (ng╞░ß╗íng an to├án Γëñ 15%). Mß║Ñt ${rentDaysNeeded} ng├áy doanh thu ─æß╗â trang trß║úi tiß╗ün thu├¬.`;
     } else if (rentPct <= 20) {
         rentScore = 12;
         rentStatus = 'warning';
-        rentComment = `HÆ¡i cao (${rentPct.toFixed(1)}%). Cáº§n Ä‘áº©y máº¡nh doanh thu hoáº·c Ä‘Ã m phÃ¡n thÃªm Æ°u Ä‘Ã£i máº·t báº±ng Ä‘á»ƒ trÃ¡nh Ã¡p lá»±c Ä‘á»‹nh phÃ­.`;
+        rentComment = `H╞íi cao (${rentPct.toFixed(1)}%). Cß║ºn ─æß║⌐y mß║ính doanh thu hoß║╖c ─æ├ám ph├ín th├¬m ╞░u ─æ├úi mß║╖t bß║▒ng ─æß╗â tr├ính ├íp lß╗▒c ─æß╗ïnh ph├¡.`;
     } else {
         rentScore = 5;
         rentStatus = 'danger';
-        rentComment = `VÆ°á»£t ngÆ°á»¡ng rá»§i ro (${rentPct.toFixed(1)}%). Báº¡n máº¥t tá»›i ${rentDaysNeeded} ngÃ y bÃ¡n hÃ ng chá»‰ Ä‘á»ƒ nuÃ´i chá»§ nhÃ .`;
+        rentComment = `V╞░ß╗út ng╞░ß╗íng rß╗ºi ro (${rentPct.toFixed(1)}%). Bß║ín mß║Ñt tß╗¢i ${rentDaysNeeded} ng├áy b├ín h├áng chß╗ë ─æß╗â nu├┤i chß╗º nh├á.`;
     }
     score += rentScore;
 
@@ -1345,19 +1345,19 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     if (laborPct <= 18) {
         laborScore = 25;
         laborStatus = 'excellent';
-        laborComment = `Tá»‘i Æ°u Ä‘á»‹nh biÃªn nhÃ¢n sá»± xuáº¥t sáº¯c (${laborPct.toFixed(1)}% DT). NÄƒng suáº¥t lao Ä‘á»™ng cao.`;
+        laborComment = `Tß╗æi ╞░u ─æß╗ïnh bi├¬n nh├ón sß╗▒ xuß║Ñt sß║»c (${laborPct.toFixed(1)}% DT). N─âng suß║Ñt lao ─æß╗Öng cao.`;
     } else if (laborPct <= 22) {
         laborScore = 20;
         laborStatus = 'good';
-        laborComment = `Äáº¡t chuáº©n quáº£n trá»‹ F&B (ngÆ°á»¡ng chuáº©n 18% - 22%). CÆ¡ cáº¥u ca kÃ­p há»£p lÃ½.`;
+        laborComment = `─Éß║ít chuß║⌐n quß║ún trß╗ï F&B (ng╞░ß╗íng chuß║⌐n 18% - 22%). C╞í cß║Ñu ca k├¡p hß╗úp l├╜.`;
     } else if (laborPct <= 28) {
         laborScore = 12;
         laborStatus = 'warning';
-        laborComment = `Quá»¹ lÆ°Æ¡ng Ä‘ang chiáº¿m ${laborPct.toFixed(1)}% DT. NÃªn Ã¡p dá»¥ng ca gÃ£y linh hoáº¡t vÃ  tuyá»ƒn thÃªm part-time theo giá» cao Ä‘iá»ƒm.`;
+        laborComment = `Quß╗╣ l╞░╞íng ─æang chiß║┐m ${laborPct.toFixed(1)}% DT. N├¬n ├íp dß╗Ñng ca g├úy linh hoß║ít v├á tuyß╗ân th├¬m part-time theo giß╗¥ cao ─æiß╗âm.`;
     } else {
         laborScore = 5;
         laborStatus = 'danger';
-        laborComment = `Chi phÃ­ nhÃ¢n sá»± quÃ¡ náº·ng (${laborPct.toFixed(1)}% DT). Nguy cÆ¡ Äƒn mÃ²n toÃ n bá»™ lá»£i nhuáº­n rÃ²ng.`;
+        laborComment = `Chi ph├¡ nh├ón sß╗▒ qu├í nß║╖ng (${laborPct.toFixed(1)}% DT). Nguy c╞í ─ân m├▓n to├án bß╗Ö lß╗úi nhuß║¡n r├▓ng.`;
     }
     score += laborScore;
 
@@ -1368,19 +1368,19 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     if (cogsPct <= 25) {
         cogsScore = 25;
         cogsStatus = 'excellent';
-        cogsComment = `BiÃªn lÃ£i gá»™p cá»±c dÃ y (${(100 - cogsPct).toFixed(1)}%). Kiá»ƒm soÃ¡t hao há»¥t vÃ  giÃ¡ vá»‘n nguyÃªn váº­t liá»‡u ráº¥t tá»‘t.`;
+        cogsComment = `Bi├¬n l├úi gß╗Öp cß╗▒c d├áy (${(100 - cogsPct).toFixed(1)}%). Kiß╗âm so├ít hao hß╗Ñt v├á gi├í vß╗æn nguy├¬n vß║¡t liß╗çu rß║Ñt tß╗æt.`;
     } else if (cogsPct <= 30) {
         cogsScore = 20;
         cogsStatus = 'good';
-        cogsComment = `Äáº¡t tá»· lá»‡ vÃ ng giÃ¡ vá»‘n Ä‘á»“ uá»‘ng (${cogsPct.toFixed(1)}% DT). Menu cÃ³ cáº¥u trÃºc Ä‘á»‹nh giÃ¡ vá»¯ng cháº¯c.`;
+        cogsComment = `─Éß║ít tß╗╖ lß╗ç v├áng gi├í vß╗æn ─æß╗ô uß╗æng (${cogsPct.toFixed(1)}% DT). Menu c├│ cß║Ñu tr├║c ─æß╗ïnh gi├í vß╗»ng chß║»c.`;
     } else if (cogsPct <= 35) {
         cogsScore = 12;
         cogsStatus = 'warning';
-        cogsComment = `GiÃ¡ vá»‘n hÆ¡i cao (${cogsPct.toFixed(1)}%). Cáº§n kiá»ƒm tra láº¡i Ä‘á»‹nh lÆ°á»£ng (recipe) vÃ  tÃ¬m nhÃ  cung cáº¥p giÃ¡ sá»‰ tá»‘t hÆ¡n.`;
+        cogsComment = `Gi├í vß╗æn h╞íi cao (${cogsPct.toFixed(1)}%). Cß║ºn kiß╗âm tra lß║íi ─æß╗ïnh l╞░ß╗úng (recipe) v├á t├¼m nh├á cung cß║Ñp gi├í sß╗ë tß╗æt h╞ín.`;
     } else {
         cogsScore = 5;
         cogsStatus = 'danger';
-        cogsComment = `GiÃ¡ vá»‘n chiáº¿m ${cogsPct.toFixed(1)}% DT. BiÃªn lÃ£i gá»™p bá»‹ bÃ³p ngháº¹t, rá»§i ro cao khi giÃ¡ nguyÃªn liá»‡u thá»‹ trÆ°á»ng biáº¿n Ä‘á»™ng.`;
+        cogsComment = `Gi├í vß╗æn chiß║┐m ${cogsPct.toFixed(1)}% DT. Bi├¬n l├úi gß╗Öp bß╗ï b├│p nghß║╣t, rß╗ºi ro cao khi gi├í nguy├¬n liß╗çu thß╗ï tr╞░ß╗¥ng biß║┐n ─æß╗Öng.`;
     }
     score += cogsScore;
 
@@ -1391,19 +1391,19 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     if (marginOfSafety >= 40 && netMarginPct >= 20) {
         safetyScore = 25;
         safetyStatus = 'excellent';
-        safetyComment = `BiÃªn an toÃ n cá»±c lá»›n (${marginOfSafety.toFixed(1)}%) vÃ  tá»· suáº¥t lÃ£i rÃ²ng Ä‘áº¡t ${netMarginPct.toFixed(1)}%. Dá»± Ã¡n cÃ³ sá»©c chá»‘ng chá»‹u biáº¿n Ä‘á»™ng thá»‹ trÆ°á»ng hoÃ n háº£o.`;
+        safetyComment = `Bi├¬n an to├án cß╗▒c lß╗¢n (${marginOfSafety.toFixed(1)}%) v├á tß╗╖ suß║Ñt l├úi r├▓ng ─æß║ít ${netMarginPct.toFixed(1)}%. Dß╗▒ ├ín c├│ sß╗⌐c chß╗æng chß╗ïu biß║┐n ─æß╗Öng thß╗ï tr╞░ß╗¥ng ho├án hß║úo.`;
     } else if (marginOfSafety >= 25 && netProfit > 0) {
         safetyScore = 20;
         safetyStatus = 'good';
-        safetyComment = `BiÃªn an toÃ n tá»‘t (${marginOfSafety.toFixed(1)}%). QuÃ¡n sinh lá»i dÆ°Æ¡ng (${formatShortVND(netProfit)}/thÃ¡ng) vÃ  cÃ³ khoáº£ng Ä‘á»‡m an toÃ n trÆ°á»›c rá»§i ro váº¯ng khÃ¡ch.`;
+        safetyComment = `Bi├¬n an to├án tß╗æt (${marginOfSafety.toFixed(1)}%). Qu├ín sinh lß╗¥i d╞░╞íng (${formatShortVND(netProfit)}/th├íng) v├á c├│ khoß║úng ─æß╗çm an to├án tr╞░ß╗¢c rß╗ºi ro vß║»ng kh├ích.`;
     } else if (marginOfSafety > 0 && netProfit > 0) {
         safetyScore = 12;
         safetyStatus = 'warning';
-        safetyComment = `BiÃªn an toÃ n má»ng (${marginOfSafety.toFixed(1)}%). Chá»‰ cáº§n sáº£n lÆ°á»£ng giáº£m nháº¹ lÃ  rÆ¡i vÃ o vÃ¹ng thua lá»—. Cáº§n tÄƒng tá»‘c marketing kÃ©o khÃ¡ch.`;
+        safetyComment = `Bi├¬n an to├án mß╗Ång (${marginOfSafety.toFixed(1)}%). Chß╗ë cß║ºn sß║ún l╞░ß╗úng giß║úm nhß║╣ l├á r╞íi v├áo v├╣ng thua lß╗ù. Cß║ºn t─âng tß╗æc marketing k├⌐o kh├ích.`;
     } else {
         safetyScore = 0;
         safetyStatus = 'danger';
-        safetyComment = `Äang hoáº¡t Ä‘á»™ng dÆ°á»›i Ä‘iá»ƒm hÃ²a vá»‘n (${volBase} ly < ${Math.ceil(breakeven)} ly). Äang bá»‹ thÃ¢m há»¥t dÃ²ng tiá»n má»—i thÃ¡ng.`;
+        safetyComment = `─Éang hoß║ít ─æß╗Öng d╞░ß╗¢i ─æiß╗âm h├▓a vß╗æn (${volBase} ly < ${Math.ceil(breakeven)} ly). ─Éang bß╗ï th├óm hß╗Ñt d├▓ng tiß╗ün mß╗ùi th├íng.`;
     }
     score += safetyScore;
 
@@ -1414,25 +1414,25 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     let overallColor = '';
 
     if (score >= 85) {
-        overallBadge = 'ðŸŒŸ Xuáº¥t Sáº¯c - Chuáº©n VÃ ng F&B';
+        overallBadge = '≡ƒîƒ Xuß║Ñt Sß║»c - Chuß║⌐n V├áng F&B';
         overallBadgeClass = 'badge-excellent';
         overallColor = 'var(--success)';
-        overallDesc = `MÃ´ hÃ¬nh tÃ i chÃ­nh cá»§a quÃ¡n Ä‘Æ°á»£c tá»‘i Æ°u á»Ÿ má»©c <strong>cá»±c ká»³ xuáº¥t sáº¯c</strong>. Cáº£ 3 cáº¥u pháº§n chi phÃ­ lá»›n nháº¥t (Máº·t báº±ng, NhÃ¢n sá»±, GiÃ¡ vá»‘n) Ä‘á»u náº±m trá»n trong "VÃ¹ng Tá»· Lá»‡ VÃ ng" chuáº©n quá»‘c táº¿. Dá»± Ã¡n cÃ³ biÃªn an toÃ n dÃ y, kháº£ nÄƒng sinh lá»i vÃ  thu há»“i vá»‘n vÆ°á»£t trá»™i, ráº¥t dá»… thuyáº¿t phá»¥c nhÃ  Ä‘áº§u tÆ° & cá»• Ä‘Ã´ng.`;
+        overallDesc = `M├┤ h├¼nh t├ái ch├¡nh cß╗ºa qu├ín ─æ╞░ß╗úc tß╗æi ╞░u ß╗ƒ mß╗⌐c <strong>cß╗▒c kß╗│ xuß║Ñt sß║»c</strong>. Cß║ú 3 cß║Ñu phß║ºn chi ph├¡ lß╗¢n nhß║Ñt (Mß║╖t bß║▒ng, Nh├ón sß╗▒, Gi├í vß╗æn) ─æß╗üu nß║▒m trß╗ìn trong "V├╣ng Tß╗╖ Lß╗ç V├áng" chuß║⌐n quß╗æc tß║┐. Dß╗▒ ├ín c├│ bi├¬n an to├án d├áy, khß║ú n─âng sinh lß╗¥i v├á thu hß╗ôi vß╗æn v╞░ß╗út trß╗Öi, rß║Ñt dß╗à thuyß║┐t phß╗Ñc nh├á ─æß║ºu t╞░ & cß╗ò ─æ├┤ng.`;
     } else if (score >= 70) {
-        overallBadge = 'âœ… Tá»‘t - Sá»©c Khá»e Vá»¯ng Cháº¯c';
+        overallBadge = 'Γ£à Tß╗æt - Sß╗⌐c Khß╗Åe Vß╗»ng Chß║»c';
         overallBadgeClass = 'badge-good';
         overallColor = 'var(--primary)';
-        overallDesc = `MÃ´ hÃ¬nh tÃ i chÃ­nh Ä‘áº¡t má»©c <strong>khá»e máº¡nh vÃ  kháº£ thi cao</strong>. CÃ¡c chá»‰ sá»‘ cá»‘t lÃµi Ä‘á»u náº±m trong ngÆ°á»¡ng an toÃ n cho phÃ©p cá»§a ngÃ nh F&B. Chá»‰ cáº§n lÆ°u Ã½ kiá»ƒm soÃ¡t á»•n Ä‘á»‹nh cháº¥t lÆ°á»£ng dá»‹ch vá»¥ vÃ  quáº£n trá»‹ cháº·t cháº½ hÃ ng tá»“n kho Ä‘á»ƒ báº£o toÃ n dÃ²ng tiá»n.`;
+        overallDesc = `M├┤ h├¼nh t├ái ch├¡nh ─æß║ít mß╗⌐c <strong>khß╗Åe mß║ính v├á khß║ú thi cao</strong>. C├íc chß╗ë sß╗æ cß╗æt l├╡i ─æß╗üu nß║▒m trong ng╞░ß╗íng an to├án cho ph├⌐p cß╗ºa ng├ánh F&B. Chß╗ë cß║ºn l╞░u ├╜ kiß╗âm so├ít ß╗òn ─æß╗ïnh chß║Ñt l╞░ß╗úng dß╗ïch vß╗Ñ v├á quß║ún trß╗ï chß║╖t chß║╜ h├áng tß╗ôn kho ─æß╗â bß║úo to├án d├▓ng tiß╗ün.`;
     } else if (score >= 50) {
-        overallBadge = 'âš ï¸ Cáº£nh BÃ¡o - Cáº§n Tinh Chá»‰nh';
+        overallBadge = 'ΓÜá∩╕Å Cß║únh B├ío - Cß║ºn Tinh Chß╗ënh';
         overallBadgeClass = 'badge-warning';
         overallColor = 'var(--warning)';
-        overallDesc = `Dá»± Ã¡n cÃ³ má»™t sá»‘ chá»‰ sá»‘ tÃ i chÃ­nh <strong>Ä‘ang tiá»‡m cáº­n ngÆ°á»¡ng rá»§i ro</strong>. Ãp lá»±c tá»« chi phÃ­ cá»‘ Ä‘á»‹nh (Máº·t báº±ng hoáº·c Quá»¹ lÆ°Æ¡ng) hoáº·c giÃ¡ vá»‘n Ä‘ang lÃ m giáº£m biÃªn lá»£i nhuáº­n rÃ²ng. Báº¡n nÃªn rÃ  soÃ¡t láº¡i cÃ¡c gá»£i Ã½ chiáº¿n lÆ°á»£c bÃªn dÆ°á»›i Ä‘á»ƒ tá»‘i Æ°u trÆ°á»›c khi rÃ³t vá»‘n thá»±c táº¿.`;
+        overallDesc = `Dß╗▒ ├ín c├│ mß╗Öt sß╗æ chß╗ë sß╗æ t├ái ch├¡nh <strong>─æang tiß╗çm cß║¡n ng╞░ß╗íng rß╗ºi ro</strong>. ├üp lß╗▒c tß╗½ chi ph├¡ cß╗æ ─æß╗ïnh (Mß║╖t bß║▒ng hoß║╖c Quß╗╣ l╞░╞íng) hoß║╖c gi├í vß╗æn ─æang l├ám giß║úm bi├¬n lß╗úi nhuß║¡n r├▓ng. Bß║ín n├¬n r├á so├ít lß║íi c├íc gß╗úi ├╜ chiß║┐n l╞░ß╗úc b├¬n d╞░ß╗¢i ─æß╗â tß╗æi ╞░u tr╞░ß╗¢c khi r├│t vß╗æn thß╗▒c tß║┐.`;
     } else {
-        overallBadge = 'ðŸš¨ Rá»§i Ro Cao - Cáº§n TÃ¡i Cáº¥u TrÃºc';
+        overallBadge = '≡ƒÜ¿ Rß╗ºi Ro Cao - Cß║ºn T├íi Cß║Ñu Tr├║c';
         overallBadgeClass = 'badge-danger';
         overallColor = 'var(--danger)';
-        overallDesc = `Cáº£nh bÃ¡o rá»§i ro nghiÃªm trá»ng: Dá»± Ã¡n Ä‘ang chá»‹u Ã¡p lá»±c chi phÃ­ quÃ¡ lá»›n so vá»›i doanh thu dá»± kiáº¿n hoáº·c hoáº¡t Ä‘á»™ng dÆ°á»›i Ä‘iá»ƒm hÃ²a vá»‘n. Cáº§n giáº£m ngay chi phÃ­ thuÃª, tinh gá»n bá»™ mÃ¡y nhÃ¢n sá»± hoáº·c nÃ¢ng giÃ¡ trá»‹ Ä‘Æ¡n hÃ ng trung bÃ¬nh Ä‘á»ƒ trÃ¡nh cáº¡n kiá»‡t vá»‘n lÆ°u Ä‘á»™ng.`;
+        overallDesc = `Cß║únh b├ío rß╗ºi ro nghi├¬m trß╗ìng: Dß╗▒ ├ín ─æang chß╗ïu ├íp lß╗▒c chi ph├¡ qu├í lß╗¢n so vß╗¢i doanh thu dß╗▒ kiß║┐n hoß║╖c hoß║ít ─æß╗Öng d╞░ß╗¢i ─æiß╗âm h├▓a vß╗æn. Cß║ºn giß║úm ngay chi ph├¡ thu├¬, tinh gß╗ìn bß╗Ö m├íy nh├ón sß╗▒ hoß║╖c n├óng gi├í trß╗ï ─æ╞ín h├áng trung b├¼nh ─æß╗â tr├ính cß║ín kiß╗çt vß╗æn l╞░u ─æß╗Öng.`;
     }
 
     // Helper for status badge
@@ -1459,13 +1459,13 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
     const dividendYield = totalEquityContributed > 0 ? (annualDividend / totalEquityContributed) * 100 : 0;
     
     // Cash Runway
-    let runwayMonths = 'VÃ´ háº¡n (Äang lÃ£i)';
+    let runwayMonths = 'V├┤ hß║ín (─Éang l├úi)';
     if (netProfit < 0) {
         const actualLoss = Math.abs(netProfit);
-        runwayMonths = actualLoss > 0 ? (buffer / actualLoss).toFixed(1) + ' thÃ¡ng' : 'N/A';
+        runwayMonths = actualLoss > 0 ? (buffer / actualLoss).toFixed(1) + ' th├íng' : 'N/A';
     } else {
         const worstCaseOpex = fixedMonthlyOpex + monthlyDebt;
-        runwayMonths = worstCaseOpex > 0 ? (buffer / worstCaseOpex).toFixed(1) + ' thÃ¡ng (Zero DT)' : 'N/A';
+        runwayMonths = worstCaseOpex > 0 ? (buffer / worstCaseOpex).toFixed(1) + ' th├íng (Zero DT)' : 'N/A';
     }
 
     // Shift metrics
@@ -1479,11 +1479,11 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
         <div class="advisor-hero-card">
             <div class="health-score-circle-wrap" style="border-color:${overallColor}; box-shadow: 0 0 20px ${overallColor}40;">
                 <div class="health-score-val" style="color:${overallColor};">${score}</div>
-                <div class="health-score-max">/ 100 ÄIá»‚M FHI</div>
+                <div class="health-score-max">/ 100 ─ÉIß╗éM FHI</div>
             </div>
             <div class="advisor-hero-content">
                 <div class="advisor-hero-title">
-                    Chá»‰ Sá»‘ Sá»©c Khá»e TÃ i ChÃ­nh F&B (Financial Health Index)
+                    Chß╗ë Sß╗æ Sß╗⌐c Khß╗Åe T├ái Ch├¡nh F&B (Financial Health Index)
                     <span class="advisor-hero-badge ${overallBadgeClass}">${overallBadge}</span>
                 </div>
                 <div class="advisor-hero-desc">
@@ -1495,23 +1495,23 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
         <!-- 4 Golden Ratios of F&B -->
         <div>
             <div class="advice-section-title">
-                <span>ðŸ†</span> Bá»™ Tá»© Tá»· Lá»‡ VÃ ng Trong Kinh Doanh QuÃ¡n CÃ  PhÃª
+                <span>≡ƒÅå</span> Bß╗Ö Tß╗⌐ Tß╗╖ Lß╗ç V├áng Trong Kinh Doanh Qu├ín C├á Ph├¬
             </div>
             <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px; margin-top: 2px;">
-                ÄÆ°á»£c tá»•ng há»£p tá»« mÃ´ hÃ¬nh chuáº©n cá»§a hÆ¡n 500+ chuá»—i vÃ  quÃ¡n cÃ  phÃª thÃ nh cÃ´ng táº¡i Viá»‡t Nam.
+                ─É╞░ß╗úc tß╗òng hß╗úp tß╗½ m├┤ h├¼nh chuß║⌐n cß╗ºa h╞ín 500+ chuß╗ùi v├á qu├ín c├á ph├¬ th├ánh c├┤ng tß║íi Viß╗çt Nam.
             </p>
             <div class="golden-ratio-grid">
                 <!-- 1. Rent Ratio -->
                 <div class="ratio-card">
                     <div class="ratio-header">
-                        <span class="ratio-title">ðŸ¢ Máº·t Báº±ng / Doanh Thu</span>
-                        <span class="ratio-benchmark-tag">Chuáº©n VÃ ng: â‰¤ 15%</span>
+                        <span class="ratio-title">≡ƒÅó Mß║╖t Bß║▒ng / Doanh Thu</span>
+                        <span class="ratio-benchmark-tag">Chuß║⌐n V├áng: Γëñ 15%</span>
                     </div>
                     <div class="ratio-value-row">
                         <div class="ratio-val-num" style="color:${rentStatus === 'excellent' || rentStatus === 'good' ? 'var(--success)' : rentStatus === 'warning' ? 'var(--warning)' : 'var(--danger)'};">
                             ${rentPct.toFixed(1)}%
                         </div>
-                        ${getStatusPill(rentStatus, rentStatus === 'excellent' ? 'ðŸŸ¢ Xuáº¥t sáº¯c' : rentStatus === 'good' ? 'ðŸŸ¢ Äáº¡t Chuáº©n' : rentStatus === 'warning' ? 'ðŸŸ¡ Cháº¥p nháº­n' : 'ðŸ”´ VÆ°á»£t tráº§n')}
+                        ${getStatusPill(rentStatus, rentStatus === 'excellent' ? '≡ƒƒó Xuß║Ñt sß║»c' : rentStatus === 'good' ? '≡ƒƒó ─Éß║ít Chuß║⌐n' : rentStatus === 'warning' ? '≡ƒƒí Chß║Ñp nhß║¡n' : '≡ƒö┤ V╞░ß╗út trß║ºn')}
                     </div>
                     ${getMeterFill(rentPct, 30, rentStatus === 'danger' ? 'var(--danger)' : rentStatus === 'warning' ? 'var(--warning)' : 'var(--success)')}
                     <div class="ratio-desc">${rentComment}</div>
@@ -1520,14 +1520,14 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
                 <!-- 2. Labor Cost Ratio -->
                 <div class="ratio-card">
                     <div class="ratio-header">
-                        <span class="ratio-title">ðŸ‘¥ NhÃ¢n Sá»± / Doanh Thu</span>
-                        <span class="ratio-benchmark-tag">Chuáº©n VÃ ng: â‰¤ 22%</span>
+                        <span class="ratio-title">≡ƒæÑ Nh├ón Sß╗▒ / Doanh Thu</span>
+                        <span class="ratio-benchmark-tag">Chuß║⌐n V├áng: Γëñ 22%</span>
                     </div>
                     <div class="ratio-value-row">
                         <div class="ratio-val-num" style="color:${laborStatus === 'excellent' || laborStatus === 'good' ? 'var(--success)' : laborStatus === 'warning' ? 'var(--warning)' : 'var(--danger)'};">
                             ${laborPct.toFixed(1)}%
                         </div>
-                        ${getStatusPill(laborStatus, laborStatus === 'excellent' ? 'ðŸŸ¢ Xuáº¥t sáº¯c' : laborStatus === 'good' ? 'ðŸŸ¢ Äáº¡t Chuáº©n' : laborStatus === 'warning' ? 'ðŸŸ¡ Cháº¥p nháº­n' : 'ðŸ”´ VÆ°á»£t tráº§n')}
+                        ${getStatusPill(laborStatus, laborStatus === 'excellent' ? '≡ƒƒó Xuß║Ñt sß║»c' : laborStatus === 'good' ? '≡ƒƒó ─Éß║ít Chuß║⌐n' : laborStatus === 'warning' ? '≡ƒƒí Chß║Ñp nhß║¡n' : '≡ƒö┤ V╞░ß╗út trß║ºn')}
                     </div>
                     ${getMeterFill(laborPct, 40, laborStatus === 'danger' ? 'var(--danger)' : laborStatus === 'warning' ? 'var(--warning)' : 'var(--success)')}
                     <div class="ratio-desc">${laborComment}</div>
@@ -1536,14 +1536,14 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
                 <!-- 3. COGS Ratio -->
                 <div class="ratio-card">
                     <div class="ratio-header">
-                        <span class="ratio-title">â˜• GiÃ¡ Vá»‘n (COGS) / Doanh Thu</span>
-                        <span class="ratio-benchmark-tag">Chuáº©n VÃ ng: â‰¤ 30%</span>
+                        <span class="ratio-title">Γÿò Gi├í Vß╗æn (COGS) / Doanh Thu</span>
+                        <span class="ratio-benchmark-tag">Chuß║⌐n V├áng: Γëñ 30%</span>
                     </div>
                     <div class="ratio-value-row">
                         <div class="ratio-val-num" style="color:${cogsStatus === 'excellent' || cogsStatus === 'good' ? 'var(--success)' : cogsStatus === 'warning' ? 'var(--warning)' : 'var(--danger)'};">
                             ${cogsPct.toFixed(1)}%
                         </div>
-                        ${getStatusPill(cogsStatus, cogsStatus === 'excellent' ? 'ðŸŸ¢ Xuáº¥t sáº¯c' : cogsStatus === 'good' ? 'ðŸŸ¢ Äáº¡t Chuáº©n' : cogsStatus === 'warning' ? 'ðŸŸ¡ Cháº¥p nháº­n' : 'ðŸ”´ VÆ°á»£t tráº§n')}
+                        ${getStatusPill(cogsStatus, cogsStatus === 'excellent' ? '≡ƒƒó Xuß║Ñt sß║»c' : cogsStatus === 'good' ? '≡ƒƒó ─Éß║ít Chuß║⌐n' : cogsStatus === 'warning' ? '≡ƒƒí Chß║Ñp nhß║¡n' : '≡ƒö┤ V╞░ß╗út trß║ºn')}
                     </div>
                     ${getMeterFill(cogsPct, 50, cogsStatus === 'danger' ? 'var(--danger)' : cogsStatus === 'warning' ? 'var(--warning)' : 'var(--success)')}
                     <div class="ratio-desc">${cogsComment}</div>
@@ -1552,14 +1552,14 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
                 <!-- 4. Margin of Safety -->
                 <div class="ratio-card">
                     <div class="ratio-header">
-                        <span class="ratio-title">ðŸ›¡ï¸ BiÃªn An ToÃ n HÃ²a Vá»‘n</span>
-                        <span class="ratio-benchmark-tag">Chuáº©n VÃ ng: â‰¥ 35%</span>
+                        <span class="ratio-title">≡ƒ¢í∩╕Å Bi├¬n An To├án H├▓a Vß╗æn</span>
+                        <span class="ratio-benchmark-tag">Chuß║⌐n V├áng: ΓëÑ 35%</span>
                     </div>
                     <div class="ratio-value-row">
                         <div class="ratio-val-num" style="color:${safetyStatus === 'excellent' || safetyStatus === 'good' ? 'var(--success)' : safetyStatus === 'warning' ? 'var(--warning)' : 'var(--danger)'};">
                             ${marginOfSafety.toFixed(1)}%
                         </div>
-                        ${getStatusPill(safetyStatus, safetyStatus === 'excellent' ? 'ðŸŸ¢ Cá»±c DÃ y' : safetyStatus === 'good' ? 'ðŸŸ¢ An ToÃ n' : safetyStatus === 'warning' ? 'ðŸŸ¡ Háº¹p' : 'ðŸ”´ Nguy Hiá»ƒm')}
+                        ${getStatusPill(safetyStatus, safetyStatus === 'excellent' ? '≡ƒƒó Cß╗▒c D├áy' : safetyStatus === 'good' ? '≡ƒƒó An To├án' : safetyStatus === 'warning' ? '≡ƒƒí Hß║╣p' : '≡ƒö┤ Nguy Hiß╗âm')}
                     </div>
                     ${getMeterFill(Math.max(marginOfSafety, 0), 60, safetyStatus === 'danger' ? 'var(--danger)' : safetyStatus === 'warning' ? 'var(--warning)' : 'var(--success)')}
                     <div class="ratio-desc">${safetyComment}</div>
@@ -1570,53 +1570,53 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
         <!-- 4 Strategic Actionable Recommendations -->
         <div>
             <div class="advice-section-title">
-                <span>ðŸŽ¯</span> Khuyáº¿n Nghá»‹ Chiáº¿n LÆ°á»£c Váº­n HÃ nh & Gá»i Vá»‘n
+                <span>≡ƒÄ»</span> Khuyß║┐n Nghß╗ï Chiß║┐n L╞░ß╗úc Vß║¡n H├ánh & Gß╗ìi Vß╗æn
             </div>
             <div class="advice-cards-grid" style="margin-top: 10px;">
                 <!-- 1. Location Strategy -->
                 <div class="advice-card">
                     <div class="advice-card-header">
-                        <div class="advice-icon-wrap advice-icon-blue">ðŸ¢</div>
-                        <div class="advice-card-title">Chiáº¿n LÆ°á»£c Máº·t Báº±ng & Äiá»ƒm BÃ¡n</div>
+                        <div class="advice-icon-wrap advice-icon-blue">≡ƒÅó</div>
+                        <div class="advice-card-title">Chiß║┐n L╞░ß╗úc Mß║╖t Bß║▒ng & ─Éiß╗âm B├ín</div>
                     </div>
                     <div class="advice-card-body">
-                        Máº·t báº±ng tiÃªu tá»‘n <strong>${formatVND(rent)}/thÃ¡ng</strong>. Báº¡n cáº§n Ä‘áº¡t doanh thu tá»‘i thiá»ƒu <strong>${formatShortVND(rent / 0.15)}/thÃ¡ng</strong> Ä‘á»ƒ Ä‘Æ°a tá»· lá»‡ tiá»n thuÃª vá» má»©c an toÃ n chuáº©n 15%.
-                        ${rentPct > 15 ? '<br><span style="color:var(--warning);">âš ï¸ Máº¹o: HÃ£y táº­n dá»¥ng vá»‰a hÃ¨ hoáº·c má»Ÿ thÃªm quáº§y Takeaway buá»•i sÃ¡ng Ä‘á»ƒ gia tÄƒng doanh thu trÃªn cÃ¹ng 1 mÃ©t vuÃ´ng thuÃª.</span>' : '<br><span style="color:var(--success);">âœ¨ Vá»‹ tháº¿ máº·t báº±ng tá»‘t, Ã¡p lá»±c Ä‘á»‹nh phÃ­ máº·t báº±ng á»Ÿ má»©c lÃ½ tÆ°á»Ÿng.</span>'}
+                        Mß║╖t bß║▒ng ti├¬u tß╗æn <strong>${formatVND(rent)}/th├íng</strong>. Bß║ín cß║ºn ─æß║ít doanh thu tß╗æi thiß╗âu <strong>${formatShortVND(rent / 0.15)}/th├íng</strong> ─æß╗â ─æ╞░a tß╗╖ lß╗ç tiß╗ün thu├¬ vß╗ü mß╗⌐c an to├án chuß║⌐n 15%.
+                        ${rentPct > 15 ? '<br><span style="color:var(--warning);">ΓÜá∩╕Å Mß║╣o: H├úy tß║¡n dß╗Ñng vß╗ëa h├¿ hoß║╖c mß╗ƒ th├¬m quß║ºy Takeaway buß╗òi s├íng ─æß╗â gia t─âng doanh thu tr├¬n c├╣ng 1 m├⌐t vu├┤ng thu├¬.</span>' : '<br><span style="color:var(--success);">Γ£¿ Vß╗ï thß║┐ mß║╖t bß║▒ng tß╗æt, ├íp lß╗▒c ─æß╗ïnh ph├¡ mß║╖t bß║▒ng ß╗ƒ mß╗⌐c l├╜ t╞░ß╗ƒng.</span>'}
                     </div>
                     <div class="advice-key-stat">
-                        <span class="advice-stat-label">Sá»‘ ngÃ y bÃ¡n tráº£ tiá»n nhÃ :</span>
-                        <span class="advice-stat-val" style="color:${rentDaysNeeded <= 4.5 ? 'var(--success)' : 'var(--warning)'};">${rentDaysNeeded} ngÃ y / thÃ¡ng</span>
+                        <span class="advice-stat-label">Sß╗æ ng├áy b├ín trß║ú tiß╗ün nh├á:</span>
+                        <span class="advice-stat-val" style="color:${rentDaysNeeded <= 4.5 ? 'var(--success)' : 'var(--warning)'};">${rentDaysNeeded} ng├áy / th├íng</span>
                     </div>
                 </div>
 
                 <!-- 2. Staffing Strategy -->
                 <div class="advice-card">
                     <div class="advice-card-header">
-                        <div class="advice-icon-wrap advice-icon-green">ðŸ‘¥</div>
-                        <div class="advice-card-title">Chiáº¿n LÆ°á»£c Quáº£n Trá»‹ NhÃ¢n Sá»± & Ca KÃ­p</div>
+                        <div class="advice-icon-wrap advice-icon-green">≡ƒæÑ</div>
+                        <div class="advice-card-title">Chiß║┐n L╞░ß╗úc Quß║ún Trß╗ï Nh├ón Sß╗▒ & Ca K├¡p</div>
                     </div>
                     <div class="advice-card-body">
-                        Tá»•ng Ä‘á»‹nh biÃªn cÃ³ <strong>${totalShiftsPerDay} nhÃ¢n sá»±/ngÃ y</strong> chia 3 ca. BÃ¬nh quÃ¢n má»—i nhÃ¢n viÃªn phá»¥c vá»¥ táº¡o ra khoáº£ng <strong>${totalShiftsPerDay > 0 ? formatShortVND(dailyRev / totalShiftsPerDay) : '0'} doanh thu/ngÃ y</strong>.
-                        ${laborPct > 22 ? '<br><span style="color:var(--warning);">âš ï¸ Máº¹o: NÃªn chuyá»ƒn 1 pháº§n nhÃ¢n viÃªn full-time sang part-time theo giá» (18k - 22k/h) Ä‘á»ƒ chá»‰ tÄƒng cÆ°á»ng vÃ o khung giá» cao Ä‘iá»ƒm (7h-9h sÃ¡ng & 19h-21h tá»‘i).</span>' : '<br><span style="color:var(--success);">âœ¨ CÆ¡ cáº¥u lÆ°Æ¡ng vÃ  phÃ¢n ca Ä‘ang váº­n hÃ nh ráº¥t hiá»‡u quáº£.</span>'}
+                        Tß╗òng ─æß╗ïnh bi├¬n c├│ <strong>${totalShiftsPerDay} nh├ón sß╗▒/ng├áy</strong> chia 3 ca. B├¼nh qu├ón mß╗ùi nh├ón vi├¬n phß╗Ñc vß╗Ñ tß║ío ra khoß║úng <strong>${totalShiftsPerDay > 0 ? formatShortVND(dailyRev / totalShiftsPerDay) : '0'} doanh thu/ng├áy</strong>.
+                        ${laborPct > 22 ? '<br><span style="color:var(--warning);">ΓÜá∩╕Å Mß║╣o: N├¬n chuyß╗ân 1 phß║ºn nh├ón vi├¬n full-time sang part-time theo giß╗¥ (18k - 22k/h) ─æß╗â chß╗ë t─âng c╞░ß╗¥ng v├áo khung giß╗¥ cao ─æiß╗âm (7h-9h s├íng & 19h-21h tß╗æi).</span>' : '<br><span style="color:var(--success);">Γ£¿ C╞í cß║Ñu l╞░╞íng v├á ph├ón ca ─æang vß║¡n h├ánh rß║Ñt hiß╗çu quß║ú.</span>'}
                     </div>
                     <div class="advice-key-stat">
-                        <span class="advice-stat-label">Quá»¹ lÆ°Æ¡ng trung bÃ¬nh/ngÃ y:</span>
-                        <span class="advice-stat-val">${formatShortVND(totalSalary / 30)}/ngÃ y</span>
+                        <span class="advice-stat-label">Quß╗╣ l╞░╞íng trung b├¼nh/ng├áy:</span>
+                        <span class="advice-stat-val">${formatShortVND(totalSalary / 30)}/ng├áy</span>
                     </div>
                 </div>
 
                 <!-- 3. Pitching Strategy -->
                 <div class="advice-card">
                     <div class="advice-card-header">
-                        <div class="advice-icon-wrap advice-icon-purple">ðŸ¤</div>
-                        <div class="advice-card-title">Chiáº¿n LÆ°á»£c Cá»• ÄÃ´ng & Gá»i Vá»‘n (Pitching)</div>
+                        <div class="advice-icon-wrap advice-icon-purple">≡ƒñ¥</div>
+                        <div class="advice-card-title">Chiß║┐n L╞░ß╗úc Cß╗ò ─É├┤ng & Gß╗ìi Vß╗æn (Pitching)</div>
                     </div>
                     <div class="advice-card-body">
-                        Vá»›i má»©c chi tráº£ cá»• tá»©c ${payoutPct}%, tá»· suáº¥t cá»• tá»©c thá»±c nháº­n hÃ ng nÄƒm dá»± kiáº¿n Ä‘áº¡t <strong>${dividendYield.toFixed(1)}%/nÄƒm</strong> trÃªn tá»•ng vá»‘n gÃ³p.
-                        ${dividendYield > 20 ? '<br><span style="color:var(--success);">âœ¨ Tá»· suáº¥t sinh lá»i vÆ°á»£t trá»™i so vá»›i gá»­i tiáº¿t kiá»‡m ngÃ¢n hÃ ng (5-6%/nÄƒm), lÃ  luáº­n Ä‘iá»ƒm vÃ ng Ä‘á»ƒ chá»‘t deal vá»›i cá»• Ä‘Ã´ng.</span>' : '<br><span style="color:var(--warning);">âš ï¸ Tá»· suáº¥t cá»• tá»©c Ä‘ang á»Ÿ má»©c vá»«a pháº£i. CÃ¢n nháº¯c giá»¯ láº¡i thÃªm quá»¹ tÃ¡i Ä‘áº§u tÆ° Ä‘á»ƒ má»Ÿ rá»™ng quy mÃ´.</span>'}
+                        Vß╗¢i mß╗⌐c chi trß║ú cß╗ò tß╗⌐c ${payoutPct}%, tß╗╖ suß║Ñt cß╗ò tß╗⌐c thß╗▒c nhß║¡n h├áng n─âm dß╗▒ kiß║┐n ─æß║ít <strong>${dividendYield.toFixed(1)}%/n─âm</strong> tr├¬n tß╗òng vß╗æn g├│p.
+                        ${dividendYield > 20 ? '<br><span style="color:var(--success);">Γ£¿ Tß╗╖ suß║Ñt sinh lß╗¥i v╞░ß╗út trß╗Öi so vß╗¢i gß╗¡i tiß║┐t kiß╗çm ng├ón h├áng (5-6%/n─âm), l├á luß║¡n ─æiß╗âm v├áng ─æß╗â chß╗æt deal vß╗¢i cß╗ò ─æ├┤ng.</span>' : '<br><span style="color:var(--warning);">ΓÜá∩╕Å Tß╗╖ suß║Ñt cß╗ò tß╗⌐c ─æang ß╗ƒ mß╗⌐c vß╗½a phß║úi. C├ón nhß║»c giß╗» lß║íi th├¬m quß╗╣ t├íi ─æß║ºu t╞░ ─æß╗â mß╗ƒ rß╗Öng quy m├┤.</span>'}
                     </div>
                     <div class="advice-key-stat">
-                        <span class="advice-stat-label">Tá»· lá»‡ sá»Ÿ há»¯u cá»§a Founder:</span>
+                        <span class="advice-stat-label">Tß╗╖ lß╗ç sß╗ƒ hß╗»u cß╗ºa Founder:</span>
                         <span class="advice-stat-val" style="color:var(--primary);">${founderRatio.toFixed(1)}% (${formatShortVND(founderEquity)})</span>
                     </div>
                 </div>
@@ -1624,16 +1624,16 @@ function renderSmartAdvisor(base, breakeven, volBase, setupCosts, deposit, renov
                 <!-- 4. Runway Strategy -->
                 <div class="advice-card">
                     <div class="advice-card-header">
-                        <div class="advice-icon-wrap advice-icon-amber">ðŸ›¡ï¸</div>
-                        <div class="advice-card-title">Kháº£ NÄƒng PhÃ²ng Vá»‡ & Quá»¹ Dá»± PhÃ²ng</div>
+                        <div class="advice-icon-wrap advice-icon-amber">≡ƒ¢í∩╕Å</div>
+                        <div class="advice-card-title">Khß║ú N─âng Ph├▓ng Vß╗ç & Quß╗╣ Dß╗▒ Ph├▓ng</div>
                     </div>
                     <div class="advice-card-body">
-                        Quá»¹ dá»± phÃ²ng tiá»n máº·t hiá»‡n cÃ³ <strong>${formatVND(buffer)}</strong>. 
-                        ${netProfit >= 0 ? `Náº¿u quÃ¡n khÃ´ng cÃ³ báº¥t ká»³ doanh thu nÃ o (Zero Revenue), quá»¹ nÃ y cho phÃ©p duy trÃ¬ tráº£ máº·t báº±ng vÃ  ná»£ vay trong <strong>${runwayMonths}</strong>.` : `Vá»›i má»©c thÃ¢m há»¥t hiá»‡n táº¡i, quÃ¡n cÃ³ thá»ƒ gá»“ng lá»— trong tá»‘i Ä‘a <strong>${runwayMonths}</strong> trÆ°á»›c khi cáº¡n tiá»n.`}
-                        <br><span style="color:${buffer >= fixedMonthlyOpex * 3 ? 'var(--success)' : 'var(--warning)'};">${buffer >= fixedMonthlyOpex * 3 ? 'âœ¨ Quá»¹ dá»± phÃ²ng Ä‘áº¡t chuáº©n báº£o hiá»ƒm an toÃ n (â‰¥ 3 thÃ¡ng Ä‘á»‹nh phÃ­).' : 'âš ï¸ Khuyáº¿n nghá»‹: NÃªn chuáº©n bá»‹ quá»¹ dá»± phÃ²ng tá»‘i thiá»ƒu tÆ°Æ¡ng Ä‘Æ°Æ¡ng 3 thÃ¡ng tiá»n nhÃ  + ná»£ vay Ä‘á»ƒ yÃªn tÃ¢m váº­n hÃ nh.'}</span>
+                        Quß╗╣ dß╗▒ ph├▓ng tiß╗ün mß║╖t hiß╗çn c├│ <strong>${formatVND(buffer)}</strong>. 
+                        ${netProfit >= 0 ? `Nß║┐u qu├ín kh├┤ng c├│ bß║Ñt kß╗│ doanh thu n├áo (Zero Revenue), quß╗╣ n├áy cho ph├⌐p duy tr├¼ trß║ú mß║╖t bß║▒ng v├á nß╗ú vay trong <strong>${runwayMonths}</strong>.` : `Vß╗¢i mß╗⌐c th├óm hß╗Ñt hiß╗çn tß║íi, qu├ín c├│ thß╗â gß╗ông lß╗ù trong tß╗æi ─æa <strong>${runwayMonths}</strong> tr╞░ß╗¢c khi cß║ín tiß╗ün.`}
+                        <br><span style="color:${buffer >= fixedMonthlyOpex * 3 ? 'var(--success)' : 'var(--warning)'};">${buffer >= fixedMonthlyOpex * 3 ? 'Γ£¿ Quß╗╣ dß╗▒ ph├▓ng ─æß║ít chuß║⌐n bß║úo hiß╗âm an to├án (ΓëÑ 3 th├íng ─æß╗ïnh ph├¡).' : 'ΓÜá∩╕Å Khuyß║┐n nghß╗ï: N├¬n chuß║⌐n bß╗ï quß╗╣ dß╗▒ ph├▓ng tß╗æi thiß╗âu t╞░╞íng ─æ╞░╞íng 3 th├íng tiß╗ün nh├á + nß╗ú vay ─æß╗â y├¬n t├óm vß║¡n h├ánh.'}</span>
                     </div>
                     <div class="advice-key-stat">
-                        <span class="advice-stat-label">Thá»i gian sinh tá»“n an toÃ n:</span>
+                        <span class="advice-stat-label">Thß╗¥i gian sinh tß╗ôn an to├án:</span>
                         <span class="advice-stat-val" style="color:${netProfit >= 0 ? 'var(--success)' : 'var(--danger)'};">${runwayMonths}</span>
                     </div>
                 </div>
@@ -1758,7 +1758,7 @@ function updateDashboard() {
     
     if (kpiCap) animateValue(kpiCap, 0, totalCapitalNeeded, 800, formatShortVND);
     if (kpiDebt) animateValue(kpiDebt, 0, monthlyDebt, 800, formatShortVND);
-    if (kpiBe) animateValue(kpiBe, 0, breakEvenDailyVol, 800, (val) => Math.ceil(val) + ' ly/ngÃ y');
+    if (kpiBe) animateValue(kpiBe, 0, breakEvenDailyVol, 800, (val) => Math.ceil(val) + ' ly/ng├áy');
 
     const lblLeverage = document.getElementById('lbl-leverage-ratio');
     if (lblLeverage) lblLeverage.innerText = leverageRatio.toFixed(0) + '%';
@@ -1815,7 +1815,7 @@ function updateDashboard() {
         const elNet = document.getElementById(`fc-${level}-net`);
         const elStatus = document.getElementById(`fc-${level}-status`);
 
-        if (elVol) elVol.innerText = sc.vol + ' ly/ngÃ y';
+        if (elVol) elVol.innerText = sc.vol + ' ly/ng├áy';
         if (elRev) elRev.innerText = formatShortVND(sc.rev);
         if (elCost) elCost.innerText = formatShortVND(sc.totalExpense);
         if (elNet) {
@@ -1824,13 +1824,13 @@ function updateDashboard() {
         }
         if (elStatus) {
             if (sc.net < 0) {
-                elStatus.innerText = 'Cáº§n bÃ¹ lá»—: ' + formatShortVND(Math.abs(sc.net)) + '/th';
+                elStatus.innerText = 'Cß║ºn b├╣ lß╗ù: ' + formatShortVND(Math.abs(sc.net)) + '/th';
                 elStatus.style.color = 'var(--danger)';
             } else if (sc.net === 0) {
-                elStatus.innerText = 'HÃ²a vá»‘n kinh doanh';
+                elStatus.innerText = 'H├▓a vß╗æn kinh doanh';
                 elStatus.style.color = 'var(--warning)';
             } else {
-                elStatus.innerText = (level === 'good' ? 'Tá»‘i Æ°u: LÃ£i +' : 'LÃ£i +') + formatShortVND(sc.net) + '/th';
+                elStatus.innerText = (level === 'good' ? 'Tß╗æi ╞░u: L├úi +' : 'L├úi +') + formatShortVND(sc.net) + '/th';
                 elStatus.style.color = 'var(--success)';
             }
         }
@@ -1888,8 +1888,8 @@ function updateDashboard() {
         alertContainer.style.borderRadius = '12px';
         alertContainer.style.border = '1px solid';
         
-        let statusIcon = 'ðŸŸ¢';
-        let statusText = 'An toÃ n';
+        let statusIcon = '≡ƒƒó';
+        let statusText = 'An to├án';
         let badgeBg = 'rgba(16, 185, 129, 0.1)';
         let badgeColor = isLightAlert ? '#047857' : '#34d399';
         let badgeBorder = 'rgba(16, 185, 129, 0.3)';
@@ -1897,17 +1897,17 @@ function updateDashboard() {
         let textColor = isLightAlert ? '#0f172a' : '#f8fafc';
         let containerBg = isLightAlert ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.02)';
         let containerBorder = 'rgba(16, 185, 129, 0.25)';
-        let warningMessage = 'Quá»¹ dá»± phÃ²ng á»Ÿ má»©c an toÃ n. Doanh sá»‘ dá»± kiáº¿n Ä‘áº£m báº£o kháº£ nÄƒng sinh lá»i hoáº·c sinh tá»“n á»•n Ä‘á»‹nh.';
-        let runwayText = 'VÃ´ háº¡n (KhÃ´ng cáº¡n kiá»‡t)';
+        let warningMessage = 'Quß╗╣ dß╗▒ ph├▓ng ß╗ƒ mß╗⌐c an to├án. Doanh sß╗æ dß╗▒ kiß║┐n ─æß║úm bß║úo khß║ú n─âng sinh lß╗¥i hoß║╖c sinh tß╗ôn ß╗òn ─æß╗ïnh.';
+        let runwayText = 'V├┤ hß║ín (Kh├┤ng cß║ín kiß╗çt)';
 
         if (runwayMonths !== Infinity) {
-            runwayText = runwayMonths.toFixed(1) + ' thÃ¡ng';
+            runwayText = runwayMonths.toFixed(1) + ' th├íng';
         }
 
         if (burnRate > 0) {
             if (runwayMonths < 3) {
-                statusIcon = 'ðŸ”´';
-                statusText = 'Nguy hiá»ƒm';
+                statusIcon = '≡ƒö┤';
+                statusText = 'Nguy hiß╗âm';
                 badgeBg = 'rgba(239, 68, 68, 0.1)';
                 badgeColor = isLightAlert ? '#b91c1c' : '#f87171';
                 badgeBorder = 'rgba(239, 68, 68, 0.3)';
@@ -1915,11 +1915,11 @@ function updateDashboard() {
                 textColor = isLightAlert ? '#b91c1c' : '#fca5a5';
                 containerBg = 'var(--danger-glow)';
                 containerBorder = 'rgba(239, 68, 68, 0.3)';
-                warningMessage = `Vá»›i má»©c lá»— ${formatShortVND(burnRate)}/thÃ¡ng, quá»¹ dá»± phÃ²ng cá»§a báº¡n sáº½ cáº¡n kiá»‡t trong khoáº£ng ${runwayMonths.toFixed(1)} thÃ¡ng. Cáº§n cáº£i thiá»‡n doanh sá»‘ hoáº·c cáº¯t giáº£m Ä‘á»‹nh phÃ­.`;
+                warningMessage = `Vß╗¢i mß╗⌐c lß╗ù ${formatShortVND(burnRate)}/th├íng, quß╗╣ dß╗▒ ph├▓ng cß╗ºa bß║ín sß║╜ cß║ín kiß╗çt trong khoß║úng ${runwayMonths.toFixed(1)} th├íng. Cß║ºn cß║úi thiß╗çn doanh sß╗æ hoß║╖c cß║»t giß║úm ─æß╗ïnh ph├¡.`;
                 alertContainer.classList.add('danger-alert');
             } else if (runwayMonths <= 6) {
-                statusIcon = 'ðŸŸ¡';
-                statusText = 'Cáº£nh bÃ¡o';
+                statusIcon = '≡ƒƒí';
+                statusText = 'Cß║únh b├ío';
                 badgeBg = 'rgba(245, 158, 11, 0.1)';
                 badgeColor = isLightAlert ? '#b45309' : '#fbbf24';
                 badgeBorder = 'rgba(245, 158, 11, 0.3)';
@@ -1927,7 +1927,7 @@ function updateDashboard() {
                 textColor = isLightAlert ? '#92400e' : '#fde68a';
                 containerBg = 'var(--warning-glow)';
                 containerBorder = 'rgba(245, 158, 11, 0.3)';
-                warningMessage = `Quá»¹ dá»± phÃ²ng Ä‘á»§ gÃ¡nh lá»— trong khoáº£ng ${runwayMonths.toFixed(1)} thÃ¡ng. Má»©c Ä‘á»™ an toÃ n á»Ÿ má»©c trung bÃ¬nh, cáº§n chÃº Ã½ tá»‘i Æ°u Ä‘á»‹nh phÃ­ hoáº·c tÄƒng doanh sá»‘.`;
+                warningMessage = `Quß╗╣ dß╗▒ ph├▓ng ─æß╗º g├ính lß╗ù trong khoß║úng ${runwayMonths.toFixed(1)} th├íng. Mß╗⌐c ─æß╗Ö an to├án ß╗ƒ mß╗⌐c trung b├¼nh, cß║ºn ch├║ ├╜ tß╗æi ╞░u ─æß╗ïnh ph├¡ hoß║╖c t─âng doanh sß╗æ.`;
                 alertContainer.classList.remove('danger-alert');
             } else {
                 alertContainer.classList.remove('danger-alert');
@@ -1945,7 +1945,7 @@ function updateDashboard() {
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                     <div style="display: flex; align-items: center; gap: 6px; font-weight: bold; font-size: 13.5px;">
                         <span>${statusIcon}</span>
-                        <span>Kháº£ NÄƒng Sinh Tá»“n TÃ i ChÃ­nh (Cash Runway)</span>
+                        <span>Khß║ú N─âng Sinh Tß╗ôn T├ái Ch├¡nh (Cash Runway)</span>
                     </div>
                     <span style="padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; background: ${badgeBg}; color: ${badgeColor}; border: 1px solid ${badgeBorder};">
                         ${statusText}
@@ -1953,13 +1953,13 @@ function updateDashboard() {
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-top: 1px dashed ${borderColor}; padding-top: 8px; margin-top: 4px;">
                     <div>
-                        <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">Tá»C Äá»˜ Äá»T TIá»€N (BURN RATE)</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">Tß╗ÉC ─Éß╗ÿ ─Éß╗ÉT TIß╗ÇN (BURN RATE)</div>
                         <div style="font-size: 15px; font-weight: bold; margin-top: 2px; color: ${burnRate > 0 ? 'var(--danger)' : 'var(--success)'};">
-                            ${base.net < 0 ? '-' + formatShortVND(burnRate) : '+' + formatShortVND(base.net)}/thÃ¡ng
+                            ${base.net < 0 ? '-' + formatShortVND(burnRate) : '+' + formatShortVND(base.net)}/th├íng
                         </div>
                     </div>
                     <div>
-                        <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">THá»œI GIAN SINH Tá»’N (RUNWAY)</div>
+                        <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600;">THß╗£I GIAN SINH Tß╗ÆN (RUNWAY)</div>
                         <div style="font-size: 15px; font-weight: bold; margin-top: 2px;">
                             ${runwayText}
                         </div>
@@ -2075,7 +2075,7 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
         costChartInstance = new Chart(ctxCost, {
             type: 'doughnut',
             data: {
-                labels: ['Cá»c máº·t báº±ng', 'Thi cÃ´ng sá»­a chá»¯a', 'Thiáº¿t bá»‹ & BÃ n gháº¿', 'NguyÃªn liá»‡u Ä‘áº§u'],
+                labels: ['Cß╗ìc mß║╖t bß║▒ng', 'Thi c├┤ng sß╗¡a chß╗»a', 'Thiß║┐t bß╗ï & B├án ghß║┐', 'Nguy├¬n liß╗çu ─æß║ºu'],
                 datasets: [{
                     data: costData,
                     backgroundColor: [
@@ -2127,7 +2127,7 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
         equityChartInstance = new Chart(ctxEquity, {
             type: 'doughnut',
             data: {
-                labels: labels.length > 0 ? labels : ['ChÆ°a gÃ³p vá»‘n'],
+                labels: labels.length > 0 ? labels : ['Ch╞░a g├│p vß╗æn'],
                 datasets: [{
                     data: data.length > 0 ? data : [1],
                     backgroundColor: data.length > 0 ? colors.slice(0, data.length) : ['rgba(148, 163, 184, 0.3)'],
@@ -2147,7 +2147,7 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                if (context.label === 'ChÆ°a gÃ³p vá»‘n') return ' ChÆ°a gÃ³p vá»‘n';
+                                if (context.label === 'Ch╞░a g├│p vß╗æn') return ' Ch╞░a g├│p vß╗æn';
                                 return ' ' + context.label + ': ' + formatVND(context.raw) + ` (${((context.raw / totalEquityContributed)*100).toFixed(1)}%)`;
                             }
                         }
@@ -2173,15 +2173,15 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
         const canvasEl = document.getElementById('financialChart');
         if (canvasEl && activeTab === 'cashflow') {
             const ctx = canvasEl.getContext('2d');
-            const monthsLabel = ['Báº¯t Ä‘áº§u'];
-            for (let i = 1; i <= 12; i++) monthsLabel.push('ThÃ¡ng ' + i);
+            const monthsLabel = ['Bß║»t ─æß║ºu'];
+            for (let i = 1; i <= 12; i++) monthsLabel.push('Th├íng ' + i);
             chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: monthsLabel,
                     datasets: [
                         {
-                            label: 'Quá»¹ tiá»n máº·t dá»± kiáº¿n (VND)',
+                            label: 'Quß╗╣ tiß╗ün mß║╖t dß╗▒ kiß║┐n (VND)',
                             data: baseTrend,
                             borderColor: isLight ? '#0284c7' : '#38bdf8',
                             backgroundColor: isLight ? 'rgba(2, 132, 199, 0.08)' : 'rgba(56, 189, 248, 0.1)',
@@ -2200,7 +2200,7 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
                         legend: { display: true, position: 'top', labels: { color: textColor } },
                         tooltip: {
                             callbacks: {
-                                label: function(context) { return 'Sá»‘ dÆ° quá»¹: ' + formatVND(context.raw); }
+                                label: function(context) { return 'Sß╗æ d╞░ quß╗╣: ' + formatVND(context.raw); }
                             }
                         },
                         datalabels: getDataLabelConfig(isLight, 'line')
@@ -2264,9 +2264,9 @@ window.exportPDF = function() {
 // Product Mix Logic
 // ======================================================================
 let menuItems = [
-    { id: 1, name: "CÃ  phÃª", volumePct: 40, price: 25000, costPct: 25 },
-    { id: 2, name: "TrÃ  & Sinh tá»‘", volumePct: 40, price: 35000, costPct: 30 },
-    { id: 3, name: "BÃ¡nh & Äá»“ Äƒn", volumePct: 20, price: 30000, costPct: 45 }
+    { id: 1, name: "C├á ph├¬", volumePct: 40, price: 25000, costPct: 25 },
+    { id: 2, name: "Tr├á & Sinh tß╗æ", volumePct: 40, price: 35000, costPct: 30 },
+    { id: 3, name: "B├ính & ─Éß╗ô ─ân", volumePct: 20, price: 30000, costPct: 45 }
 ];
 
 function updateMenuVolumeWarning() {
@@ -2275,7 +2275,7 @@ function updateMenuVolumeWarning() {
     if (warnEl) {
         if (Math.abs(totalVol - 100) > 0.1) {
             warnEl.style.display = 'block';
-            warnEl.innerText = `LÆ°u Ã½: Tá»•ng tá»· trá»ng bÃ¡n = ${totalVol.toFixed(1)}%. NÃªn Ä‘iá»u chá»‰nh láº¡i cho Ä‘á»§ 100%.`;
+            warnEl.innerText = `L╞░u ├╜: Tß╗òng tß╗╖ trß╗ìng b├ín = ${totalVol.toFixed(1)}%. N├¬n ─æiß╗üu chß╗ënh lß║íi cho ─æß╗º 100%.`;
         } else {
             warnEl.style.display = 'none';
         }
@@ -2302,7 +2302,7 @@ window.renderMenuItems = function() {
                     <input type="number" class="menu-cost" value="${item.costPct}" oninput="updateMenuItem(${item.id}, 'costPct', this.value)" style="padding:6px 8px; font-size:12px;">
                     <span class="unit">%</span>
                 </div>
-                <button onclick="removeMenuItem(${item.id})" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">Ã—</button>
+                <button onclick="removeMenuItem(${item.id})" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">├ù</button>
             </div>
         `;
     });
@@ -2357,7 +2357,7 @@ window.formatAndSetMenuPrice = function(inputElement, id) {
 };
 
 window.addMenuItem = function() {
-    menuItems.push({ id: Date.now(), name: "NhÃ³m má»›i", volumePct: 0, price: 0, costPct: 0 });
+    menuItems.push({ id: Date.now(), name: "Nh├│m mß╗¢i", volumePct: 0, price: 0, costPct: 0 });
     renderMenuItems();
 };
 
@@ -2452,8 +2452,7 @@ window.addEventListener('DOMContentLoaded', () => {
         'inp-ft-manager-count', 'inp-ft-manager-salary',
         'inp-weekend-multiplier', 'inp-commission-rate',
         'inp-discount-rate', 'inp-growth-rev', 'inp-growth-opex',
-        'inp-term', 'inp-cost-pct', 'inp-vol-weak', 'inp-vol-base', 'inp-vol-good', 'inp-depr-years',
-        'inp-tax-rate', 'inp-price', 'inp-div-payout'
+        'inp-term', 'inp-cost-pct', 'inp-vol-weak', 'inp-vol-base', 'inp-vol-good', 'inp-depr-years'
     ].forEach(id => safeAddListener(id, 'input', updateDashboard));
 
     updateDashboard();
@@ -2501,13 +2500,13 @@ const DEFAULT_INPUTS = {
 };
 
 const DEFAULT_MENU_ITEMS = [
-    { id: 1, name: "CÃ  phÃª", volumePct: 40, price: 25000, costPct: 25 },
-    { id: 2, name: "TrÃ  & Sinh tá»‘", volumePct: 40, price: 35000, costPct: 30 },
-    { id: 3, name: "BÃ¡nh & Äá»“ Äƒn", volumePct: 20, price: 30000, costPct: 45 }
+    { id: 1, name: "C├á ph├¬", volumePct: 40, price: 25000, costPct: 25 },
+    { id: 2, name: "Tr├á & Sinh tß╗æ", volumePct: 40, price: 35000, costPct: 30 },
+    { id: 3, name: "B├ính & ─Éß╗ô ─ân", volumePct: 20, price: 30000, costPct: 45 }
 ];
 
 const DEFAULT_SHAREHOLDERS = [
-    { id: 1, name: "Báº¡n (Cá»• Ä‘Ã´ng sÃ¡ng láº­p)", contribution: 80000000, role: "operate" }
+    { id: 1, name: "Bß║ín (Cß╗ò ─æ├┤ng s├íng lß║¡p)", contribution: 80000000, role: "operate" }
 ];
 
 function getInputsData() {
@@ -2577,10 +2576,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Clear the URL parameter so it doesn't re-trigger on reload
                 window.history.replaceState({}, document.title, window.location.pathname);
-                alert("ÄÃ£ táº£i dá»¯ liá»‡u tá»« Ä‘Æ°á»ng link chia sáº» thÃ nh cÃ´ng!");
+                alert("─É├ú tß║úi dß╗» liß╗çu tß╗½ ─æ╞░ß╗¥ng link chia sß║╗ th├ánh c├┤ng!");
             }
         } catch (err) {
-            console.error("Lá»—i giáº£i mÃ£ liÃªn káº¿t chia sáº»:", err);
+            console.error("Lß╗ùi giß║úi m├ú li├¬n kß║┐t chia sß║╗:", err);
         }
     }
 });
@@ -2724,8 +2723,8 @@ function renderInvestmentAnalysis() {
     let roi = ((totalInflow - totalCapital) / totalCapital) * 100;
     let pi = pvCashflowsIn / totalCapital;
 
-    let paybackText = paybackMonth > 0 ? paybackMonth.toFixed(1) + " thÃ¡ng" : "KhÃ´ng trong 3 nÄƒm";
-    let discPaybackText = discPaybackMonth > 0 ? discPaybackMonth.toFixed(1) + " thÃ¡ng" : "KhÃ´ng trong 3 nÄƒm";
+    let paybackText = paybackMonth > 0 ? paybackMonth.toFixed(1) + " th├íng" : "Kh├┤ng trong 3 n─âm";
+    let discPaybackText = discPaybackMonth > 0 ? discPaybackMonth.toFixed(1) + " th├íng" : "Kh├┤ng trong 3 n─âm";
 
     let npvColor = npv >= 0 ? 'val-profit' : 'val-loss';
     let irrColor = irrAnnual >= discountRatePct ? 'val-profit' : 'val-loss';
@@ -2741,65 +2740,65 @@ function renderInvestmentAnalysis() {
     const breakEvenDailyVol = unitContributionMargin > 0 ? (fixedMonthlyOpex + monthlyDebt + monthlyDepreciation) / (30 * unitContributionMargin) : 0;
 
     let html = `
-        <h3 class="chart-sub-title">PhÃ¢n tÃ­ch Hiá»‡u Quáº£ Äáº§u TÆ° (Táº§m nhÃ¬n 3 nÄƒm)</h3>
+        <h3 class="chart-sub-title">Ph├ón t├¡ch Hiß╗çu Quß║ú ─Éß║ºu T╞░ (Tß║ºm nh├¼n 3 n─âm)</h3>
         
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
-            Sáº£n lÆ°á»£ng dá»± kiáº¿n: <strong>${vol} ly/ngÃ y</strong>. Tá»•ng vá»‘n: ${formatShortVND(totalCapital)}. TÄƒng trÆ°á»Ÿng DT: ${growthRevPct}%/nÄƒm | TÄƒng chi phÃ­: ${growthOpexPct}%/nÄƒm.
+            Sß║ún l╞░ß╗úng dß╗▒ kiß║┐n: <strong>${vol} ly/ng├áy</strong>. Tß╗òng vß╗æn: ${formatShortVND(totalCapital)}. T─âng tr╞░ß╗ƒng DT: ${growthRevPct}%/n─âm | T─âng chi ph├¡: ${growthOpexPct}%/n─âm.
         </p>
 
         <div class="scenarios-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">HoÃ n vá»‘n Ä‘Æ¡n giáº£n</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Ho├án vß╗æn ─æ╞ín giß║ún</span>
                     <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${paybackText}</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">HoÃ n vá»‘n chiáº¿t kháº¥u</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Ho├án vß╗æn chiß║┐t khß║Ñu</span>
                     <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${discPaybackText}</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Sáº£n lÆ°á»£ng hÃ²a vá»‘n</span>
-                    <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${Math.ceil(breakEvenDailyVol)} ly/ngÃ y</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">Sß║ún l╞░ß╗úng h├▓a vß╗æn</span>
+                    <span style="font-size:16px; color:var(--primary); font-weight:bold; margin-top: 4px;">${Math.ceil(breakEvenDailyVol)} ly/ng├áy</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">NPV (Hiá»‡n giÃ¡ thuáº§n)</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">NPV (Hiß╗çn gi├í thuß║ºn)</span>
                     <span class="${npvColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${npv >= 0 ? '+' : ''}${formatShortVND(npv)}</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">IRR (Tá»· suáº¥t ná»™i bá»™)</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">IRR (Tß╗╖ suß║Ñt nß╗Öi bß╗Ö)</span>
                     <span class="${irrColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${totalInflow > totalCapital && irrAnnual > -100 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">ROI (Tá»· lá»‡ hoÃ n vá»‘n)</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">ROI (Tß╗╖ lß╗ç ho├án vß╗æn)</span>
                     <span class="${roiColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${roi.toFixed(1)}%</span>
                 </div>
             </div>
             <div class="glass-card scenario-card" style="padding: 12px;">
                 <div class="scenario-metric">
-                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">PI (Chá»‰ sá»‘ sinh lá»i)</span>
+                    <span style="font-size:14px; font-weight:600; color: var(--text-muted);">PI (Chß╗ë sß╗æ sinh lß╗¥i)</span>
                     <span class="${piColor}" style="font-size:16px; font-weight:bold; margin-top: 4px;">${pi.toFixed(2)}</span>
                 </div>
             </div>
         </div>
 
         <div class="explanation-box" style="margin-top:16px; padding: 12px 16px; background: rgba(15,23,42,0.02); border-radius: 6px; border-left: 4px solid ${npv >= 0 ? 'var(--primary)' : 'var(--danger)'};">
-            <strong>Káº¿t luáº­n tÃ i chÃ­nh:</strong> 
-            ${npv >= 0 ? `<span style="color:var(--val-profit)">Dá»± Ã¡n kháº£ thi vá» máº·t tÃ i chÃ­nh (NPV &gt; 0, chá»‰ sá»‘ PI Ä‘áº¡t ${pi.toFixed(2)} &gt; 1). IRR Ä‘áº¡t ${irrAnnual.toFixed(1)}% lá»›n hÆ¡n lÃ£i suáº¥t chiáº¿t kháº¥u ${discountRatePct}%.</span>` : `<span style="color:var(--val-loss)">Dá»± Ã¡n khÃ´ng hiá»‡u quáº£ vá»›i má»©c lÃ£i suáº¥t chiáº¿t kháº¥u nÃ y (NPV &lt; 0, PI Ä‘áº¡t ${pi.toFixed(2)} &lt; 1). Báº¡n nÃªn cÃ¢n nháº¯c Ä‘iá»u chá»‰nh Ä‘á»‹nh phÃ­, giÃ¡ bÃ¡n hoáº·c cáº£i thiá»‡n sáº£n lÆ°á»£ng bÃ¡n.</span>`}
+            <strong>Kß║┐t luß║¡n t├ái ch├¡nh:</strong> 
+            ${npv >= 0 ? `<span style="color:var(--val-profit)">Dß╗▒ ├ín khß║ú thi vß╗ü mß║╖t t├ái ch├¡nh (NPV &gt; 0, chß╗ë sß╗æ PI ─æß║ít ${pi.toFixed(2)} &gt; 1). IRR ─æß║ít ${irrAnnual.toFixed(1)}% lß╗¢n h╞ín l├úi suß║Ñt chiß║┐t khß║Ñu ${discountRatePct}%.</span>` : `<span style="color:var(--val-loss)">Dß╗▒ ├ín kh├┤ng hiß╗çu quß║ú vß╗¢i mß╗⌐c l├úi suß║Ñt chiß║┐t khß║Ñu n├áy (NPV &lt; 0, PI ─æß║ít ${pi.toFixed(2)} &lt; 1). Bß║ín n├¬n c├ón nhß║»c ─æiß╗üu chß╗ënh ─æß╗ïnh ph├¡, gi├í b├ín hoß║╖c cß║úi thiß╗çn sß║ún l╞░ß╗úng b├ín.</span>`}
         </div>
 
         <!-- Cumulative Cash Flow Chart -->
         <div style="margin-top: 24px;">
-            <h4 class="chart-sub-title" style="margin-bottom: 8px;">Äá»“ Thá»‹ DÃ²ng Tiá»n TÃ­ch LÅ©y 36 ThÃ¡ng (HÃ²a vá»‘n khi Ä‘Æ°á»ng tÃ­ch lÅ©y vÆ°á»£t má»©c 0)</h4>
+            <h4 class="chart-sub-title" style="margin-bottom: 8px;">─Éß╗ô Thß╗ï D├▓ng Tiß╗ün T├¡ch L┼⌐y 36 Th├íng (H├▓a vß╗æn khi ─æ╞░ß╗¥ng t├¡ch l┼⌐y v╞░ß╗út mß╗⌐c 0)</h4>
             <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
                 <canvas id="cumulativeCashFlowChart"></canvas>
             </div>
@@ -2807,66 +2806,66 @@ function renderInvestmentAnalysis() {
 
         <!-- Detailed Year-by-Year Table -->
         <div style="margin-top: 24px; overflow-x: auto;">
-            <h4 class="chart-sub-title" style="margin-bottom: 8px;">Báº£ng Chi Tiáº¿t DÃ²ng Tiá»n 3 NÄƒm (Ä‘Æ¡n vá»‹: Ä‘)</h4>
+            <h4 class="chart-sub-title" style="margin-bottom: 8px;">Bß║úng Chi Tiß║┐t D├▓ng Tiß╗ün 3 N─âm (─æ╞ín vß╗ï: ─æ)</h4>
             <table class="sensitivity-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                 <thead>
                     <tr>
-                        <th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Khoáº£n má»¥c \\ Thá»i Ä‘iá»ƒm</th>
-                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">NÄƒm 0 (Hiá»‡n táº¡i)</th>
-                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">NÄƒm 1</th>
-                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">NÄƒm 2</th>
-                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">NÄƒm 3</th>
+                        <th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Khoß║ún mß╗Ñc \\ Thß╗¥i ─æiß╗âm</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">N─âm 0 (Hiß╗çn tß║íi)</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">N─âm 1</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">N─âm 2</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid var(--border-color);">N─âm 3</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align: left; padding: 8px; font-weight: 500;">Doanh thu thuáº§n</td>
+                        <td style="text-align: left; padding: 8px; font-weight: 500;">Doanh thu thuß║ºn</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">--</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].rev))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].rev))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].rev))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].rev))}─æ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].rev))}─æ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].rev))}─æ</td>
                     </tr>
                     <tr>
-                        <td style="text-align: left; padding: 8px; font-weight: 500;">Tá»•ng chi phÃ­ hoáº¡t Ä‘á»™ng (gá»“m COGS & Ná»£ vay)</td>
+                        <td style="text-align: left; padding: 8px; font-weight: 500;">Tß╗òng chi ph├¡ hoß║ít ─æß╗Öng (gß╗ôm COGS & Nß╗ú vay)</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">--</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].opex))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].opex))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].opex))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].opex))}─æ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].opex))}─æ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].opex))}─æ</td>
                     </tr>
                     <tr>
-                        <td style="text-align: left; padding: 8px; font-weight: 500;">Thuáº¿ TNDN</td>
+                        <td style="text-align: left; padding: 8px; font-weight: 500;">Thuß║┐ TNDN</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">--</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].tax))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].tax))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].tax))}Ä‘</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[1].tax))}─æ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[2].tax))}─æ</td>
+                        <td style="text-align: right; padding: 8px;">${formatNumber(Math.round(yearData[3].tax))}─æ</td>
                     </tr>
                     <tr style="border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); font-weight: 600; background: rgba(15,23,42,0.01);">
-                        <td style="text-align: left; padding: 8px;">DÃ²ng tiá»n rÃ²ng (Net Cash Flow)</td>
-                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[1].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].net))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[2].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].net))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[3].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].net))}Ä‘</td>
+                        <td style="text-align: left; padding: 8px;">D├▓ng tiß╗ün r├▓ng (Net Cash Flow)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}─æ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[1].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].net))}─æ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[2].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].net))}─æ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[3].net >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].net >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].net))}─æ</td>
                     </tr>
                     <tr>
-                        <td style="text-align: left; padding: 8px; font-weight: 500; color: var(--text-muted);">Há»‡ sá»‘ chiáº¿t kháº¥u</td>
+                        <td style="text-align: left; padding: 8px; font-weight: 500; color: var(--text-muted);">Hß╗ç sß╗æ chiß║┐t khß║Ñu</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">1.000</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">${(1 / Math.pow(1 + (discountRatePct / 100), 1)).toFixed(3)}</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">${(1 / Math.pow(1 + (discountRatePct / 100), 2)).toFixed(3)}</td>
                         <td style="text-align: right; padding: 8px; color: var(--text-muted);">${(1 / Math.pow(1 + (discountRatePct / 100), 3)).toFixed(3)}</td>
                     </tr>
                     <tr style="font-weight: 600; border-top: 1px dashed var(--border-color);">
-                        <td style="text-align: left; padding: 8px;">DÃ²ng tiá»n chiáº¿t kháº¥u (PV)</td>
-                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[1].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].pv))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[2].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].pv))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px; color: ${yearData[3].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].pv))}Ä‘</td>
+                        <td style="text-align: left; padding: 8px;">D├▓ng tiß╗ün chiß║┐t khß║Ñu (PV)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}─æ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[1].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[1].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[1].pv))}─æ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[2].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[2].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[2].pv))}─æ</td>
+                        <td style="text-align: right; padding: 8px; color: ${yearData[3].pv >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${yearData[3].pv >= 0 ? '+' : ''}${formatNumber(Math.round(yearData[3].pv))}─æ</td>
                     </tr>
                     <tr style="background: rgba(15,23,42,0.03); font-weight: bold; border-top: 2px solid var(--border-color);">
-                        <td style="text-align: left; padding: 8px;">TÃ­ch lÅ©y chiáº¿t kháº¥u (Cumulative PV)</td>
-                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px; color: ${cumY1 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY1 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY1))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px; color: ${cumY2 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY2 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY2))}Ä‘</td>
-                        <td style="text-align: right; padding: 8px; color: ${cumY3 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY3 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY3))}Ä‘</td>
+                        <td style="text-align: left; padding: 8px;">T├¡ch l┼⌐y chiß║┐t khß║Ñu (Cumulative PV)</td>
+                        <td style="text-align: right; padding: 8px; color: var(--val-loss);">${formatNumber(Math.round(-totalCapital))}─æ</td>
+                        <td style="text-align: right; padding: 8px; color: ${cumY1 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY1 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY1))}─æ</td>
+                        <td style="text-align: right; padding: 8px; color: ${cumY2 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY2 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY2))}─æ</td>
+                        <td style="text-align: right; padding: 8px; color: ${cumY3 >= 0 ? 'var(--val-profit)' : 'var(--val-loss)'};">${cumY3 >= 0 ? '+' : ''}${formatNumber(Math.round(cumY3))}─æ</td>
                     </tr>
                 </tbody>
             </table>
@@ -2875,62 +2874,62 @@ function renderInvestmentAnalysis() {
         <!-- Detailed explanation of metrics -->
         <div class="glass-card" style="margin-top: 24px; padding: 16px; font-size: 13.5px; line-height: 1.6; color: var(--text-main);">
             <h4 class="chart-sub-title" style="margin-bottom: 12px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; color: var(--primary);">
-                ðŸ’¡ Diá»…n giáº£i & CÃ´ng thá»©c tÃ­nh chi tiáº¿t (Sáº£n lÆ°á»£ng ${vol} ly/ngÃ y)
+                ≡ƒÆí Diß╗àn giß║úi & C├┤ng thß╗⌐c t├¡nh chi tiß║┐t (Sß║ún l╞░ß╗úng ${vol} ly/ng├áy)
             </h4>
             <div style="display: flex; flex-direction: column; gap: 14px;">
                 <div>
-                    <strong>1. Tá»•ng vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u (Vá»‘n cáº§n thiáº¿t):</strong>
+                    <strong>1. Tß╗òng vß╗æn ─æß║ºu t╞░ ban ─æß║ºu (Vß╗æn cß║ºn thiß║┐t):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        â€¢ CÃ´ng thá»©c: Cá»c máº·t báº±ng (${formatShortVND(deposit)}) + Thi cÃ´ng sá»­a chá»¯a (${formatShortVND(renovate)}) + Thiáº¿t bá»‹ mÃ¡y mÃ³c (${formatShortVND(equipment)}) + NguyÃªn liá»‡u khá»Ÿi táº¡o (${formatShortVND(rawStart)}) + Decor & KhÃ¡c (${formatShortVND(decorMisc)}) + Dá»± phÃ²ng gá»“ng lá»— (${formatShortVND(buffer)}).
-                        <br>â€¢ Káº¿t quáº£: <strong>${formatNumber(totalCapital)} Ä‘</strong>.
+                        ΓÇó C├┤ng thß╗⌐c: Cß╗ìc mß║╖t bß║▒ng (${formatShortVND(deposit)}) + Thi c├┤ng sß╗¡a chß╗»a (${formatShortVND(renovate)}) + Thiß║┐t bß╗ï m├íy m├│c (${formatShortVND(equipment)}) + Nguy├¬n liß╗çu khß╗ƒi tß║ío (${formatShortVND(rawStart)}) + Decor & Kh├íc (${formatShortVND(decorMisc)}) + Dß╗▒ ph├▓ng gß╗ông lß╗ù (${formatShortVND(buffer)}).
+                        <br>ΓÇó Kß║┐t quß║ú: <strong>${formatNumber(totalCapital)} ─æ</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>2. Thá»i gian hoÃ n vá»‘n Ä‘Æ¡n giáº£n (Simple Payback):</strong>
+                    <strong>2. Thß╗¥i gian ho├án vß╗æn ─æ╞ín giß║ún (Simple Payback):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        â€¢ CÃ´ng thá»©c: Tá»•ng vá»‘n Ä‘áº§u tÆ° / DÃ²ng tiá»n rÃ²ng hÃ ng thÃ¡ng trung bÃ¬nh nÄƒm 1.
-                        <br>â€¢ CÃ¡ch tÃ­nh: ${formatNumber(totalCapital)} Ä‘ / ${formatNumber(Math.round(yearData[1].net / 12))} Ä‘ (dÃ²ng tiá»n rÃ²ng trung bÃ¬nh/thÃ¡ng cá»§a NÄƒm 1).
-                        <br>â€¢ Káº¿t quáº£: <strong>${paybackText}</strong>.
+                        ΓÇó C├┤ng thß╗⌐c: Tß╗òng vß╗æn ─æß║ºu t╞░ / D├▓ng tiß╗ün r├▓ng h├áng th├íng trung b├¼nh n─âm 1.
+                        <br>ΓÇó C├ích t├¡nh: ${formatNumber(totalCapital)} ─æ / ${formatNumber(Math.round(yearData[1].net / 12))} ─æ (d├▓ng tiß╗ün r├▓ng trung b├¼nh/th├íng cß╗ºa N─âm 1).
+                        <br>ΓÇó Kß║┐t quß║ú: <strong>${paybackText}</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>3. Thá»i gian hoÃ n vá»‘n chiáº¿t kháº¥u (Discounted Payback):</strong>
+                    <strong>3. Thß╗¥i gian ho├án vß╗æn chiß║┐t khß║Ñu (Discounted Payback):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        â€¢ CÃ´ng thá»©c: Thá»i Ä‘iá»ƒm mÃ  tá»•ng hiá»‡n giÃ¡ cÃ¡c dÃ²ng tiá»n tÃ­ch luá»¹ Ä‘áº¡t tráº¡ng thÃ¡i hÃ²a vá»‘n (lá»›n hÆ¡n hoáº·c báº±ng 0).
-                        <br>â€¢ CÃ¡ch tÃ­nh: Quy Ä‘á»•i dÃ²ng tiá»n tá»«ng thÃ¡ng vá» hiá»‡n giÃ¡ (PV) theo tá»· lá»‡ chiáº¿t kháº¥u hÃ ng thÃ¡ng hiá»‡u dá»¥ng r_m = (1 + ${discountRatePct}%)^(1/12) - 1 â‰ˆ ${(monthlyRate*100).toFixed(3)}%/thÃ¡ng. Sau Ä‘Ã³ cá»™ng dá»“n tá»«ng thÃ¡ng Ä‘á»ƒ xem khi nÃ o thu há»“i Ä‘á»§ vá»‘n hiá»‡n giÃ¡.
-                        <br>â€¢ Káº¿t quáº£: <strong>${discPaybackText}</strong>.
+                        ΓÇó C├┤ng thß╗⌐c: Thß╗¥i ─æiß╗âm m├á tß╗òng hiß╗çn gi├í c├íc d├▓ng tiß╗ün t├¡ch luß╗╣ ─æß║ít trß║íng th├íi h├▓a vß╗æn (lß╗¢n h╞ín hoß║╖c bß║▒ng 0).
+                        <br>ΓÇó C├ích t├¡nh: Quy ─æß╗òi d├▓ng tiß╗ün tß╗½ng th├íng vß╗ü hiß╗çn gi├í (PV) theo tß╗╖ lß╗ç chiß║┐t khß║Ñu h├áng th├íng hiß╗çu dß╗Ñng r_m = (1 + ${discountRatePct}%)^(1/12) - 1 Γëê ${(monthlyRate*100).toFixed(3)}%/th├íng. Sau ─æ├│ cß╗Öng dß╗ôn tß╗½ng th├íng ─æß╗â xem khi n├áo thu hß╗ôi ─æß╗º vß╗æn hiß╗çn gi├í.
+                        <br>ΓÇó Kß║┐t quß║ú: <strong>${discPaybackText}</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>4. GiÃ¡ trá»‹ hiá»‡n táº¡i thuáº§n (NPV - Net Present Value):</strong>
+                    <strong>4. Gi├í trß╗ï hiß╗çn tß║íi thuß║ºn (NPV - Net Present Value):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        â€¢ CÃ´ng thá»©c: -Vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u + Tá»•ng PV cá»§a dÃ²ng tiá»n 36 thÃ¡ng.
-                        <br>â€¢ Ã nghÄ©a: Thá»ƒ hiá»‡n sá»‘ tiá»n lÃ£i rÃ²ng thá»±c táº¿ thu vá» (sau khi Ä‘Ã£ kháº¥u trá»« Ä‘i trÆ°á»£t giÃ¡ vÃ  chi phÃ­ cÆ¡ há»™i lÃ  lÃ£i suáº¥t chiáº¿t kháº¥u ${discountRatePct}%).
-                        <br>â€¢ Káº¿t quáº£: <strong class="${npvColor}">${npv >= 0 ? '+' : ''}${formatNumber(Math.round(npv))} Ä‘</strong>.
+                        ΓÇó C├┤ng thß╗⌐c: -Vß╗æn ─æß║ºu t╞░ ban ─æß║ºu + Tß╗òng PV cß╗ºa d├▓ng tiß╗ün 36 th├íng.
+                        <br>ΓÇó ├¥ ngh─⌐a: Thß╗â hiß╗çn sß╗æ tiß╗ün l├úi r├▓ng thß╗▒c tß║┐ thu vß╗ü (sau khi ─æ├ú khß║Ñu trß╗½ ─æi tr╞░ß╗út gi├í v├á chi ph├¡ c╞í hß╗Öi l├á l├úi suß║Ñt chiß║┐t khß║Ñu ${discountRatePct}%).
+                        <br>ΓÇó Kß║┐t quß║ú: <strong class="${npvColor}">${npv >= 0 ? '+' : ''}${formatNumber(Math.round(npv))} ─æ</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>5. Tá»· suáº¥t sinh lá»i ná»™i bá»™ (IRR - Internal Rate of Return):</strong>
+                    <strong>5. Tß╗╖ suß║Ñt sinh lß╗¥i nß╗Öi bß╗Ö (IRR - Internal Rate of Return):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        â€¢ KhÃ¡i niá»‡m: Má»©c lÃ£i suáº¥t chiáº¿t kháº¥u mÃ  táº¡i Ä‘Ã³ NPV = 0.
-                        <br>â€¢ Ã nghÄ©a: Tá»· suáº¥t sinh lá»i thá»±c táº¿ cá»§a quÃ¡n. Náº¿u IRR lá»›n hÆ¡n LÃ£i suáº¥t chiáº¿t kháº¥u kÃ¬ vá»ng (${discountRatePct}%) thÃ¬ dá»± Ã¡n Ä‘Ã¡ng Ä‘á»ƒ Ä‘áº§u tÆ°.
-                        <br>â€¢ Káº¿t quáº£: <strong class="${irrColor}">${totalInflow > totalCapital && irrAnnual > -100 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</strong>.
+                        ΓÇó Kh├íi niß╗çm: Mß╗⌐c l├úi suß║Ñt chiß║┐t khß║Ñu m├á tß║íi ─æ├│ NPV = 0.
+                        <br>ΓÇó ├¥ ngh─⌐a: Tß╗╖ suß║Ñt sinh lß╗¥i thß╗▒c tß║┐ cß╗ºa qu├ín. Nß║┐u IRR lß╗¢n h╞ín L├úi suß║Ñt chiß║┐t khß║Ñu k├¼ vß╗ìng (${discountRatePct}%) th├¼ dß╗▒ ├ín ─æ├íng ─æß╗â ─æß║ºu t╞░.
+                        <br>ΓÇó Kß║┐t quß║ú: <strong class="${irrColor}">${totalInflow > totalCapital && irrAnnual > -100 ? irrAnnual.toFixed(1) + '%' : 'N/A'}</strong>.
                     </div>
                 </div>
                 <div>
-                    <strong>6. Tá»· lá»‡ hoÃ n vá»‘n Ä‘áº§u tÆ° (ROI - Return on Investment):</strong>
+                    <strong>6. Tß╗╖ lß╗ç ho├án vß╗æn ─æß║ºu t╞░ (ROI - Return on Investment):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        â€¢ CÃ´ng thá»©c: (Tá»•ng dÃ²ng tiá»n rÃ²ng 3 nÄƒm - Vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u) / Vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u Ã— 100%.
-                        <br>â€¢ CÃ¡ch tÃ­nh: (${formatNumber(Math.round(totalInflow))} Ä‘ dÃ²ng tiá»n thu vá» - ${formatNumber(totalCapital)} Ä‘ vá»‘n bá» ra) / ${formatNumber(totalCapital)} Ä‘.
-                        <br>â€¢ Káº¿t quáº£: <strong class="${roiColor}">${roi.toFixed(1)}%</strong> trong vÃ²ng 3 nÄƒm (tÆ°Æ¡ng Ä‘Æ°Æ¡ng trung bÃ¬nh khoáº£ng ${(roi/3).toFixed(1)}%/nÄƒm).
+                        ΓÇó C├┤ng thß╗⌐c: (Tß╗òng d├▓ng tiß╗ün r├▓ng 3 n─âm - Vß╗æn ─æß║ºu t╞░ ban ─æß║ºu) / Vß╗æn ─æß║ºu t╞░ ban ─æß║ºu ├ù 100%.
+                        <br>ΓÇó C├ích t├¡nh: (${formatNumber(Math.round(totalInflow))} ─æ d├▓ng tiß╗ün thu vß╗ü - ${formatNumber(totalCapital)} ─æ vß╗æn bß╗Å ra) / ${formatNumber(totalCapital)} ─æ.
+                        <br>ΓÇó Kß║┐t quß║ú: <strong class="${roiColor}">${roi.toFixed(1)}%</strong> trong v├▓ng 3 n─âm (t╞░╞íng ─æ╞░╞íng trung b├¼nh khoß║úng ${(roi/3).toFixed(1)}%/n─âm).
                     </div>
                 </div>
                 <div>
-                    <strong>7. Chá»‰ sá»‘ sinh lá»i (PI - Profitability Index):</strong>
+                    <strong>7. Chß╗ë sß╗æ sinh lß╗¥i (PI - Profitability Index):</strong>
                     <div style="padding-left: 12px; color: var(--text-muted); margin-top: 2px;">
-                        â€¢ CÃ´ng thá»©c: Tá»•ng hiá»‡n giÃ¡ dÃ²ng tiá»n vÃ o (PV) / Vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u.
-                        <br>â€¢ Ã nghÄ©a: Cá»© 1 Ä‘á»“ng vá»‘n Ä‘áº§u tÆ° ban Ä‘áº§u Ä‘em láº¡i bao nhiÃªu Ä‘á»“ng giÃ¡ trá»‹ hiá»‡n táº¡i. Dá»± Ã¡n cÃ³ kháº£ thi khi PI > 1.
-                        <br>â€¢ Káº¿t quáº£: <strong class="${piColor}">${pi.toFixed(2)}</strong>.
+                        ΓÇó C├┤ng thß╗⌐c: Tß╗òng hiß╗çn gi├í d├▓ng tiß╗ün v├áo (PV) / Vß╗æn ─æß║ºu t╞░ ban ─æß║ºu.
+                        <br>ΓÇó ├¥ ngh─⌐a: Cß╗⌐ 1 ─æß╗ông vß╗æn ─æß║ºu t╞░ ban ─æß║ºu ─æem lß║íi bao nhi├¬u ─æß╗ông gi├í trß╗ï hiß╗çn tß║íi. Dß╗▒ ├ín c├│ khß║ú thi khi PI > 1.
+                        <br>ΓÇó Kß║┐t quß║ú: <strong class="${piColor}">${pi.toFixed(2)}</strong>.
                     </div>
                 </div>
             </div>
@@ -2960,7 +2959,7 @@ function renderInvestmentAnalysis() {
                 labels: labels,
                 datasets: [
                     {
-                        label: 'TÃ­ch lÅ©y thá»±c táº¿',
+                        label: 'T├¡ch l┼⌐y thß╗▒c tß║┐',
                         data: dataCumCash,
                         borderColor: '#38bdf8',
                         backgroundColor: 'rgba(56, 189, 248, 0.05)',
@@ -2969,7 +2968,7 @@ function renderInvestmentAnalysis() {
                         fill: true
                     },
                     {
-                        label: 'TÃ­ch lÅ©y chiáº¿t kháº¥u (PV)',
+                        label: 'T├¡ch l┼⌐y chiß║┐t khß║Ñu (PV)',
                         data: dataCumPv,
                         borderColor: '#fbbf24',
                         backgroundColor: 'rgba(251, 191, 36, 0.05)',
@@ -2991,7 +2990,7 @@ function renderInvestmentAnalysis() {
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                return context.dataset.label + ': ' + formatNumber(context.raw) + 'Ä‘';
+                                return context.dataset.label + ': ' + formatNumber(context.raw) + '─æ';
                             }
                         }
                     },
@@ -3060,15 +3059,15 @@ window.shareCurrentState = function() {
         const label = document.getElementById('share-btn-label');
         if (btn && label) {
             btn.classList.add('share-success');
-            label.textContent = 'âœ“ ÄÃ£ Copy!';
+            label.textContent = 'Γ£ô ─É├ú Copy!';
             setTimeout(() => {
                 btn.classList.remove('share-success');
-                label.textContent = 'Chia Sáº»';
+                label.textContent = 'Chia Sß║╗';
             }, 2500);
         }
     }).catch(() => {
         // Fallback: prompt the user to copy manually
-        prompt('Sao chÃ©p link chia sáº» bÃªn dÆ°á»›i:', shareUrl);
+        prompt('Sao ch├⌐p link chia sß║╗ b├¬n d╞░ß╗¢i:', shareUrl);
     });
 };
 
@@ -3113,7 +3112,7 @@ function loadStateFromURL() {
         }, 300);
 
     } catch(e) {
-        console.warn('KhÃ´ng thá»ƒ load state tá»« URL:', e);
+        console.warn('Kh├┤ng thß╗â load state tß╗½ URL:', e);
     }
 }
 
@@ -3124,7 +3123,7 @@ function showShareLoadedNotification() {
         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
         </svg>
-        <span>ÄÃ£ táº£i sá»‘ liá»‡u Ä‘Æ°á»£c chia sáº» thÃ nh cÃ´ng!</span>
+        <span>─É├ú tß║úi sß╗æ liß╗çu ─æ╞░ß╗úc chia sß║╗ th├ánh c├┤ng!</span>
     `;
     document.body.appendChild(notif);
 
@@ -3139,4 +3138,3 @@ function showShareLoadedNotification() {
 document.addEventListener('DOMContentLoaded', () => {
     loadStateFromURL();
 });
-
