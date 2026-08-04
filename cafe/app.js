@@ -13,7 +13,7 @@ let costChartInstance = null;
 let equityChartInstance = null;
 let editingShareholderId = null;
 let shareholders = [
-    { id: 1, name: "Bạn (Cổ đông sáng lập)", contribution: 80000000, role: "operate" }
+    { id: 1, name: "Bạn (Cổ đông sáng lập)", contribution: 139000000, role: "operate" }
 ];
 
 // ======================================================================
@@ -115,6 +115,46 @@ window.applyBusinessPreset = function(presetType) {
         newShareholders = [
             { id: 1, name: "Chủ quán", contribution: 45000000, role: "operate" }
         ];
+    } else if (presetType === 'max') {
+        // Dự toán nâng cao (Mức Cao Nhất 227 Tr)
+        data = {
+            'inp-deposit': 16000000,
+            'inp-renovate': 42000000, // Xây dựng 15M + Bảng hiệu 5M + Điện nước 7M + Decor 15M
+            'inp-equipment': 106000000, // Dụng cụ 5M, Tủ lạnh 7M, Máy xay 4M, Ly tách 5M, POS 7M, Bàn ghế 35M, Đèn 7M, Loa 7M, Máy lạnh 20M, Quạt 3M, Camera wifi 3M, Menu 2M, Vệ sinh 1M
+            'inp-raw-start': 10000000,
+            'inp-decor-misc': 23000000, // Phát sinh 20M + Pháp lý 3M
+            'inp-depr-years': 5,
+            'inp-buffer': 30000000,
+            'inp-loan': 70000000,
+            'inp-interest': 12,
+            'inp-term': 18,
+            'inp-rent': 5500000,
+            'inp-utilities': 2500000,
+            'inp-shift-morning-staff': 1,
+            'inp-shift-morning-rate': 18000,
+            'inp-shift-afternoon-staff': 1,
+            'inp-shift-afternoon-rate': 18000,
+            'inp-shift-evening-staff': 1,
+            'inp-shift-evening-rate': 20000,
+            'inp-ft-manager-count': 0,
+            'inp-ft-manager-salary': 7000000,
+            'inp-weekend-multiplier': 1.15,
+            'inp-commission-rate': 0,
+            'inp-misc': 600000,
+            'inp-price': 28000,
+            'inp-cost-pct': 26,
+            'inp-vol-weak': 55,
+            'inp-vol-base': 90,
+            'inp-vol-good': 140,
+            'inp-discount-rate': 15,
+            'inp-growth-rev': 12,
+            'inp-growth-opex': 5,
+            'inp-div-retained': 20,
+            'inp-div-payout': 80
+        };
+        newShareholders = [
+            { id: 1, name: "Bạn (Cổ đông sáng lập)", contribution: 160000000, role: "operate" }
+        ];
     } else if (presetType === 'garden') {
         data = {
             'inp-deposit': 36000000,
@@ -156,19 +196,19 @@ window.applyBusinessPreset = function(presetType) {
             { id: 2, name: "Cổ đông đầu tư A", contribution: 50000000, role: "invest" }
         ];
     } else {
-        // standard (Quán máy lạnh chuẩn 50m2)
+        // standard (Dự toán Chuẩn: Mức Trung Bình 179 Tr)
         data = {
-            'inp-deposit': 18000000,
-            'inp-renovate': 18000000,
-            'inp-equipment': 40000000,
-            'inp-raw-start': 10000000,
-            'inp-decor-misc': 4000000,
+            'inp-deposit': 16000000, // Cọc 3 tháng
+            'inp-renovate': 28000000, // Xây dựng 10M + Bảng hiệu 2M + Điện nước 6M + Decor 10M
+            'inp-equipment': 83000000, // Dụng cụ 3M, Tủ lạnh 5M, Máy xay 3M, Ly tách 4M, POS 6M, Bàn ghế 30M, Đèn 5M, Loa 5M, Máy lạnh 16M, Quạt 2M, Camera wifi 2M, Menu 1M, Vệ sinh 1M
+            'inp-raw-start': 10000000, // Nguyên liệu 30 loại nước
+            'inp-decor-misc': 12000000, // Phát sinh 10M + Pháp lý 2M
             'inp-depr-years': 5,
-            'inp-buffer': 30000000,
+            'inp-buffer': 30000000, // Quỹ dự phòng 3 tháng
             'inp-loan': 40000000,
             'inp-interest': 12,
             'inp-term': 12,
-            'inp-rent': 6000000,
+            'inp-rent': 5500000,
             'inp-utilities': 2200000,
             'inp-shift-morning-staff': 1,
             'inp-shift-morning-rate': 18000,
@@ -193,7 +233,7 @@ window.applyBusinessPreset = function(presetType) {
             'inp-div-payout': 80
         };
         newShareholders = [
-            { id: 1, name: "Bạn (Cổ đông sáng lập)", contribution: 80000000, role: "operate" }
+            { id: 1, name: "Bạn (Cổ đông sáng lập)", contribution: 139000000, role: "operate" }
         ];
     }
 
@@ -2012,6 +2052,7 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
     const breakevenTab = document.getElementById('breakeven-tab');
     const longtermTab = document.getElementById('longterm-tab');
     const advisorTab = document.getElementById('advisor-tab');
+    const budgetTab = document.getElementById('budget-tab');
 
     if (mainWrapper) mainWrapper.style.display = 'none';
     if (splitWrapper) splitWrapper.style.display = 'none';
@@ -2021,11 +2062,16 @@ function renderChart(base, breakeven, volBase, baseTrend, setupCosts, deposit, r
     if (breakevenTab) breakevenTab.style.display = 'none';
     if (longtermTab) longtermTab.style.display = 'none';
     if (advisorTab) advisorTab.style.display = 'none';
+    if (budgetTab) budgetTab.style.display = 'none';
 
     // Always clean up any charts before rendering new tab
     destroyAllCharts();
 
-    if (activeTab === 'structure') {
+    if (activeTab === 'budget') {
+        if (budgetTab) budgetTab.style.display = 'block';
+        renderBudgetTab();
+        return;
+    } else if (activeTab === 'structure') {
         if (splitWrapper) splitWrapper.style.display = 'grid';
     } else if (activeTab === 'advisor') {
         if (advisorTab) advisorTab.style.display = 'block';
@@ -2233,6 +2279,9 @@ window.switchTab = function(tabName) {
         const onclickAttr = btn.getAttribute('onclick') || '';
         if (onclickAttr.includes(`'${tabName}'`) || onclickAttr.includes(`"${tabName}"`)) {
             btn.classList.add('active');
+            if (btn.scrollIntoView) {
+                btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+            }
         }
     });
 
@@ -3137,3 +3186,387 @@ function showShareLoadedNotification() {
 document.addEventListener('DOMContentLoaded', () => {
     loadStateFromURL();
 });
+
+// ======================================================================
+// Detailed Budget Breakdown Data (18 items reference: 179M vs 227M)
+// ======================================================================
+const BUDGET_PLAN_DATA = [
+    {
+        category: "1. Chi Phí Mặt Bằng & Cải Tạo Xây Dựng",
+        colorBadge: "badge-blue",
+        items: [
+            {
+                name: "Thuê mặt bằng (Cọc 3 tháng)",
+                note: "Tiền đặt cọc giữ chỗ hợp đồng thuê tối thiểu 3 tháng (~5.3M - 5.5M/tháng)",
+                avg: 16000000,
+                max: 16000000,
+                targetField: "inp-deposit"
+            },
+            {
+                name: "Xây dựng thô & nền nhà",
+                note: "Cải tạo cấu trúc nhà, mặt bằng sàn, tường thô",
+                avg: 10000000,
+                max: 15000000,
+                targetField: "inp-renovate"
+            },
+            {
+                name: "Bảng hiệu mặt tiền",
+                note: "Biển hiệu đèn led, chữ nổi mica, logo quán nhận diện",
+                avg: 2000000,
+                max: 5000000,
+                targetField: "inp-renovate"
+            },
+            {
+                name: "Hệ thống điện & nước",
+                note: "Dây nguồn, ổ cắm, bóng đèn, quầy bar (~3tr), cải tạo WC (~3-4tr)",
+                avg: 6000000,
+                max: 7000000,
+                targetField: "inp-renovate"
+            },
+            {
+                name: "Chỉnh sửa & Decor không gian",
+                note: "Sơn tường, tranh ảnh, ốp lát, cây xanh trang trí trong và ngoài quán",
+                avg: 10000000,
+                max: 15000000,
+                targetField: "inp-renovate"
+            }
+        ]
+    },
+    {
+        category: "2. Chi Phí Đầu Tư Trang Thiết Bị & Máy Móc",
+        colorBadge: "badge-amber",
+        items: [
+            {
+                name: "Dụng cụ pha chế",
+                note: "Phin nhôm/inox, ca đong định lượng, cốc lắc shaker, muỗng khuấy, tamper...",
+                avg: 3000000,
+                max: 5000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Tủ lạnh trữ nguyên liệu",
+                note: "Tủ lạnh dung tích vừa đủ trữ đá, sữa, trái cây và topping",
+                avg: 5000000,
+                max: 7000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Máy xay sinh tố chuyên dụng",
+                note: "Công suất lớn chuyên xay đá tuyết, sinh tố không đứng máy",
+                avg: 3000000,
+                max: 4000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Ly, tách, cốc, dĩa, bao mang về",
+                note: "Bộ ly thủy tinh uống tại quán + ly nhựa/giấy mang đi, ống hút, túi chữ T",
+                avg: 4000000,
+                max: 5000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Máy POS bán hàng & Máy in bill",
+                note: "Tận dụng app điện thoại / laptop quản lý + máy in bill nhiệt bluetooth/LAN",
+                avg: 6000000,
+                max: 7000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Bàn ghế (Nội thất & Ngoại thất)",
+                note: "Trong nhà: 8-10 bộ bàn ghế; Ngoài trời/vỉa hè: 4 bộ chính + 6 bộ phụ",
+                avg: 30000000,
+                max: 35000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Hệ thống chiếu sáng & Decor",
+                note: "Đèn rọi ray quầy bar, đèn thả bàn, đèn led hắt ấm tạo không gian chill",
+                avg: 5000000,
+                max: 7000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Dàn loa âm thanh",
+                note: "Tiết kiệm: fix loa cũ (~500k) hoặc trang bị 4 loa Bose/JBL treo tường (~1tr/cái)",
+                avg: 5000000,
+                max: 7000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Điều hòa nhiệt độ (Máy lạnh)",
+                note: "Máy lạnh Inverter 1 - 1.5 HP làm mát phòng kín cho khách ngồi lâu",
+                avg: 16000000,
+                max: 20000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Máy quạt làm mát",
+                note: "5 máy quạt Lifan / quạt công nghiệp treo tường (~400k/cái = 2tr)",
+                avg: 2000000,
+                max: 3000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Camera an ninh & Router Wifi",
+                note: "Hệ thống 2-3 mắt camera IP + bộ phát wifi chịu tải cao cho 30-50 khách",
+                avg: 2000000,
+                max: 3000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Menu & Bảng giá",
+                note: "Menu mica để bàn, bảng menu led / gỗ treo sau quầy bar",
+                avg: 1000000,
+                max: 2000000,
+                targetField: "inp-equipment"
+            },
+            {
+                name: "Vật dụng vệ sinh",
+                note: "Chổi quét, cây lau nhà, ki hốt rác, khăn lau microfiber, nước tẩy rửa",
+                avg: 1000000,
+                max: 1000000,
+                targetField: "inp-equipment"
+            }
+        ]
+    },
+    {
+        category: "3. Chi Phí Nguyên Liệu Pha Chế & Phát Sinh",
+        colorBadge: "badge-emerald",
+        items: [
+            {
+                name: "Nguyên vật liệu ban đầu",
+                note: "Nhập đợt đầu cho thực đơn ~30 loại đồ uống (cà phê hạt, trà, sữa, siro, topping)",
+                avg: 10000000,
+                max: 10000000,
+                targetField: "inp-raw-start"
+            },
+            {
+                name: "Chi phí phát sinh setup",
+                note: "Dự phòng các khoản mua sắm nhỏ, vận chuyển, thợ lắp đặt ngoài dự tính",
+                avg: 10000000,
+                max: 20000000,
+                targetField: "inp-decor-misc"
+            }
+        ]
+    },
+    {
+        category: "4. Các Loại Chi Phí Khác & Pháp Lý",
+        colorBadge: "badge-rose",
+        items: [
+            {
+                name: "Quỹ dự phòng vận hành (3 tháng)",
+                note: "Quỹ tiền mặt an toàn đảm bảo chi trả mặt bằng, điện nước, lương trong 3 tháng đầu",
+                avg: 30000000,
+                max: 30000000,
+                targetField: "inp-buffer"
+            },
+            {
+                name: "Đăng ký hộ kinh doanh & vỉa hè",
+                note: "Lệ phí giấy phép ĐKKD, chứng nhận ATVSTP, phí sử dụng tạm thời vỉa hè",
+                avg: 2000000,
+                max: 3000000,
+                targetField: "inp-decor-misc"
+            }
+        ]
+    }
+];
+
+function generateBudgetTableHTML(isModal = false) {
+    let totalAvg = 0;
+    let totalMax = 0;
+
+    let rowsHtml = '';
+    let itemIndex = 1;
+
+    BUDGET_PLAN_DATA.forEach((cat, catIdx) => {
+        let catAvg = 0;
+        let catMax = 0;
+
+        let catRows = '';
+        cat.items.forEach(item => {
+            catAvg += item.avg;
+            catMax += item.max;
+            totalAvg += item.avg;
+            totalMax += item.max;
+
+            const diff = item.max - item.avg;
+            const diffText = diff > 0 ? `+${formatShortVND(diff)}` : '-';
+            const diffClass = diff > 0 ? 'text-diff-up' : 'text-diff-same';
+
+            catRows += `
+                <tr class="budget-item-row">
+                    <td class="col-num">${itemIndex++}</td>
+                    <td class="col-name">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-note">${item.note}</div>
+                    </td>
+                    <td class="col-val val-avg">${formatVND(item.avg)}</td>
+                    <td class="col-val val-max">${formatVND(item.max)}</td>
+                    <td class="col-diff ${diffClass}">${diffText}</td>
+                </tr>
+            `;
+        });
+
+        rowsHtml += `
+            <tr class="budget-category-header">
+                <td colspan="2">
+                    <div class="cat-title-wrap">
+                        <span class="cat-badge ${cat.colorBadge}">${catIdx + 1}</span>
+                        <strong>${cat.category}</strong>
+                    </div>
+                </td>
+                <td class="cat-val val-avg">${formatVND(catAvg)}</td>
+                <td class="cat-val val-max">${formatVND(catMax)}</td>
+                <td class="cat-val cat-diff">+${formatShortVND(catMax - catAvg)}</td>
+            </tr>
+            ${catRows}
+        `;
+    });
+
+    return `
+        <div class="budget-table-responsive">
+            <table class="budget-detail-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px; text-align: center;">STT</th>
+                        <th>Hạng Mục Dự Toán Đầu Tư</th>
+                        <th style="width: 170px; text-align: right;">Trung Bình (VND)</th>
+                        <th style="width: 170px; text-align: right;">Cao Nhất (VND)</th>
+                        <th style="width: 110px; text-align: center;">Chênh Lệch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rowsHtml}
+                </tbody>
+                <tfoot>
+                    <tr class="budget-total-row">
+                        <td colspan="2" style="text-align: right; font-weight: 700; font-size: 15px;">
+                            🎯 TỔNG CỘNG VỐN ĐẦU TƯ BAN ĐẦU:
+                        </td>
+                        <td class="total-val val-avg">${formatVND(totalAvg)}</td>
+                        <td class="total-val val-max">${formatVND(totalMax)}</td>
+                        <td class="total-diff">+${formatShortVND(totalMax - totalAvg)}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    `;
+}
+
+window.openBudgetModal = function() {
+    const modal = document.getElementById('budget-modal');
+    if (!modal) return;
+    const container = document.getElementById('budget-modal-table-container');
+    if (container) {
+        container.innerHTML = generateBudgetTableHTML(true);
+    }
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+};
+
+window.closeBudgetModal = function() {
+    const modal = document.getElementById('budget-modal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+};
+
+window.handleBudgetBackdropClick = function(e) {
+    if (e.target.id === 'budget-modal') {
+        closeBudgetModal();
+    }
+};
+
+window.applyBudgetPlan = function(mode) {
+    if (mode === 'max') {
+        applyBusinessPreset('max');
+    } else {
+        applyBusinessPreset('standard');
+    }
+    closeBudgetModal();
+    
+    const label = mode === 'max' ? 'Mức Cao Nhất (227 Triệu)' : 'Mức Trung Bình (179 Triệu)';
+    showBudgetToast(`✅ Đã áp dụng thành công ${label} vào bảng tính!`);
+};
+
+function showBudgetToast(msg) {
+    const toast = document.createElement('div');
+    toast.className = 'share-load-notif';
+    toast.style.background = 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(56, 189, 248, 0.2))';
+    toast.style.borderColor = 'rgba(56, 189, 248, 0.5)';
+    toast.style.color = '#38bdf8';
+    toast.innerHTML = `
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+        </svg>
+        <span>${msg}</span>
+    `;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+    }, 3500);
+}
+
+function renderBudgetTab() {
+    const container = document.getElementById('budget-tab');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="budget-tab-header">
+            <div class="budget-tab-title-wrap">
+                <h4 class="chart-sub-title">📋 Bảng Kê Chi Tiết 18 Hạng Mục Dự Toán Thực Tế</h4>
+                <p class="tab-info-desc">
+                    Đối chiếu chi tiết giữa <strong>Dự toán Trung Bình (179.000.000 đ)</strong> và <strong>Dự toán Cao Nhất (227.000.000 đ)</strong>. Bấm nút áp dụng để đồng bộ trực tiếp vào toàn bộ báo cáo tài chính.
+                </p>
+            </div>
+            <div class="budget-tab-actions">
+                <button type="button" class="btn-apply-plan btn-plan-avg" onclick="applyBudgetPlan('avg')">
+                    ⚡ Áp Dụng Mức TB (179 Tr)
+                </button>
+                <button type="button" class="btn-apply-plan btn-plan-max" onclick="applyBudgetPlan('max')">
+                    ⚡ Áp Dụng Mức Cao (227 Tr)
+                </button>
+                <button type="button" class="btn-print-budget" onclick="window.print()">
+                    🖨️ In Bảng Kê
+                </button>
+            </div>
+        </div>
+
+        <div class="budget-kpi-summary-grid">
+            <div class="budget-kpi-card card-blue">
+                <div class="bkpi-label">1. Mặt Bằng & Cải Tạo</div>
+                <div class="bkpi-vals">
+                    <span class="val-avg">TB: 44.0M đ</span>
+                    <span class="val-max">Max: 58.0M đ</span>
+                </div>
+            </div>
+            <div class="budget-kpi-card card-amber">
+                <div class="bkpi-label">2. Trang Thiết Bị & Máy Móc</div>
+                <div class="bkpi-vals">
+                    <span class="val-avg">TB: 83.0M đ</span>
+                    <span class="val-max">Max: 106.0M đ</span>
+                </div>
+            </div>
+            <div class="budget-kpi-card card-emerald">
+                <div class="bkpi-label">3. Nguyên Liệu & Phát Sinh</div>
+                <div class="bkpi-vals">
+                    <span class="val-avg">TB: 20.0M đ</span>
+                    <span class="val-max">Max: 30.0M đ</span>
+                </div>
+            </div>
+            <div class="budget-kpi-card card-rose">
+                <div class="bkpi-label">4. Dự Phòng 3 Tháng & Pháp Lý</div>
+                <div class="bkpi-vals">
+                    <span class="val-avg">TB: 32.0M đ</span>
+                    <span class="val-max">Max: 33.0M đ</span>
+                </div>
+            </div>
+        </div>
+
+        ${generateBudgetTableHTML(false)}
+    `;
+}
+
