@@ -1,7 +1,7 @@
 /* ==========================================================================
    Coffeelytics - Financial Dashboard Design System & Styling
    Theme: Modern Fintech Glassmorphism (Dark / Light)
-   Fonts: 'Plus Jakarta Sans' (Display/Numbers) & 'Outfit' (UI/Body)
+   Fonts: 'Plus Jakarta Sans' & 'Be Vietnam Pro'
    ========================================================================== */
 
 :root {
@@ -39,8 +39,8 @@
     --card-shadow: 0 10px 35px -5px rgba(0, 0, 0, 0.4), 0 0 1px 1px rgba(255, 255, 255, 0.05);
     --card-hover-shadow: 0 15px 45px -5px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(56, 189, 248, 0.3);
 
-    --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: 'Plus Jakarta Sans', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Plus Jakarta Sans', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --radius-sm: 8px;
     --radius-md: 14px;
     --radius-lg: 20px;
